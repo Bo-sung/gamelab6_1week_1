@@ -6,6 +6,7 @@ public class TrackEdge : MonoBehaviour
     private BoxCollider trigger;
 
     public System.Action OnTrigger;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
