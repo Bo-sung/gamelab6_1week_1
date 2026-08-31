@@ -5,41 +5,15 @@ public class CarController : MonoBehaviour
     public float speed = 10f;
     public float rotationSpeed = 100f;
 
-    [SerializeField]
-    private InputManager inputManager;
 
     [SerializeField]
     private CarManager carManager;
-    void Start()
-    {
-        inputManager.OnAPressed += TurnLeft;
-        inputManager.OnDPressed += TurnRight;
-        inputManager.OnWPressed += MoveForward;
-        inputManager.OnSPressed += MoveBackward;
-    }
-    void OnDestroy()
-    {
-        inputManager.OnAPressed -= TurnLeft;
-        inputManager.OnDPressed -= TurnRight;
-        inputManager.OnWPressed -= MoveForward;
-        inputManager.OnSPressed -= MoveBackward;
-    }
 
-    void TurnLeft()
+    private void Update()
     {
-        carManager.Steer(-1);
-    }
-    void TurnRight()
-    {
-        carManager.Steer(1);
-    }
-    void MoveForward()
-    {
-        carManager.Accelerate(1);
-    }
-    void MoveBackward()
-    {
-        carManager.Accelerate(-1);
+        carManager.Accelerate(Input.GetAxis("Vertical"));
+        carManager.Steer(Input.GetAxis("Horizontal"));
+        carManager.Brake(Input.GetKey(KeyCode.Space));
     }
 }
 

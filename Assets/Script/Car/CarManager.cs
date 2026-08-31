@@ -1,4 +1,5 @@
 using System.ComponentModel.Design;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -30,26 +31,39 @@ public class CarManager : MonoBehaviour
         
     }
 
-    public void Accelerate(int direction)
+    public void Accelerate(float direction)
     {
-        RLWheel.motorTorque = direction * stat.Acceleration;
-        RRWheel.motorTorque = direction * stat.Acceleration;
+        RLWheel.motorTorque = direction * stat.Acceleration*100;
+        RRWheel.motorTorque = direction * stat.Acceleration*100;
+
+        
 
     }
-    public void Steer(int steer)
+    public void Steer(float steer)
     {
-
+        FLWheel.steerAngle = steer * stat.Cornering;
+        FRWheel.steerAngle = steer * stat.Cornering;
     }
  
-    public void Brake()
+    public void Brake(bool brake)
     {
+        if (!brake)
+        {
+            FLWheel.brakeTorque = 0;
+            FRWheel.brakeTorque = 0;
+            RLWheel.brakeTorque = 0;
+            RLWheel.brakeTorque = 0;
+            return;
+        }
+
+      
         RLWheel.motorTorque = 0f;
         RRWheel.motorTorque = 0f;
 
-        FLWheel.brakeTorque = stat.Braking;
-        FRWheel.brakeTorque = stat.Braking;
-        RLWheel.brakeTorque = stat.Braking;
-        RLWheel.brakeTorque = stat.Braking;
+        FLWheel.brakeTorque = stat.Braking * 100;
+        FRWheel.brakeTorque = stat.Braking * 100;
+        RLWheel.brakeTorque = stat.Braking * 100;
+        RLWheel.brakeTorque = stat.Braking * 100;
     }
 
 
