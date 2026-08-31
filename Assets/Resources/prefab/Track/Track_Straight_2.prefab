@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 581167691808032249}
   - component: {fileID: 7580437512861579352}
   - component: {fileID: 4752114486940068408}
-  - component: {fileID: 5129641960169143465}
+  - component: {fileID: 2922591424149909748}
   m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Wall
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.0057924534, y: -0, z: -0.000428612, w: 0.99998313}
   m_LocalPosition: {x: 2.96, y: -0.05, z: -0.019999996}
-  m_LocalScale: {x: 3.9178517, y: 1, z: 9.573234}
+  m_LocalScale: {x: 3.9178517, y: 1.5, z: 9.573234}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7515575458418234414}
@@ -91,8 +91,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5129641960169143465
-CapsuleCollider:
+--- !u!64 &2922591424149909748
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -109,11 +109,10 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &3307404739576716261
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +124,7 @@ GameObject:
   - component: {fileID: 4650643962377180107}
   - component: {fileID: 3868481472381933764}
   - component: {fileID: 4528553386829065108}
-  - component: {fileID: 2984585120109513419}
+  - component: {fileID: 7725618241224578235}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Wall
@@ -143,7 +142,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.0057924534, y: -0, z: -0.000428612, w: 0.99998313}
   m_LocalPosition: {x: -2.96, y: -0.05, z: -0.02}
-  m_LocalScale: {x: 3.9178517, y: 1, z: 9.573234}
+  m_LocalScale: {x: 3.9178517, y: 1.5, z: 9.573234}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7515575458418234414}
@@ -205,8 +204,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2984585120109513419
-CapsuleCollider:
+--- !u!64 &7725618241224578235
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -223,11 +222,10 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &5355437716323621502
 GameObject:
   m_ObjectHideFlags: 0
