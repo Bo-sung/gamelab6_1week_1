@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    AugmentManager agManager;
+    AugmentManger agManager;
     [SerializeField]
     CarStat carStat;
 
@@ -15,14 +15,47 @@ public class GameManager : MonoBehaviour
     {
         if (agManager == null)
         {
-            agManager = GetComponent<AugmentManager>();
+            agManager = GetComponent<AugmentManger>();
         }
         agManager.OnSelectAugment += HandleAugmentSelected;
+
     }
 
-    private void HandleAugmentSelected(int obj)
+    private void HandleAugmentSelected(Augment data)
     {
-        throw new NotImplementedException();
+        switch (data.type)
+        {
+            case AugmentType.SpeedUp:
+                carStat.UpdateSpeed(carStat.Speed + data.value);
+                Debug.Log("SpeedUp " + data.value);
+                break;
+            case AugmentType.AccelerationUp:
+                carStat .UpdateAcceleration(carStat.Acceleration + data.value);
+                Debug.Log("AccelerationUp " + data.value);
+                break;
+            case AugmentType.BrakeUp:
+                carStat.UdpateBraking(carStat.Braking + data.value);
+                Debug.Log("BrakeUp " + data.value);
+                break;
+            case AugmentType.CorneringUp:
+                carStat.UpdateCornering(carStat.Cornering + data.value);
+                Debug.Log("CorneringUp " + data.value);
+                break;
+            case AugmentType.WeightUp:
+                carStat.UpdateWeight(carStat.Weight + data.value);
+                Debug.Log("WeightUp " + data.value);
+                break;
+            case AugmentType.LoseWheel: 
+                Debug.Log("LoseWheel");
+                break;
+            case AugmentType.ThrowBreak:
+                Debug.Log("ThrowBreak");
+                break;
+            case AugmentType.SpringBumper:
+                Debug.Log("SpringBumper");
+                break;
+        }
+        //throw new NotImplementedException();
     }
 
     public void StartGame()
@@ -34,16 +67,6 @@ public class GameManager : MonoBehaviour
     {
         // Implement game end logic here
         Console.WriteLine("Game Ended");
-    }
-}
-
-[DisallowMultipleComponent]
-public class AugmentManager : MonoBehaviour
-{
-    public System.Action<int> OnSelectAugment;
-    public void OpenAugmentPanel()
-    {
-
     }
 }
 
@@ -73,6 +96,28 @@ public class CarStat : MonoBehaviour
         this.acceleration = acceleration;
         this.braking = braking;
         this.cornering = cornering;
+        this.weight = weight;
+    }
+
+    public void UpdateSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+    public void UpdateAcceleration(float acceleration)
+    {
+        this.acceleration = acceleration;
+    }
+
+    public void UdpateBraking(float braking)
+    {
+        this.braking = braking;
+    }
+    public void UpdateCornering(float cornering)
+    {
+        this.cornering = cornering;
+    }
+    public void UpdateWeight(float weight)
+    {
         this.weight = weight;
     }
 }
