@@ -8,6 +8,11 @@ public class TrackElement : MonoBehaviour
     [SerializeField]
     private TrackEdge trackEnd;
 
+    [SerializeField]
+    private bool isCurve;
+
+    public bool IsCurve => isCurve;
+
 
     public System.Action OnCarTrackIn;
     public System.Action OnCarTrackOut;
