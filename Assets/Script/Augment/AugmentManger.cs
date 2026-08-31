@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using NUnit.Framework;
+using UnityEngine.DedicatedServer;
 
+[DisallowMultipleComponent]
 public class AugmentManger : MonoBehaviour
 {
     public bool isActive = false;
@@ -12,6 +14,7 @@ public class AugmentManger : MonoBehaviour
     public GameObject[] augmentButtons;
     public List<Augment> augmentList = new List<Augment>();
     public List<Augment> selectedAugments = new List<Augment>();
+    public System.Action<Augment> OnSelectAugment;
 
     [ContextMenu("강제 증강 출현")]
     public void ActiveScreen()
@@ -58,21 +61,11 @@ public class AugmentManger : MonoBehaviour
     public void SelectAgument(int index)
     {
         Augment data = selectedAugments[index];
-        switch(data.type)
-        {
-            case AugmentType.SpeedUp:
-                Debug.Log("SpeedUp");
-                break;
-            case AugmentType.LoseWheel:
-                Debug.Log("LoseWheel");
-                break;
-            case AugmentType.ThrowBreak:
-                Debug.Log("ThrowBreak");
-                break;
-            case AugmentType.SpringBumper:
-                Debug.Log("SpringBumper");
-                break;
-        }
+        OnSelectAugment?.Invoke(data);
+        //증강실행코드는 따로 설정?
+
         DisableScreen();
     }
+
+    //게임매니저의 업데이트 스텟으로 자동차 스탯관리할 것
 }
