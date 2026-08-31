@@ -10,6 +10,12 @@ public class GravelPlacer : MonoBehaviour
     [SerializeField]
     float gravelSpacing = 1.0f;
     [SerializeField]
+    float gravelScale = 0.1f;
+    [SerializeField]
+    float gravelScaleMin = 0.5f;
+    [SerializeField]
+    float gravelScaleMax = 1.5f;
+    [SerializeField]
     GameObject gravelPrefab;
 
     private void Awake()
@@ -20,7 +26,7 @@ public class GravelPlacer : MonoBehaviour
             var mf = gravelPrefab.AddComponent<MeshFilter>();
             var mr = gravelPrefab.AddComponent<MeshRenderer>();
             mf.mesh = CreateCubeMesh();
-            mr.material = new Material(Shader.Find("Standard"));
+            mr.material = new Material(Shader.Find("lit"));
             var bc = gravelPrefab.AddComponent<BoxCollider>();
             bc.enabled = true;
 
@@ -45,9 +51,9 @@ public class GravelPlacer : MonoBehaviour
             {
                 Vector3 offset = new Vector3(j * gravelSpacing, 0, k * gravelSpacing);
                 // 랜덤크기 및 랜덤회전 적용
-                float randomScale = Random.Range(0.5f, 1.5f);
+                float randomScale = Random.Range(gravelScaleMin, gravelScaleMax);
                 Quaternion randomRotation = Random.rotation;
-                Instantiate(gravelPrefab, transform.position + offset, randomRotation, transform).transform.localScale = new Vector3(0.2f, 0.2f, 0.2f) * randomScale;
+                Instantiate(gravelPrefab, transform.position + offset, randomRotation, transform).transform.localScale = Vector3.one * gravelScale * randomScale;
             }
         }
     }

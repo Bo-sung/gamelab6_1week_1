@@ -11,8 +11,6 @@ public class TrackElement : MonoBehaviour
 
     public bool IsCurve => isCurve;
 
-
-
     private void Update()
     {
         // 트랙 아웃 상태가 아닌 경우에는 생명 주기 감소를 하지 않음
