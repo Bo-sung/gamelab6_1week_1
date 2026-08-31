@@ -77,14 +77,3 @@ public class GameManager : MonoBehaviour
         Console.WriteLine("Game Ended");
     }
 }
-public class TrackManager : MonoBehaviour
-{
-    [SerializeField]
-    List<GameObject> trackPool = new List<GameObject>();
-
-    public System.Action OnCarTrackFinish;
-
-
-
-
-}

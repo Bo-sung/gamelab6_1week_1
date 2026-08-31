@@ -4,23 +4,14 @@ using UnityEngine.UI;
 public class TrackElement : MonoBehaviour
 {
     [SerializeField]
-    private TrackEdge trackStart;
-    [SerializeField]
-    private TrackEdge trackEnd;
-    [SerializeField]
     private float life = 10000f;
     private bool IsCarTrackOut = false;
 
-    public System.Action OnCarTrackIn;
-    public System.Action OnCarTrackOut;
+    private bool isCurve = false;
 
-    private void Awake()
-    {
-        trackStart.OnTrigger += () => OnCarTrackIn?.Invoke();
-        trackEnd.OnTrigger += () => OnCarTrackOut?.Invoke();
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, 0.2f);
-    }
+    public bool IsCurve => isCurve;
+
+
 
     private void Update()
     {
@@ -33,5 +24,10 @@ public class TrackElement : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void DestroyCountdown()
+    {
+        IsCarTrackOut = true;
     }
 }
