@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrackElement
   trackStart: {fileID: 863820088586886623}
   trackEnd: {fileID: 7008680567122415957}
-  isCurve: 0
+  life: 10000
 --- !u!1001 &8213750850838446629
 PrefabInstance:
   m_ObjectHideFlags: 0
