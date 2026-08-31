@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("SpringBumper");
                 break;
         }
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public void StartGame()

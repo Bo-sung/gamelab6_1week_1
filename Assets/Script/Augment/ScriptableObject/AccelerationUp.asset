@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16e153a5008306f4e82bba0f50e24d2d, type: 3}
-  m_Name: LoseWheel
+  m_Name: AccelerationUp
   m_EditorClassIdentifier: Assembly-CSharp::Augment
-  augmentName: Lose Wheel
-  description: Lose Wheel descrition
+  augmentName: AccelerationUp
+  description: AccelerationUpDescription
   limit: 0
-  type: 0
+  type: 1
+  value: 10
