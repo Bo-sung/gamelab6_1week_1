@@ -10,19 +10,20 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        
+        if (Input.GetKey(KeyCode.A))
         {
             OnAPressed?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             OnDPressed?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             OnWPressed?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
             OnSPressed?.Invoke();
         }

@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     AugmentManger agManager;
     [SerializeField]
     CarStat carStat;
+    [SerializeField]
+    TrackManager trackManager;
 
     private void Awake()
     {
@@ -17,8 +19,12 @@ public class GameManager : MonoBehaviour
         {
             agManager = GetComponent<AugmentManger>();
         }
+        if (trackManager == null)
+        {
+            trackManager = GetComponent<TrackManager>();
+        }
         agManager.OnSelectAugment += HandleAugmentSelected;
-
+        trackManager.OnCarTrackFinish += HandleCarTrackFinish;
     }
 
     private void HandleAugmentSelected(Augment data)
@@ -26,26 +32,26 @@ public class GameManager : MonoBehaviour
         switch (data.type)
         {
             case AugmentType.SpeedUp:
-                carStat.UpdateSpeed(carStat.Speed + data.value);
+                carStat.ApplySpeed(data.value);
                 Debug.Log("SpeedUp " + data.value);
                 break;
             case AugmentType.AccelerationUp:
-                carStat .UpdateAcceleration(carStat.Acceleration + data.value);
+                carStat.ApplyAcceleration(data.value);
                 Debug.Log("AccelerationUp " + data.value);
                 break;
             case AugmentType.BrakeUp:
-                carStat.UdpateBraking(carStat.Braking + data.value);
+                carStat.ApplyBraking(data.value);
                 Debug.Log("BrakeUp " + data.value);
                 break;
             case AugmentType.CorneringUp:
-                carStat.UpdateCornering(carStat.Cornering + data.value);
+                carStat.ApplyCornering(data.value);
                 Debug.Log("CorneringUp " + data.value);
                 break;
             case AugmentType.WeightUp:
-                carStat.UpdateWeight(carStat.Weight + data.value);
+                carStat.ApplyWeight(data.value);
                 Debug.Log("WeightUp " + data.value);
                 break;
-            case AugmentType.LoseWheel: 
+            case AugmentType.LoseWheel:
                 Debug.Log("LoseWheel");
                 break;
             case AugmentType.ThrowBreak:
@@ -55,69 +61,30 @@ public class GameManager : MonoBehaviour
                 Debug.Log("SpringBumper");
                 break;
         }
-        //throw new NotImplementedException();
+    }
+
+    private void HandleCarTrackFinish()
+    {
+        agManager.ActiveScreen();
     }
 
     public void StartGame()
     {
-        // Implement game start logic here
         Console.WriteLine("Game Started");
     }
     public void EndGame()
     {
-        // Implement game end logic here
         Console.WriteLine("Game Ended");
     }
 }
-
-[DisallowMultipleComponent]
-public class CarStat : MonoBehaviour
+public class TrackManager : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 10f;
-    [SerializeField]
-    private float acceleration = 5f;
-    [SerializeField]
-    private float braking = 8f;
-    [SerializeField]
-    private float cornering = 7f;
-    [SerializeField]
-    private float weight = 1000f;
+    List<GameObject> trackPool = new List<GameObject>();
 
-    public float Speed { get => speed; private set => speed = value; }
-    public float Acceleration { get => acceleration; private set => acceleration = value; }
-    public float Braking { get => braking; private set => braking = value; }
-    public float Cornering { get => cornering; private set => cornering = value; }
-    public float Weight { get => weight; private set => weight = value; }
+    public System.Action OnCarTrackFinish;
 
-    public void UpdateStat(float speed, float acceleration, float braking, float cornering, float weight)
-    {
-        this.speed = speed;
-        this.acceleration = acceleration;
-        this.braking = braking;
-        this.cornering = cornering;
-        this.weight = weight;
-    }
 
-    public void UpdateSpeed(float speed)
-    {
-        this.speed = speed;
-    }
-    public void UpdateAcceleration(float acceleration)
-    {
-        this.acceleration = acceleration;
-    }
 
-    public void UdpateBraking(float braking)
-    {
-        this.braking = braking;
-    }
-    public void UpdateCornering(float cornering)
-    {
-        this.cornering = cornering;
-    }
-    public void UpdateWeight(float weight)
-    {
-        this.weight = weight;
-    }
+
 }

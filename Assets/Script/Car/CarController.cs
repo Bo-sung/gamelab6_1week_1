@@ -44,17 +44,17 @@ public class CarController : MonoBehaviour
 }
 
 // 에러 방지용 임시 CarManager 클래스
-class CarManager
-{
-    public void Steer(int direction)
-    {
-        // Implement steering logic here
-        Debug.Log($"Steering in direction: {direction}");
-    }
+//class CarManager
+//{
+//    public void Steer(int direction)
+//    {
+//        // Implement steering logic here
+//        Debug.Log($"Steering in direction: {direction}");
+//    }
 
-    public void Accelerate(int direction)
-    {
-        // Implement acceleration logic here
-        Debug.Log($"Accelerating in direction: {direction}");
-    }
-}
+//    public void Accelerate(int direction)
+//    {
+//        // Implement acceleration logic here
+//        Debug.Log($"Accelerating in direction: {direction}");
+//    }
+//}
