@@ -15,11 +15,11 @@ public class TrackEdge : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Car"))
-        {
-            OnTrigger?.Invoke();
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Car"))
+    //    {
+    //        OnTrigger?.Invoke();
+    //    }
+    //}
 }

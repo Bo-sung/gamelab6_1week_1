@@ -35,9 +35,9 @@ public class TrackManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("GenerateTrack")]
     public void Generate()
     {
-
         // OnCarTrackFinish > GameManager의 Evenet > Generate()
         // 트랙 생성
 
@@ -65,6 +65,7 @@ public class TrackManager : MonoBehaviour
         }
         Vector3 trackPosition = transform.TransformPoint(generatedTracks[generatedTracks.Count - 1].endPoint.position);
         GameObject track = Instantiate(originTrack, trackPosition, Quaternion.identity);
+        track.transform.localScale = track.transform.localScale * 2.5f; // 스케일 조정
 
 
         generatedTracks.Add(track.GetComponentInChildren<TrackElement>());
