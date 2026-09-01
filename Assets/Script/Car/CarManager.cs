@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel.Design;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class CarManager : MonoBehaviour
     public Transform RLWheelMesh;
     public Transform RRWheelMesh;
 
+    [SerializeField]
+    private CarImpactManager carImpactManager;
     
     [SerializeField]
     private float MaxSteerAngle = 5;
@@ -32,28 +35,42 @@ public class CarManager : MonoBehaviour
     private float DownForceLevel = 10f;
 
 
-    private Rigidbody RB;
+
+    private Rigidbody rb;
 
     private CarStat stat;
 
 
 
     //단순 상태값.
-    public float Speed => RB.linearVelocity.magnitude;
+    public float Speed => rb.linearVelocity.magnitude;
 
     public float SpeedKmh => Speed * 3.6f;
 
     private float steerAngle = 0f;
 
     private bool steerControlOnFrame;
+    private bool downForceFlag;
 
+    private float collisionMortorFlag;
 
+    //코루틴 상태값
+    private Coroutine collsionCoroutine;
 
     private void Start()
     {
-        RB = GetComponent<Rigidbody>();
-        stat = GetComponent<CarStat>();
         
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        rb = GetComponent<Rigidbody>();
+        stat = GetComponent<CarStat>();
+
+        carImpactManager.Initialize(stat);
+        carImpactManager.OnWallCollsion += OnWallCollision;
+        collisionMortorFlag = 1f;
     }
 
     private void Update()
@@ -64,11 +81,15 @@ public class CarManager : MonoBehaviour
         UpdateWheelVisual(RRWheelMesh, RRWheel);
     }
 
+    private void OnDestroy()
+    {
+        carImpactManager.OnWallCollsion -= OnWallCollision;
+    }
     public void Accelerate(float acc)
     {
 
-        RLWheel.motorTorque = acc * stat.Acceleration* MortorTorqueMultiplier * (1000 / stat.Weight);
-        RRWheel.motorTorque = acc * stat.Acceleration* MortorTorqueMultiplier * (1000 / stat.Weight);
+        RLWheel.motorTorque = acc * stat.Acceleration* MortorTorqueMultiplier * (1000 / stat.Weight) * collisionMortorFlag;
+        RRWheel.motorTorque = acc * stat.Acceleration* MortorTorqueMultiplier * (1000 / stat.Weight) * collisionMortorFlag;
 
 
 
@@ -127,8 +148,15 @@ public class CarManager : MonoBehaviour
             RLWheel.motorTorque = 0f;
             RRWheel.motorTorque = 0f;
         }
+        // 튕겨 나가는 상황을 위한 각속도 조정;
+        if(rb.angularVelocity.magnitude > 2f)
+        {
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        
         //다운포스
-        RB.AddForce(-transform.up * DownForceLevel,ForceMode.Force);
+        if(downForceFlag)   rb.AddForce(-transform.up * DownForceLevel,ForceMode.Force);
 
         if(!steerControlOnFrame)
         {
@@ -143,12 +171,28 @@ public class CarManager : MonoBehaviour
                 steerAngle = absSteer;
             }
 
-            Debug.Log(steerAngle);
+         
         }
+        //Stiffness를 매 프레임 stat 값 및 충돌 상태에 따라 조정한다.
+        ChangeStiffness(FLWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
+        ChangeStiffness(FRWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
+        ChangeStiffness(RLWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
+        ChangeStiffness(RRWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
         steerControlOnFrame = false;
 
        
  
+    }
+
+    private void OnWallCollision(string wall)
+    {
+        if(collsionCoroutine != null)
+        {
+            StopCoroutine(collsionCoroutine);
+        }
+
+        collsionCoroutine = StartCoroutine(CollisionAdjust());
+
     }
 
     public void RefreshStat()
@@ -179,5 +223,20 @@ public class CarManager : MonoBehaviour
 
         trans.position = UpdatePos;
         trans.rotation = UpdateRot;
+    }
+
+
+    IEnumerator CollisionAdjust()
+    {
+
+        downForceFlag = false;
+        collisionMortorFlag = 0f;
+
+        yield return new WaitForSeconds(0.5f);
+
+       
+        downForceFlag = true;
+        collisionMortorFlag = 1f;
+
     }
 }
