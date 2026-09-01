@@ -16,7 +16,7 @@ public class TrackManager : MonoBehaviour
 
     private void Awake()
     {
-        Initialize();
+        trackEdge.OnTrigger += OnCarTrackFinish;
     }
 
     public void Initialize()
