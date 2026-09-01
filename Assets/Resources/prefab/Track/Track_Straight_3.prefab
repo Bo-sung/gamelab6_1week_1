@@ -842,7 +842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrackElement
   life: 10000
-  isCurve: 0
+  endPoint: {fileID: 2891009471121272503}
 --- !u!1 &7377410509145105119
 GameObject:
   m_ObjectHideFlags: 0
