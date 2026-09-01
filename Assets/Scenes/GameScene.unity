@@ -789,12 +789,24 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: dashTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: dashSpeed
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: sensitivity
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: dashCooldown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: dashGaugeRegenTime
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1254478530715743610, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: m_IsTrigger
@@ -1176,8 +1188,9 @@ MonoBehaviour:
   targetRb: {fileID: 189369624}
   controller: {fileID: 189369625}
   Offset: {x: 0, y: 1, z: -3}
-  DashOffset: {x: 0, y: 1, z: -5}
+  DashFov: 70
   SmoothTime: 0.1
+  RemainDashTime: 2
 --- !u!114 &1268369537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1263,7 +1276,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: 0

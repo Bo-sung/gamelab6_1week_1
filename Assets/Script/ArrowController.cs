@@ -19,6 +19,7 @@ public class ArrowController : MonoBehaviour
     float remainDashGaugeRegenTime = 0f;
 
     public System.Action OnDashStart;
+    public System.Action OnHitEnemy;
 
     float yaw, pitch = 28f;
     
@@ -89,5 +90,13 @@ public class ArrowController : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * (IsDashing ? dashSpeed : speed));
         transform.rotation = rot;
         Debug.Log($"Yaw: {yaw}, Pitch: {pitch}");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            OnHitEnemy?.Invoke();
+        }
     }
 }
