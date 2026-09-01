@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
 
 
     // 스폰 위치(원)
-    private float spawnDistance = 50f;
+    public float spawnDistance = 50f;
 
     private bool isGameOn;
 
