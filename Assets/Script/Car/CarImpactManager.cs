@@ -14,7 +14,7 @@ public class CarImpactManager : MonoBehaviour
 
     private float collisionTimer;
 
-    public void Setup(CarStat stat)
+    public void Initialize(CarStat stat)
     {
         this.stat = stat;
         rb= GetComponent<Rigidbody>();
@@ -36,8 +36,6 @@ public class CarImpactManager : MonoBehaviour
 
             rb.AddForce(contact.normal * collision.relativeVelocity.magnitude * ImpactionPower *(1000/stat.Weight), ForceMode.Impulse);
             collisionTimer = 0f;
-
-           
         }
     }
 

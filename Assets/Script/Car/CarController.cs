@@ -9,9 +9,14 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private CarManager carManager;
 
+    private void Start()
+    {
+        // 추후 Start를 제거하고 외부에서 초기화
+        Initialize();
+    }
     public void Initialize()
     {
-
+        carManager.Initialize();
     }
 
     private void FixedUpdate()
