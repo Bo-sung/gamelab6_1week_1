@@ -11,6 +11,12 @@ public class CarCamera : MonoBehaviour
     [SerializeField] private Rigidbody _targetRb;
 
     [SerializeField]
+    private Material WallRed;
+    [SerializeField] 
+    private Material WallTrans;
+
+
+    [SerializeField]
     private Vector3 Offset;
     [SerializeField]
     private float SmoothTime = 0.1f;
@@ -72,5 +78,22 @@ public class CarCamera : MonoBehaviour
         _currentVelocity = Vector3.zero;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Wall"))
+        {
+            var renderer = other.GetComponent<MeshRenderer>();
+            renderer.material = WallTrans;
+        }
+    }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.CompareTag("Wall"))
+        {
+            var renderer = other.GetComponent<MeshRenderer>();
+            renderer.material = WallRed;
+        }
+
+    }
 }
