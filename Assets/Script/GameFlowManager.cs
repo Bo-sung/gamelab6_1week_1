@@ -14,6 +14,5 @@ public class GameFlowManager : MonoBehaviour
     {
         player.gameObject.SetActive(false);
         Debug.Log("Game Over");
-        gameOverUI.ShowGameOverScreen();
     }
 }
