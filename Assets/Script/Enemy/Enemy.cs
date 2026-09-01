@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour
     public void OnDamage()
     {
         ScoreUI.scoreValue += 10;
-        Destroy(this);
+
+        this.gameObject.SetActive(false);
     }
 }

@@ -7,9 +7,6 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float speed = 2f;
     [SerializeField] float dashSpeed = 4f;
 
-    Camera cam;
-    void Awake() => cam = GetComponent<Camera>();
-
     float yaw, pitch = 28f;
     bool IsDashing => Input.GetKey(KeyCode.LeftShift);
 
