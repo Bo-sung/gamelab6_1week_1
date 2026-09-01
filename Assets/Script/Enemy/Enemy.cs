@@ -31,6 +31,17 @@ public class Enemy : MonoBehaviour
 
     public void OnDamage()
     {
+        FindAnyObjectByType<ScoreCounter>().addCounter();
         Destroy(this);
+    }
+
+
+}
+
+public class ScoreCounter : MonoBehaviour
+{
+    public void addCounter()
+    {
+
     }
 }
