@@ -63,12 +63,12 @@ public class CarManager : MonoBehaviour
         Initialize();
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         rb = GetComponent<Rigidbody>();
         stat = GetComponent<CarStat>();
 
-        carImpactManager.Setup(stat);
+        carImpactManager.Initialize(stat);
         carImpactManager.OnWallCollsion += OnWallCollision;
         collisionMortorFlag = 1f;
     }
