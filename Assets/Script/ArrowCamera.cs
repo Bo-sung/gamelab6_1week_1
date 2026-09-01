@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -12,30 +13,44 @@ public class ArrowCamera : MonoBehaviour
     [SerializeField]
     private Vector3 Offset = new Vector3(0, 1, -3);
     [SerializeField]
-    private Vector3 DashOffset = new Vector3(0, 1, -5);
+    private float DashFov = 70f;
+
+
     [SerializeField]
     private float SmoothTime = 0.1f;
+    [SerializeField]
+    private float RemainDashTime = 0.2f;
 
-    
-    private Camera _cam;
+
+    private Camera cam;
     private Vector3 _currentVelocity;
-    private Vector3 currentOffset;
+
+    private float DefaultFov;
+
+    private bool isDashing;
+    private float remainDashCount;
+    private Coroutine DashBackCo;
 
     private void Start()
     {
-        _cam = GetComponent<Camera>();
+        cam = GetComponent<Camera>();
         ApplyViewImmediate();
-        currentOffset = Offset;
+
+        DefaultFov = cam.fieldOfView;
+
+        controller.OnDashStart += OnDash;
+
     }
 
     private void LateUpdate()
     {
         if (target == null) return;
 
-        
-        Vector3 targetWorldPos = target.TransformPoint(controller.IsDashing? DashOffset:Offset);
+    
+        cam.fieldOfView = Mathf.Lerp(DashFov, DefaultFov, remainDashCount / RemainDashTime);
+        remainDashCount += Time.deltaTime;
+        Vector3 targetWorldPos = target.TransformPoint(Offset);
 
- 
         transform.position = Vector3.SmoothDamp(
             transform.position,
             targetWorldPos,
@@ -54,6 +69,17 @@ public class ArrowCamera : MonoBehaviour
         transform.LookAt(target.transform.position);
         _currentVelocity = Vector3.zero;
     }
+
+    public void OnDash()
+    {
+
+        cam.fieldOfView = DashFov;
+        remainDashCount = 0;
+
+
+    }
+
+
 
 
 }
