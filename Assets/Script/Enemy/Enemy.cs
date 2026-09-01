@@ -35,17 +35,7 @@ public class Enemy : MonoBehaviour
 
     public void OnDamage()
     {
-        FindAnyObjectByType<ScoreCounter>().addCounter();
+        ScoreUI.scoreValue += 10;
         Destroy(this);
-    }
-
-
-}
-
-public class ScoreCounter : MonoBehaviour
-{
-    public void addCounter()
-    {
-
     }
 }
