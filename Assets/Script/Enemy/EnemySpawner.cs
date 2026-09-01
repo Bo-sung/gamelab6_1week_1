@@ -11,10 +11,7 @@ public class EnemySpawner : MonoBehaviour
 
     private bool isGameOn;
 
-    private void Start()
-    {
-        StartGame();
-    }
+
     IEnumerator SpawnEnemy()
     {
         while (isGameOn)
@@ -28,13 +25,13 @@ public class EnemySpawner : MonoBehaviour
         
     }
 
-    public void StartGame()
+    public void GameStart()
     {
         isGameOn = true;
         StartCoroutine(SpawnEnemy());
     }
 
-    public void EndGame()
+    public void GameOver()
     {
         isGameOn = false;
     }
