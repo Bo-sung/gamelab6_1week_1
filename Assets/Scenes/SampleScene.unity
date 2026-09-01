@@ -719,9 +719,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2577981859393135107, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SuspensionDistance
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577981859393135107, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577981859393135107, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948331788334301372, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SuspensionDistance
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948331788334301372, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948331788334301372, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: MaxSteerTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: MaxSteerAngle
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: DownForceLevel
-      value: 20
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: SteerRerocateLevel
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5260267132883333115, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_Name
@@ -766,6 +802,30 @@ PrefabInstance:
     - target: {fileID: 6564689767761046234, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250379711319232886, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SuspensionDistance
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250379711319232886, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250379711319232886, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391866053940070943, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SuspensionDistance
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391866053940070943, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391866053940070943, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

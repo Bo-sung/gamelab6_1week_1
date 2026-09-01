@@ -12,6 +12,11 @@ public class CarManager : MonoBehaviour
     public WheelCollider RLWheel;
     public WheelCollider RRWheel;
 
+    public Transform FLWheelMesh;
+    public Transform FRWheelMesh;
+    public Transform RLWheelMesh;
+    public Transform RRWheelMesh;
+
     
     [SerializeField]
     private float MaxSteerAngle = 5;
@@ -51,6 +56,14 @@ public class CarManager : MonoBehaviour
         
     }
 
+    private void Update()
+    {
+        UpdateWheelVisual(FLWheelMesh, FLWheel);
+        UpdateWheelVisual(FRWheelMesh, FRWheel);
+        UpdateWheelVisual(RLWheelMesh, RLWheel);
+        UpdateWheelVisual(RRWheelMesh, RRWheel);
+    }
+
     public void Accelerate(float acc)
     {
 
@@ -65,8 +78,19 @@ public class CarManager : MonoBehaviour
         if(steer != 0f) steerControlOnFrame = true;
 
         var steerDelta = Mathf.Clamp(steer * Time.deltaTime / MaxSteerTime,-1,1);
+
+        if (steerAngle == 0f) steerAngle += steerDelta;
+
+        else if(steerDelta * steerAngle > 0)//같은 각일때
+            steerAngle = Mathf.Clamp(steerAngle + steerDelta, -1, 1);
+    
+       
+            
+        else if(steerDelta * steerAngle < 0)//다른 각일때
+            steerAngle = Mathf.Clamp(steerAngle + (steerDelta*2), -1, 1);
         
-        steerAngle = Mathf.Clamp(steerAngle + steerDelta, -1, 1);
+        
+        
 
         FLWheel.steerAngle = steerAngle * MaxSteerAngle;
         FRWheel.steerAngle = steerAngle * MaxSteerAngle;
@@ -90,8 +114,8 @@ public class CarManager : MonoBehaviour
         RLWheel.motorTorque = 0f;
         RRWheel.motorTorque = 0f;
 
-        RLWheel.brakeTorque = stat.Braking * 100;
-        RLWheel.brakeTorque = stat.Braking * 100;
+        RLWheel.brakeTorque = stat.Braking * BrakeTorqueMultiplier;
+        RLWheel.brakeTorque = stat.Braking * BrakeTorqueMultiplier;
     }
 
     //매 프레임 상태값에 따라 조정
@@ -105,6 +129,7 @@ public class CarManager : MonoBehaviour
         }
         //다운포스
         RB.AddForce(-transform.up * DownForceLevel,ForceMode.Force);
+
         if(!steerControlOnFrame)
         {
             if(steerAngle  > 0)
@@ -143,4 +168,16 @@ public class CarManager : MonoBehaviour
         wheel.sidewaysFriction = friction;
     }
 
+
+    private void UpdateWheelVisual(Transform trans, WheelCollider wheelCol)
+    {
+        Vector3 UpdatePos;
+        Quaternion UpdateRot;
+
+        //휠 운동 연산 결과를 월드 좌표로 변환
+        wheelCol.GetWorldPose(out UpdatePos, out UpdateRot);
+
+        trans.position = UpdatePos;
+        trans.rotation = UpdateRot;
+    }
 }
