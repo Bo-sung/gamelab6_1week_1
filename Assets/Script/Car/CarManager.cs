@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 public class CarManager : MonoBehaviour
 {
-    private const float CorneringToStiffnessMultiplier = 0.2f;
+    private const float CorneringToStiffnessMultiplier = 0.3f;
 
     public WheelCollider FLWheel;
     public WheelCollider FRWheel;
@@ -116,6 +116,8 @@ public class CarManager : MonoBehaviour
         FLWheel.steerAngle = steerAngle * MaxSteerAngle;
         FRWheel.steerAngle = steerAngle * MaxSteerAngle;
 
+
+        Debug.Log(FLWheel.sidewaysFriction.stiffness);
       
 
     }
@@ -174,10 +176,10 @@ public class CarManager : MonoBehaviour
          
         }
         //Stiffness를 매 프레임 stat 값 및 충돌 상태에 따라 조정한다.
-        ChangeStiffness(FLWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
-        ChangeStiffness(FRWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
-        ChangeStiffness(RLWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
-        ChangeStiffness(RRWheel, (1f + stat.Cornering * CorneringToStiffnessMultiplier) * collisionMortorFlag);
+        ChangeStiffness(FLWheel,0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
+        ChangeStiffness(FRWheel, 0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
+        ChangeStiffness(RLWheel, 0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
+        ChangeStiffness(RRWheel,0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
         steerControlOnFrame = false;
 
        
@@ -192,16 +194,6 @@ public class CarManager : MonoBehaviour
         }
 
         collsionCoroutine = StartCoroutine(CollisionAdjust());
-
-    }
-
-    public void RefreshStat()
-    {
-
-        ChangeStiffness(FLWheel, stat.Cornering * CorneringToStiffnessMultiplier);
-        ChangeStiffness(FRWheel, stat.Cornering * CorneringToStiffnessMultiplier);
-        ChangeStiffness(RLWheel, stat.Cornering * CorneringToStiffnessMultiplier);
-        ChangeStiffness(RRWheel, stat.Cornering * CorneringToStiffnessMultiplier);
 
     }
 

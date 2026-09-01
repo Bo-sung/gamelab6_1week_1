@@ -31,6 +31,7 @@ public class TrackManager : MonoBehaviour
 
     public void Generate()
     {
+
         // OnCarTrackFinish > GameManager의 Evenet > Generate()
         // 트랙 생성
 
