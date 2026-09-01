@@ -301,5 +301,5 @@ MonoBehaviour:
   player: {fileID: 0}
   head: {fileID: 0}
   hp: 2
-  speed: 0.15
+  speed: 0.012
   maxDistance: 2
