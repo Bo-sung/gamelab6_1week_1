@@ -16,17 +16,16 @@ public class TrackManager : MonoBehaviour
 
     private void Awake()
     {
-        for(int i=0; i<3; i++)
-        {
-            Generate();
-        }
-
+        Initialize();
     }
 
     public void Initialize()
     {
-        // 초기 트랙 생성
-
+        // 초기 트랙 3개 생성
+        for(int i=0; i<2; i++)
+        {
+            Generate();
+        }
     }
 
     public void Generate()
@@ -38,10 +37,9 @@ public class TrackManager : MonoBehaviour
         trackEdge.transform.position = generatedTracks[currentTrackCount].endPoint.position;
 
         // trackPrefab의 중심이 startPoint라는 가정 하에
-        GameObject originTrack = trackPrefabs[Random.Range(0, trackPrefabs.Length - 1)];
+        GameObject originTrack = trackPrefabs[Random.Range(0, trackPrefabs.Length)];
         Vector3 trackPosition= transform.TransformPoint(generatedTracks[generatedTracks.Count - 1].endPoint.position);
-        Quaternion trackRotation = generatedTracks[generatedTracks.Count - 1].endPoint.rotation;
-        GameObject track = Instantiate(originTrack, trackPosition, trackRotation);
+        GameObject track = Instantiate(originTrack, trackPosition, Quaternion.identity);
 
 
         generatedTracks.Add(track.GetComponentInChildren<TrackElement>());
