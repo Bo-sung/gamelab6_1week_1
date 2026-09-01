@@ -137,7 +137,7 @@ WheelCollider:
   m_GameObject: {fileID: 1965349185902917245}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.15
+  m_Radius: 0.12
   m_SuspensionSpring:
     spring: 45000
     damper: 4500
@@ -230,7 +230,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.04, z: 0.3}
+  m_LocalScale: {x: 0.24, y: 0.04, z: 0.24}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8840449078716828420}
@@ -320,7 +320,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.04, z: 0.3}
+  m_LocalScale: {x: 0.24, y: 0.04, z: 0.24}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1118807015561271006}
@@ -477,7 +477,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.04, z: 0.3}
+  m_LocalScale: {x: 0.24, y: 0.04, z: 0.24}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4179396431472743782}
@@ -851,7 +851,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.04, z: 0.3}
+  m_LocalScale: {x: 0.24, y: 0.04, z: 0.24}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5027999886794276403}
@@ -1044,7 +1044,7 @@ WheelCollider:
   m_GameObject: {fileID: 6274930014101350106}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.15
+  m_Radius: 0.12
   m_SuspensionSpring:
     spring: 45000
     damper: 4500
@@ -1115,7 +1115,7 @@ WheelCollider:
   m_GameObject: {fileID: 6948622882990922557}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.15
+  m_Radius: 0.12
   m_SuspensionSpring:
     spring: 45000
     damper: 4500
@@ -1186,7 +1186,7 @@ WheelCollider:
   m_GameObject: {fileID: 7268971321599565875}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.15
+  m_Radius: 0.12
   m_SuspensionSpring:
     spring: 45000
     damper: 4500
