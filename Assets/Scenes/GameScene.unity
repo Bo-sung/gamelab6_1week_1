@@ -131,6 +131,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AugmentUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2259010021326801787, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1990002787}
+    - target: {fileID: 2259010021326801787, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1990002786}
+    - target: {fileID: 4199003070731268011, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1990002788}
+    - target: {fileID: 4199003070731268011, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1990002783}
+    - target: {fileID: 4377472803484653359, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1990002785}
+    - target: {fileID: 4377472803484653359, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1990002784}
     - target: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -173,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.038983
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -193,11 +217,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -629.3506
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -359.66776
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -221,21 +245,39 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8540927983009832826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
   m_PrefabInstance: {fileID: 87065840}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &87065842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3743952267515389369, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+--- !u!114 &87065842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4199003070731268011, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
   m_PrefabInstance: {fileID: 87065840}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &87065843 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6405112388708123819, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b598a8fdf1930674595ee46e44d0f220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentButton
+--- !u!114 &87065843 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4377472803484653359, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
   m_PrefabInstance: {fileID: 87065840}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &87065844 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1921363189516558306, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b598a8fdf1930674595ee46e44d0f220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentButton
+--- !u!114 &87065844 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2259010021326801787, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
   m_PrefabInstance: {fileID: 87065840}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b598a8fdf1930674595ee46e44d0f220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentButton
 --- !u!1 &87065845 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4093833721775521302, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
@@ -973,6 +1015,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5137346366980076251, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 5260267132883333115, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_Name
       value: Car
@@ -1033,6 +1079,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16a35a6c8532894bb62414982f13965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
+--- !u!114 &1990002783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 833861168642125788, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_PrefabInstance: {fileID: 87065840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1990002784 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4755416161979018744, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_PrefabInstance: {fileID: 87065840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1990002785 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4776937036789301485, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_PrefabInstance: {fileID: 87065840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1990002786 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3437267348007740826, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_PrefabInstance: {fileID: 87065840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1990002787 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5133179788721960675, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_PrefabInstance: {fileID: 87065840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1990002788 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8213232004241151950, guid: a0229821798fb874c90bfa8c643ec0e6, type: 3}
+  m_PrefabInstance: {fileID: 87065840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &2130205217
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,7 +1175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrackManager
   trackPrefabs:
-  - {fileID: 8662077831124475227, guid: 9b3694428a3bee343b30dc392f096f79, type: 3}
   - {fileID: 619823151522466097, guid: 7f286940b6794384b92e99a151b9f8c9, type: 3}
   - {fileID: 886968527806618549, guid: a831540bb2da08348bc93c291447cdbe, type: 3}
   - {fileID: 5832405531155877354, guid: cf156b69466e0e94b8a8ff02ff490e3e, type: 3}

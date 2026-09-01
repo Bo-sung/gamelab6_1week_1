@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
-using NUnit.Framework;
-using UnityEngine.DedicatedServer;
 
 [DisallowMultipleComponent]
 public class AugmentManger : MonoBehaviour
@@ -11,7 +9,7 @@ public class AugmentManger : MonoBehaviour
     public bool isActive = false;
     // public GameObject gameManager; 게임매니저 참조?
     public GameObject augmentPanel;
-    public GameObject[] augmentButtons;
+    public AugmentButton[] augmentButtons;
     public List<Augment> augmentList = new List<Augment>();
     public List<Augment> selectedAugments = new List<Augment>();
     public System.Action<Augment> OnSelectAugment;
@@ -19,14 +17,13 @@ public class AugmentManger : MonoBehaviour
     [ContextMenu("강제 증강 출현")]
     public void ActiveScreen()
     {
-
         Time.timeScale = 0.0f;
         selectedAugments = GetRandomAugment(augmentList, 3);
         for (int i = 0; i < augmentButtons.Length; i++)
         {
-            augmentButtons[i].SetActive(true);
-            augmentButtons[i].transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = selectedAugments[i].augmentName;
-            augmentButtons[i].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = selectedAugments[i].description;
+            augmentButtons[i].gameObject.SetActive(true);
+            augmentButtons[i].SetAugmentData(selectedAugments[i].augmentName, selectedAugments[i].description, i);
+            augmentButtons[i].Onclicked += SelectAgument;
         }
         augmentPanel.SetActive(true);
     }
@@ -36,7 +33,7 @@ public class AugmentManger : MonoBehaviour
         Time.timeScale = 1.0f;
         for (int i = 0; i < augmentButtons.Length; i++)
         {
-            augmentButtons[i].SetActive(false);
+            augmentButtons[i].gameObject.SetActive(false);
         }
         augmentPanel.SetActive(false);
     }

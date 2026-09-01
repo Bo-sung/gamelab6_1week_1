@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: 5274270650970334653}
   - component: {fileID: 7787993316109713073}
   - component: {fileID: 5326454565589167545}
+  - component: {fileID: 2259010021326801787}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -173,6 +174,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2259010021326801787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921363189516558306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b598a8fdf1930674595ee46e44d0f220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentButton
+  augmentName: 
+  description: 
+  index: 0
+  button: {fileID: 5326454565589167545}
 --- !u!1 &2823562265293390013
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,6 +613,7 @@ GameObject:
   - component: {fileID: 8355004088331842585}
   - component: {fileID: 7397864214906061082}
   - component: {fileID: 3955605091767623526}
+  - component: {fileID: 4199003070731268011}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -718,6 +736,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4199003070731268011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743952267515389369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b598a8fdf1930674595ee46e44d0f220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentButton
+  augmentName: 
+  description: 
+  index: 0
+  button: {fileID: 3955605091767623526}
 --- !u!1 &4093833721775521302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,6 +1250,7 @@ GameObject:
   - component: {fileID: 4482869809530307238}
   - component: {fileID: 1761769454651636952}
   - component: {fileID: 1498847077241072884}
+  - component: {fileID: 4377472803484653359}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1338,3 +1373,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4377472803484653359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6405112388708123819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b598a8fdf1930674595ee46e44d0f220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentButton
+  augmentName: 
+  description: 
+  index: 0
+  button: {fileID: 1498847077241072884}
