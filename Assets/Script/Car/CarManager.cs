@@ -100,24 +100,15 @@ public class CarManager : MonoBehaviour
 
         var steerDelta = Mathf.Clamp(steer * Time.deltaTime / MaxSteerTime,-1,1);
 
-        if (steerAngle == 0f) steerAngle += steerDelta;
 
-        else if(steerDelta * steerAngle > 0)//같은 각일때
-            steerAngle = Mathf.Clamp(steerAngle + steerDelta, -1, 1);
-    
-       
-            
-        else if(steerDelta * steerAngle < 0)//다른 각일때
-            steerAngle = Mathf.Clamp(steerAngle + (steerDelta*2), -1, 1);
+        steerAngle = Mathf.Clamp(steerAngle + steerDelta, -1, 1);
+
+        FLWheel.steerAngle = steerAngle * MaxSteerAngle / Speed;
+        FRWheel.steerAngle = steerAngle * MaxSteerAngle / Speed;
+
+
+
         
-        
-        
-
-        FLWheel.steerAngle = steerAngle * MaxSteerAngle;
-        FRWheel.steerAngle = steerAngle * MaxSteerAngle;
-
-
-        Debug.Log(FLWheel.sidewaysFriction.stiffness);
       
 
     }

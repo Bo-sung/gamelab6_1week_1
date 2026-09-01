@@ -215,19 +215,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: MaxSteerTime
-      value: 1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: MaxSteerAngle
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: DownForceLevel
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: SteerRerocateLevel
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 5260267132883333115, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_Name
       value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260267132883333115, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6564689767761046234, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_LocalPosition.x

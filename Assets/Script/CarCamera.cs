@@ -17,8 +17,6 @@ public class CarCamera : MonoBehaviour
 
     private Camera _cam;
     private Vector3 _currentVelocity;
-    private Vector3 _desiredPosition;
-    private float _defaultSmoothTime = 0.1f;
 
     private void Start()
     {
