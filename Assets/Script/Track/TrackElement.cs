@@ -7,9 +7,7 @@ public class TrackElement : MonoBehaviour
     private float life = 10000f;
     private bool IsCarTrackOut = false;
 
-    private bool isCurve = false;
-
-    public bool IsCurve => isCurve;
+    public bool isCurve = false;
 
     private void Update()
     {
