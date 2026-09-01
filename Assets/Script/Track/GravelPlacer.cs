@@ -17,6 +17,10 @@ public class GravelPlacer : MonoBehaviour
     float gravelScaleMax = 1.5f;
     [SerializeField]
     GameObject gravelPrefab;
+    [SerializeField]
+    float gravelAreaWidth;
+    [SerializeField]
+    float gravelAreaHeight;
 
     private void Awake()
     {
@@ -31,7 +35,7 @@ public class GravelPlacer : MonoBehaviour
             bc.enabled = true;
 
         }
-        PlaceGravelInArea(transform.position, 10f, 10f);
+        PlaceGravelInArea(transform.position, gravelAreaWidth, gravelAreaHeight);
     }
 
     // 사각형 영역 내 큐브를 배치하고. 각 큐브에 랜덤 크기와 랜덤 회전을 적용해서 자연스러운 자갈 배치 효과를 구현

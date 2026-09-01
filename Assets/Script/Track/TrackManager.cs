@@ -17,7 +17,13 @@ public class TrackManager : MonoBehaviour
 
     private void Awake()
     {
-        trackEdge.OnTrigger += OnCarTrackFinish;
+        trackEdge.OnTrigger += OnTriggerEdge;
+    }
+
+    private void OnTriggerEdge()
+    {
+        currentTrackCount++;
+        OnCarTrackFinish?.Invoke();
     }
 
     public void Initialize()
@@ -37,11 +43,27 @@ public class TrackManager : MonoBehaviour
 
         // trackElement의 StartPoint에 Edge가 이동
         // 첫 트랙 없으면 여기서 널 발생하기 때문에 무조건 시작 지점은 세팅해두어야함.
+
+        if(generatedTracks.Count == 0)
+        {
+            Debug.LogError("트랙이 생성되지 않았습니다. 초기 트랙을 생성해주세요.");
+        }
+
+        if(generatedTracks[currentTrackCount].endPoint == null)
+        {
+            Debug.LogError("트랙 엔드포인트 에러");
+        }
+
         trackEdge.transform.position = generatedTracks[currentTrackCount].endPoint.position;
 
         // trackPrefab의 중심이 startPoint라는 가정 하에
-        GameObject originTrack = trackPrefabs[Random.Range(0, trackPrefabs.Length)];
-        Vector3 trackPosition= transform.TransformPoint(generatedTracks[generatedTracks.Count - 1].endPoint.position);
+        GameObject originTrack = trackPrefabs[Random.Range(0, trackPrefabs.Length - 1)];
+        if (generatedTracks[generatedTracks.Count - 1].endPoint == null)
+        {
+            Debug.LogError("트랙 프리팹에러.");
+            return;
+        }
+        Vector3 trackPosition = transform.TransformPoint(generatedTracks[generatedTracks.Count - 1].endPoint.position);
         GameObject track = Instantiate(originTrack, trackPosition, Quaternion.identity);
 
 
