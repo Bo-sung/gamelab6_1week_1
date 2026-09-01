@@ -5,14 +5,29 @@ using UnityEngine.Rendering;
 
 public class CarManager : MonoBehaviour
 {
+    private const float CorneringToStiffnessMultiplier = 0.2f;
+
     public WheelCollider FLWheel;
     public WheelCollider FRWheel;
     public WheelCollider RLWheel;
     public WheelCollider RRWheel;
 
+    
+    [SerializeField]
+    private float MaxSteerAngle = 5;
+    [SerializeField]
+    private float MortorTorqueMultiplier = 50f;
+    [SerializeField]
+    private float BrakeTorqueMultiplier = 100f;
+    [SerializeField]
+    private float MaxSteerTime = 1f;
+    [SerializeField]
+    private float SteerRerocateLevel = 0.05f;
+    [SerializeField]
+    private float DownForceLevel = 10f;
 
 
-    public Rigidbody RB;
+    private Rigidbody RB;
 
     private CarStat stat;
 
@@ -22,6 +37,11 @@ public class CarManager : MonoBehaviour
     public float Speed => RB.linearVelocity.magnitude;
 
     public float SpeedKmh => Speed * 3.6f;
+
+    private float steerAngle = 0f;
+
+    private bool steerControlOnFrame;
+
 
 
     private void Start()
@@ -34,16 +54,25 @@ public class CarManager : MonoBehaviour
     public void Accelerate(float acc)
     {
 
-        RLWheel.motorTorque = acc * stat.Acceleration*100 * (1000 / stat.Weight);
-        RRWheel.motorTorque = acc * stat.Acceleration*100 * (1000 / stat.Weight);
+        RLWheel.motorTorque = acc * stat.Acceleration* MortorTorqueMultiplier * (1000 / stat.Weight);
+        RRWheel.motorTorque = acc * stat.Acceleration* MortorTorqueMultiplier * (1000 / stat.Weight);
 
 
 
     }
     public void Steer(float steer)
     {
-        FLWheel.steerAngle = steer * stat.Cornering;
-        FRWheel.steerAngle = steer * stat.Cornering;
+        if(steer != 0f) steerControlOnFrame = true;
+
+        var steerDelta = Mathf.Clamp(steer * Time.deltaTime / MaxSteerTime,-1,1);
+        
+        steerAngle = Mathf.Clamp(steerAngle + steerDelta, -1, 1);
+
+        FLWheel.steerAngle = steerAngle * MaxSteerAngle;
+        FRWheel.steerAngle = steerAngle * MaxSteerAngle;
+
+      
+
     }
  
     public void Brake(bool brake)
@@ -61,8 +90,6 @@ public class CarManager : MonoBehaviour
         RLWheel.motorTorque = 0f;
         RRWheel.motorTorque = 0f;
 
-        FLWheel.brakeTorque = stat.Braking * 100;
-        FRWheel.brakeTorque = stat.Braking * 100;
         RLWheel.brakeTorque = stat.Braking * 100;
         RLWheel.brakeTorque = stat.Braking * 100;
     }
@@ -76,19 +103,36 @@ public class CarManager : MonoBehaviour
             RLWheel.motorTorque = 0f;
             RRWheel.motorTorque = 0f;
         }
+        //다운포스
+        RB.AddForce(-transform.up * DownForceLevel,ForceMode.Force);
+        if(!steerControlOnFrame)
+        {
+            if(steerAngle  > 0)
+            {
+                var absSteer = Mathf.Clamp01(steerAngle - SteerRerocateLevel);
+                steerAngle = absSteer;
+            }
+            else if (steerAngle < 0)
+            {
+                var absSteer = Mathf.Clamp(steerAngle + SteerRerocateLevel,-1,0);
+                steerAngle = absSteer;
+            }
 
+            Debug.Log(steerAngle);
+        }
+        steerControlOnFrame = false;
+
+       
  
     }
 
     public void RefreshStat()
     {
 
-        ChangeStiffness(FLWheel, stat.Cornering * 0.3f);
-        ChangeStiffness(FRWheel, stat.Cornering * 0.3f);
-        ChangeStiffness(RLWheel, stat.Cornering * 0.3f);
-        ChangeStiffness(RRWheel, stat.Cornering * 0.3f);
-
-
+        ChangeStiffness(FLWheel, stat.Cornering * CorneringToStiffnessMultiplier);
+        ChangeStiffness(FRWheel, stat.Cornering * CorneringToStiffnessMultiplier);
+        ChangeStiffness(RLWheel, stat.Cornering * CorneringToStiffnessMultiplier);
+        ChangeStiffness(RRWheel, stat.Cornering * CorneringToStiffnessMultiplier);
 
     }
 

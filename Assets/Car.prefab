@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1965349185902917245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0, z: 0.6}
+  m_LocalPosition: {x: 0.3, y: 0, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41,7 +41,7 @@ WheelCollider:
   m_GameObject: {fileID: 1965349185902917245}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -151,8 +151,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5260267132883333115}
   serializedVersion: 5
-  m_Mass: 500
-  m_LinearDamping: 0
+  m_Mass: 1000
+  m_LinearDamping: 0.01
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: -0.5, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -169,7 +169,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &3776497409861165244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +201,12 @@ MonoBehaviour:
   FRWheel: {fileID: 7391866053940070943}
   RLWheel: {fileID: 7250379711319232886}
   RRWheel: {fileID: 2577981859393135107}
-  RB: {fileID: 0}
+  MaxSteerAngle: 20
+  MortorTorqueMultiplier: 100
+  BrakeTorqueMultiplier: 100
+  MaxSteerTime: 1
+  SteerRerocateLevel: 0.05
+  DownForceLevel: 10
 --- !u!114 &2735707573395156387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,8 +252,8 @@ Transform:
   m_GameObject: {fileID: 5479099284142839305}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.3, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6564689767761046234}
@@ -286,7 +291,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c2e40fa84d53ccd428f640eac126b1fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -357,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 6274930014101350106}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6, y: 0, z: -0.5}
+  m_LocalPosition: {x: -0.3, y: 0, z: -0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -372,7 +377,7 @@ WheelCollider:
   m_GameObject: {fileID: 6274930014101350106}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -428,7 +433,7 @@ Transform:
   m_GameObject: {fileID: 6948622882990922557}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6, y: 0, z: 0.6}
+  m_LocalPosition: {x: -0.3, y: 0, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -443,7 +448,7 @@ WheelCollider:
   m_GameObject: {fileID: 6948622882990922557}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -499,7 +504,7 @@ Transform:
   m_GameObject: {fileID: 7268971321599565875}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0.3, y: 0, z: -0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -514,7 +519,7 @@ WheelCollider:
   m_GameObject: {fileID: 7268971321599565875}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
