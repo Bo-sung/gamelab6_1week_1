@@ -9,6 +9,10 @@ public class Enemy : MonoBehaviour
     public float speed = 0.1f;
     // 최대 접근 거리
     public float maxDistance = 2;
+    private void Awake()
+    {
+        player = FindObjectOfType<Player>().transform;
+    }
 
     private void Update()
     {

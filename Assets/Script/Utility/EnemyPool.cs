@@ -18,6 +18,8 @@ public class EnemyPool : MonoBehaviour
             instance = this;
         else
             Destroy(this.gameObject);
+
+        Initialize();
     }
 
     private void Initialize()
