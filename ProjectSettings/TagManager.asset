@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - GameOverWall
+  - CAr
   layers:
   - Default
   - TransparentFX

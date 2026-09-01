@@ -37,7 +37,7 @@ public class GameScene : MonoBehaviour
         carController.transform.position = new Vector3(0, 0, 0); // 초기 위치 설정
 
         GameoverWall.OnGameOverWallReachedPlayer += () => OnGameOverWallReachedPlayer?.Invoke();
-        trackManager.OnCarTrackFinish += () => OnGameOverWallReachedPlayer?.Invoke();
+        trackManager.OnCarTrackFinish += trackManager.Generate;
     }
 
     public void OnStart()
