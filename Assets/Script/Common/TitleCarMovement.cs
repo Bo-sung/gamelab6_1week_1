@@ -4,7 +4,7 @@ using UnityEngine;
 public class TitleCarMovement : MonoBehaviour
 {
     public Rigidbody rb;
-
+    public float force = 200000f;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -19,6 +19,6 @@ public class TitleCarMovement : MonoBehaviour
     IEnumerator MoveCar()
     {
         yield return new WaitForSeconds(0.05f);
-        rb.AddForce(transform.forward * 1600000f);
+        rb.AddForce(transform.forward * force);
     }
 }
