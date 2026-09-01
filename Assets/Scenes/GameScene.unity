@@ -1173,6 +1173,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4957a42d31f058540800b84f22950c15, type: 2}
   - {fileID: 11400000, guid: 9b49b4fcd4d7b8f4fa02185677fe130e, type: 2}
   - {fileID: 11400000, guid: dce3c3aee1dd70f4393ea9ce39773740, type: 2}
+  - {fileID: 11400000, guid: 074adc03554321c4b8fe041a26bd8a53, type: 2}
+  - {fileID: 11400000, guid: 3bc7fad9ec571dd41aae6abef540a739, type: 2}
+  - {fileID: 11400000, guid: 04b5ef03cc2401146af7076de2785a9c, type: 2}
+  - {fileID: 11400000, guid: 98543965c6aad6949be16ef816fa7adc, type: 2}
   selectedAugments: []
 --- !u!4 &1149539542746817951
 Transform:

@@ -15,4 +15,5 @@ MonoBehaviour:
   augmentName: Throw Break
   description: Throw Break Description
   limit: 0
-  type: 2
+  type: 6
+  value: 0

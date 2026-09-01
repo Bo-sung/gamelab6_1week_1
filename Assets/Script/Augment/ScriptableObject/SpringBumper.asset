@@ -15,4 +15,5 @@ MonoBehaviour:
   augmentName: SpringBumper
   description: SrpingBumper Description
   limit: 0
-  type: 3
+  type: 7
+  value: 0
