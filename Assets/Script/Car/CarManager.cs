@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 public class CarManager : MonoBehaviour
 {
-    private const float CorneringToStiffnessMultiplier = 0.3f;
+    private const float CorneringToStiffnessMultiplier = 0.15f;
 
     public WheelCollider FLWheel;
     public WheelCollider FRWheel;
@@ -57,18 +57,14 @@ public class CarManager : MonoBehaviour
     //코루틴 상태값
     private Coroutine collsionCoroutine;
 
-    private void Start()
-    {
-        
-        Initialize();
-    }
 
-    public void Initialize()
+    public void Initialize(CarStat stat)
     {
         rb = GetComponent<Rigidbody>();
-        stat = GetComponent<CarStat>();
+        if(stat == null) this.stat = GetComponent<CarStat>();
+        else this.stat = stat;
 
-        carImpactManager.Initialize(stat);
+        carImpactManager.Initialize(this.stat);
         carImpactManager.OnWallCollsion += OnWallCollision;
         collisionMortorFlag = 1f;
     }
@@ -103,8 +99,8 @@ public class CarManager : MonoBehaviour
 
         steerAngle = Mathf.Clamp(steerAngle + steerDelta, -1, 1);
 
-        FLWheel.steerAngle = steerAngle * MaxSteerAngle / Speed;
-        FRWheel.steerAngle = steerAngle * MaxSteerAngle / Speed;
+        FLWheel.steerAngle = steerAngle * MaxSteerAngle / Mathf.Sqrt(Speed);
+        FRWheel.steerAngle = steerAngle * MaxSteerAngle / Mathf.Sqrt(Speed);
 
 
 
@@ -151,6 +147,7 @@ public class CarManager : MonoBehaviour
         //다운포스
         if(downForceFlag)   rb.AddForce(-transform.up * DownForceLevel,ForceMode.Force);
 
+        //핸들 미조작시 정렬
         if(!steerControlOnFrame)
         {
             if(steerAngle  > 0)
@@ -171,6 +168,8 @@ public class CarManager : MonoBehaviour
         ChangeStiffness(FRWheel, 0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
         ChangeStiffness(RLWheel, 0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
         ChangeStiffness(RRWheel,0.5f + stat.Cornering * CorneringToStiffnessMultiplier * collisionMortorFlag);
+        
+        //플래그 초기화
         steerControlOnFrame = false;
 
        
