@@ -8,7 +8,8 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float dashSpeed = 4f;
 
     float yaw, pitch = 28f;
-    bool IsDashing => Input.GetKey(KeyCode.LeftShift);
+    
+    public bool IsDashing => Input.GetKey(KeyCode.LeftShift);
 
     void Start()
     {

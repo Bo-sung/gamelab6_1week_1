@@ -11,6 +11,10 @@ public class EnemySpawner : MonoBehaviour
 
     private bool isGameOn;
 
+    private void Start()
+    {
+        GameStart();
+    }
 
     IEnumerator SpawnEnemy()
     {
