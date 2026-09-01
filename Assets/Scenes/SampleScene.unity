@@ -721,7 +721,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2577981859393135107, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.15
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2577981859393135107, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
@@ -729,11 +729,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2577981859393135107, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2948331788334301372, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.15
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2948331788334301372, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
@@ -741,7 +741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2948331788334301372, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5122841917965146299, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: MaxSteerTime
@@ -762,6 +762,10 @@ PrefabInstance:
     - target: {fileID: 5260267132883333115, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_Name
       value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304835238413519973, guid: a561482e9e3026d44abed28b87880f12, type: 3}
+      propertyPath: ImpactionPower
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 6564689767761046234, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_LocalPosition.x
@@ -805,7 +809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7250379711319232886, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.15
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7250379711319232886, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
@@ -813,11 +817,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7250379711319232886, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7391866053940070943, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.15
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7391866053940070943, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
@@ -825,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7391866053940070943, guid: a561482e9e3026d44abed28b87880f12, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

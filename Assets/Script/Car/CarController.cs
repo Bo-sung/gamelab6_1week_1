@@ -9,6 +9,11 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private CarManager carManager;
 
+    public void Initialize()
+    {
+
+    }
+
     private void FixedUpdate()
     {
         carManager.Accelerate(Input.GetAxis("Vertical"));
