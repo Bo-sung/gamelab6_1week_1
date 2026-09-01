@@ -8,6 +8,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/preload.unity
+    guid: 2d95bbb8cfc50654fb74ea22ba13d5c6
+  - enabled: 1
+    path: Assets/Scenes/AugmentTest.unity
+    guid: 65e2ef9b6b35c7746b76c7600afb0846
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 6aa8503de141f3c4c97883b9271a922d
+  - enabled: 1
+    path: Assets/Scenes/Track_Scene.unity
+    guid: eb39bb09553d5d345b67c42443057f24
+  - enabled: 1
+    path: Assets/Scenes/TrackTest.unity
+    guid: 7cf02e3bcce23144db63cb949fa6108c
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: fdf2aa9439a2f254098086fa15892c6d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
