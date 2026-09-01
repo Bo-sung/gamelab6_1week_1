@@ -23,6 +23,6 @@ public class GameOverUI : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         GameOverText.SetActive(true);
         yield return new WaitForSeconds(1.0f);
-        ScoreText.text = "Score: " + score.ToString();
+        ScoreText.text = "Score: " + score;
     }
 }
