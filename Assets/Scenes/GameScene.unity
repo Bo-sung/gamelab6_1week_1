@@ -168,7 +168,9 @@ MonoBehaviour:
   spawnRate: 10
   currentWave: 1
   nextWaveEnemyNum: 0
+  nextWaveEnemy2Num: 0
   requireEnemyNum: 3
+  requireEnemy2Num: 0
 --- !u!114 &2026720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPool
   enemyObject: {fileID: 7767582983130423874, guid: 411cdb902212bc44b87d4fdbfe45addb, type: 3}
+  enemyObject2: {fileID: 6009350788284575901, guid: 7de10aba9d27fa74d97f66a6ecc8efab, type: 3}
   poolSize: 5
+  minSpeed: 0.01
+  maxSpeed: 0.05
 --- !u!1 &101360831
 GameObject:
   m_ObjectHideFlags: 0
