@@ -1,108 +1,49 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TrackManager : MonoBehaviour
 {
     public GameObject[] trackPrefabs;
 
-    public TrackElement[] generatedTracks;
+    public List<TrackElement> generatedTracks;
 
-    public TrackEdge[] trackEdges;
+    public TrackEdge trackEdge;
+
+    private int currentTrackCount = 0;
 
     public System.Action OnCarTrackFinish;
 
-    private int currentTrack = 0;
-
-    private int currentDestroy = 0;
-
-    private Vector3[] EdgePositionOffset =
-    {
-        new Vector3(5, 0, 0),
-        new Vector3(15, 0, 0),
-        new Vector3(20, 0, 5),
-        new Vector3(20, 0, 15),
-        new Vector3(15, 0, 20),
-        new Vector3(5, 0, 20),
-        new Vector3(0, 0, 15),
-        new Vector3(0, 0, 5)
-    };
-
-    private Vector3[] trackPositionOffset =
-    {
-        new Vector3(0, 0, 0),
-        new Vector3(0, 0, 10),
-        new Vector3(0, 0, 20),
-        new Vector3(10, 0, 20),
-        new Vector3(20, 0, 20),
-        new Vector3(20, 0, 10),
-        new Vector3(20, 0, 0),
-        new Vector3(10, 0, 0)
-    };
-
     private void Awake()
     {
-        OnCarTrackFinish += Generate;
-    }
-
-    private void Start()
-    {
-        // 시작할때는 고정적으로 배치하는 편이 나을듯(시작부터 괴랄한 트랙 나오면 다소 이상할 수 있음)
-        for(int i = 0; i<3; i++)
+        for(int i=0; i<3; i++)
         {
             Generate();
         }
-        currentDestroy = 0;
 
-        for (int i = 0; i < 8; i++) 
-        {
-            trackEdges[i].transform.position = EdgePositionOffset[i];
-            trackEdges[i].OnTrigger += () => OnCarTrackFinish?.Invoke();
-        }
+    }
+
+    public void Initialize()
+    {
+        // 초기 트랙 생성
+
     }
 
     public void Generate()
     {
-        currentDestroy++;
-        if (currentDestroy == 8)
-            currentDestroy = 0;
+        // OnCarTrackFinish > GameManager의 Evenet > Generate()
+        // 트랙 생성
 
-        GameObject track;
+        // trackElement의 StartPoint에 Edge가 이동
+        trackEdge.transform.position = generatedTracks[currentTrackCount].endPoint.position;
 
-        Debug.Log("!");
-        while(true)
-        {
-            if (currentTrack % 2 == 0)
-            {
-                int randomInt = Random.Range(0, trackPrefabs.Length);
-                if (trackPrefabs[randomInt].GetComponent<TrackElement>().isCurve == true)
-                {
-                    track = Instantiate(trackPrefabs[randomInt]);
-                    track.transform.rotation = Quaternion.Euler(0, 90 * currentTrack / 2, 0);
-                    track.transform.position = trackPositionOffset[currentTrack];
-                    generatedTracks[currentTrack] = track.GetComponent<TrackElement>();
-                    generatedTracks[currentDestroy]?.DestroyCountdown();
-                    break;
-                }
-            }
-            else
-            {
-                int randomInt = Random.Range(0, trackPrefabs.Length);
-                if (trackPrefabs[randomInt].GetComponent<TrackElement>().isCurve == false)
-                {
-                    track = Instantiate(trackPrefabs[randomInt]);
-                    track.transform.rotation = Quaternion.Euler(0, 90 * (currentTrack - 1) / 2, 0);
-                    track.transform.position = trackPositionOffset[currentTrack];
-                    generatedTracks[currentTrack] = track.GetComponent<TrackElement>();
-                    generatedTracks[currentDestroy]?.DestroyCountdown();
-                    break;
-                }
-            }
-        }
-
-        currentTrack++;
-        if (currentTrack == 8)
-            currentTrack = 0;
+        // trackPrefab의 중심이 startPoint라는 가정 하에
+        GameObject originTrack = trackPrefabs[Random.Range(0, trackPrefabs.Length - 1)];
+        Vector3 trackPosition= transform.TransformPoint(generatedTracks[generatedTracks.Count - 1].endPoint.position);
+        Quaternion trackRotation = generatedTracks[generatedTracks.Count - 1].endPoint.rotation;
+        GameObject track = Instantiate(originTrack, trackPosition, trackRotation);
 
 
+        generatedTracks.Add(track.GetComponentInChildren<TrackElement>());
     }
 }

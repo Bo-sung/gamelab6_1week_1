@@ -5,9 +5,10 @@ public class TrackElement : MonoBehaviour
 {
     [SerializeField]
     private float life = 10000f;
-    private bool IsCarTrackOut = false;
 
-    public bool isCurve = false;
+    public Transform endPoint;
+
+    private bool IsCarTrackOut = false;
 
     private void Update()
     {
