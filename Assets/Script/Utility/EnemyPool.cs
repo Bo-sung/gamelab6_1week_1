@@ -29,13 +29,13 @@ public class EnemyPool : MonoBehaviour
         else
             Destroy(this.gameObject);
 
-        Initialize();
+        Initialize(null);
     }
 
-    private void Initialize()
+    private void Initialize(IScoreHandler scoreHandler)
     {
         target = FindObjectOfType<Player>().transform;
-        scoreHandler = FindObjectOfType<ScoreUI>();
+        this.scoreHandler = scoreHandler;
 
         pools = new List<List<GameObject>>();
         foreach (var prefab in enemyPrefabs)

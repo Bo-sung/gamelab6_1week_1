@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Text;
 using System;
 
-public class ScoreUI : MonoBehaviour, IScoreHandler
+public class ScoreUI : MonoBehaviour
 {
     private const string COMBO_STR = "Combo : ";
     private const string MAX_COMBO_STR = "Max Combo : ";

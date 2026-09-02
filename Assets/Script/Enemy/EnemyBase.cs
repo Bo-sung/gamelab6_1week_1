@@ -8,7 +8,9 @@ public interface IScoreHandler
 {
     void ApplyScore(int score);
     int GetCombo();
+    int GetMaxCombo();
     int GetScore();
+    float GetComboRemainTime();
 }
 
 public abstract class EnemyBase : MonoBehaviour
@@ -16,7 +18,7 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField]
     protected Transform target;
 
-    protected IScoreHandler scorUI;
+    protected IScoreHandler scoreHandler;
 
     [SerializeField]
     // 접근 속도
@@ -38,7 +40,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     public void SetData(Transform target, IScoreHandler scoreHandler)
     {
-        scorUI = scoreHandler;
+        this.scoreHandler = scoreHandler;
         this.target = target;
     }
 
@@ -58,6 +60,6 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected virtual void ApplyScore(int score)
     {
-        scorUI?.ApplyScore(score);
+        scoreHandler.ApplyScore(score);
     }
 }
