@@ -59,14 +59,14 @@ public class ScoreUI : MonoBehaviour
         // 콤보 남은 시간이 0 미만이면 콤보 저장 후 새로 세팅
         if (curComboRemainTime <= 0)
         {
-            // 최대 콤보보다 현재가 더 많으면 갱신
-            maxCombo = maxCombo < curCombo ? curCombo : maxCombo;
             // 콤보 초기화
             curCombo = 0;
         }
         // 시간 재갱신
         curComboRemainTime = comboRemainTimeMax;
         curCombo++;
+        // 최대 콤보보다 현재가 더 많으면 갱신
+        maxCombo = maxCombo < curCombo ? curCombo : maxCombo;
 
     }
 }
