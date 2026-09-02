@@ -9,8 +9,10 @@ public interface IScoreHandler
     void ApplyScore(int score);
     int GetCombo();
     int GetMaxCombo();
+    int GetComboLevel();
     int GetScore();
     float GetComboRemainTime();
+    float GetMaxComboRemainTime();
 }
 
 public abstract class EnemyBase : MonoBehaviour
