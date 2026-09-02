@@ -8,12 +8,19 @@ public class ComboUI : MonoBehaviour
 {
     [SerializeField] private Slider comboSlider;
     [SerializeField] private Image comboFill;
-    public List<Color> comboColors;
+    private List<Color> comboColors;
 
     private IScoreHandler scoreHandler;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        comboColors = new List<Color>
+        {
+            Color.yellow,
+            Color.orange,
+            Color.red,
+            Color.darkRed
+        };
         comboFill.color = comboColors[0];
         comboSlider.value = 0;
     }
