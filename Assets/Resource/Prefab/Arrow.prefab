@@ -141,13 +141,17 @@ MonoBehaviour:
   minPitch: -20
   maxPitch: 70
   speed: 8
+  minimumSpeed: 0
   acc_per_tick: 1
   autoAcc: 1
+  arrowModel: {fileID: 8706349895964896971}
   dashSpeed: 30
   dashTime: 0.5
   dashCooldown: 0
   dashTimeScale: 0
   dashTimeSensitivity: 0
+  chargeTime: 2
+  chargeJitter: 0.5
   dashChargingTime: 0
   curSpeed: 0
   dashState: 0

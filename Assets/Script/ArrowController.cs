@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float minimumSpeed = 0f;
     [SerializeField] float acc_per_tick = 1f;
     [SerializeField] bool autoAcc = false;
+    [SerializeField] Transform arrowModel;
     float curAcceleration = 0f;
 
     [Header("Dash")]
@@ -25,6 +27,8 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float dashTimeScale = 0f;
     float defaultTimeScale = 1f;
     [SerializeField] float dashTimeSensitivity = 0f;
+    [SerializeField] float chargeTime = 2f;
+    [SerializeField]float chargeJitter = 0.5f;
 
     [Header("Monitor")]
     [SerializeField] float dashChargingTime = 0f;
@@ -35,6 +39,9 @@ public class ArrowController : MonoBehaviour
     public System.Action OnHitEnemy;
 
     float yaw, pitch = 28f;
+
+    private float chargeTimer = 0f;
+    private Coroutine arrowJitterCoroutine;
 
     public enum DashState
     {
@@ -91,18 +98,20 @@ public class ArrowController : MonoBehaviour
             ChangeDashState(DashState.Dash);
         else if (Input.GetKeyDown(KeyCode.Mouse1) && dashState == DashState.None)
             ChangeDashState(DashState.Ready);
+        else if (dashState == DashState.Charging && chargeTimer >= chargeTime)
+            ChangeDashState(DashState.Dash);
 
         ProcessDash();
 
         // 타이머 감소
         remainDashTime -= Time.deltaTime;
         remainDashCooldown -= Time.deltaTime;
-        UnityEngine.Debug.Log($"DashState: {dashState}, remainDashTime: {remainDashTime}, remainDashCooldown: {remainDashCooldown}");
+        //UnityEngine.Debug.Log($"DashState: {dashState}, remainDashTime: {remainDashTime}, remainDashCooldown: {remainDashCooldown}");
     }
 
     private void ChangeDashState(DashState state)
     {
-        UnityEngine.Debug.Log($"DashState Changed From {dashState} To {state}");
+        //UnityEngine.Debug.Log($"DashState Changed From {dashState} To {state}");
         dashState = state;
         OnDashStateChanged?.Invoke(dashState);
     }
@@ -121,10 +130,16 @@ public class ArrowController : MonoBehaviour
                 // 상태 전환
                 ChangeDashState(DashState.Charging);
                 dashChargingTime = 0;
+                chargeTimer = 0f;
+                if(arrowJitterCoroutine != null) StopCoroutine(arrowJitterCoroutine);
+                arrowJitterCoroutine = StartCoroutine(ArrowJitter());
+
+
                 break;
             // 차징 중
             case DashState.Charging:
                 // 차징중 시간 느려짐 효과 + 민감도 증가(시간이 늘어짐에 따라. 유저 입력에 보정을 주기 위해)
+                chargeTimer += Time.deltaTime;
                 dashChargingTime += Time.deltaTime;
                 Time.timeScale = Mathf.Lerp(defaultTimeScale, dashTimeScale, dashChargingTime);
                 currentSensitivity = Mathf.Lerp(sensitivity, dashTimeSensitivity, dashChargingTime);
@@ -148,6 +163,18 @@ public class ArrowController : MonoBehaviour
         Time.timeScale = defaultTimeScale;
         currentSensitivity = sensitivity;
         OnDashStart?.Invoke();
+
+        //흔들림 제거
+        if(arrowJitterCoroutine != null)
+        {
+            StopCoroutine(arrowJitterCoroutine);
+            arrowJitterCoroutine = null;
+            arrowModel.transform.localRotation = Quaternion.Euler(90, 0, 0); // Reset rotation
+        }
+        //타이머 초기화
+        chargeTimer = 0f;
+
+        UnityEngine.Debug.Log("Dash executed!");
     }
 
     void LateUpdate()
@@ -190,7 +217,7 @@ public class ArrowController : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
         curSpeed = moveSpeed;
-        UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
+        //UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -199,5 +226,25 @@ public class ArrowController : MonoBehaviour
         {
             OnHitEnemy?.Invoke();
         }
+    }
+
+    IEnumerator ArrowJitter()
+    {
+        float harfJitterTime = chargeTime / 2f;
+        float elapsed = 0f;
+        float tick = UnityEngine.Random.Range(-10f, 10f);
+        var originalPosition = arrowModel.transform.localPosition;
+        while (elapsed < chargeTime)
+        {
+            elapsed += Time.deltaTime / harfJitterTime;
+            tick += Time.deltaTime * chargeJitter;
+            arrowModel.transform.localRotation = Quaternion.Euler(
+               90f +  Mathf.PerlinNoise(tick, 0) - .5f,
+                Mathf.PerlinNoise(0, tick) - .5f,
+                0f);
+            yield return null;
+        }
+
+        arrowModel.transform.localRotation = Quaternion.Euler(90, 0, 0); // Reset rotation
     }
 }
