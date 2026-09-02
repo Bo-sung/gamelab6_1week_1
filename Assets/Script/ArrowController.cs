@@ -30,6 +30,9 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float chargeTime = 2f;
     [SerializeField]float chargeJitter = 0.5f;
 
+    [Header("Collision")]
+    [SerializeField] float offControlTime = 0.5f;
+
     [Header("Monitor")]
     [SerializeField] float dashChargingTime = 0f;
     [SerializeField] float curSpeed = 0f;
@@ -41,6 +44,8 @@ public class ArrowController : MonoBehaviour
     float yaw, pitch = 28f;
 
     private float chargeTimer = 0f;
+    private float offControlTimer = 0f;
+    private Rigidbody rb;
     private Coroutine arrowJitterCoroutine;
 
     public enum DashState
@@ -59,7 +64,12 @@ public class ArrowController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        GetComponent<ArrowChargeLaser>().Initialize(this);
+        rb = GetComponent<Rigidbody>();
+        var arrowChargeLaser = GetComponent<ArrowChargeLaser>();
+        arrowChargeLaser.Initialize(this);
+
+        
+
     }
 
     private void Update()
@@ -170,6 +180,8 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
+        offControlTimer -= Time.deltaTime;
+
         // 대시 등, 상태 처리
         float moveSpeed = 0;
         switch (dashState)
@@ -187,8 +199,12 @@ public class ArrowController : MonoBehaviour
                 pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
                 // 입력 받은 값 토대로 회전 처리
-                Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
-                transform.rotation = rot;
+                if(offControlTimer < 0)
+                {
+                    transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+                }
+                //Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
+                //transform.rotation = rot;
 
                 // 만약 자동가속이면 스킵
                 if (autoAcc)
@@ -248,5 +264,17 @@ public class ArrowController : MonoBehaviour
         }
 
         arrowModel.transform.localRotation = Quaternion.Euler(90, 0, 0); // Reset rotation
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
+        //transform.rotation = Quaternion.LookRotation(reflectDir);
+        rb.rotation = Quaternion.Euler(reflectDir);
+
+
+        offControlTimer = offControlTime;
+
+
     }
 }
