@@ -116,13 +116,13 @@ public class EnemySpawner : MonoBehaviour
             if (tableIndex >= waveData.enemySpawnTable.Length)
             {
                 //다음 웨이브 넘겨
-                yield return new WaitForSeconds(spawnRate);
                 waveIndex++;
                 tableIndex = 0;
-                if(waveIndex >= waveInfos.Length)
+                if (waveIndex >= waveInfos.Length)
                     OnGameClear?.Invoke();
                 else
                     OnWaveClear?.Invoke(waveInfos[waveIndex]);
+                yield return new WaitForSeconds(spawnRate);
                 continue;
             }
             var spawnArr = waveData.enemySpawnTable;

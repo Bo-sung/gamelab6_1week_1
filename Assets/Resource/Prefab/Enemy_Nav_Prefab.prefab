@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92c55c5a0c469264a8c0987318121a02, type: 2}
+  - {fileID: 2100000, guid: c58af2ad023942648ba2609891fdab0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,13 +99,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 88808338498897335}
-  - component: {fileID: 2977608312400312353}
   - component: {fileID: 3543762527068552913}
   - component: {fileID: 2277221811087129870}
   - component: {fileID: 6495405255522883913}
-  - component: {fileID: 7194560493018393604}
+  - component: {fileID: 3371838830951322935}
+  - component: {fileID: 7809431440860075205}
   m_Layer: 0
-  m_Name: Enemy_Basic_Prefab
+  m_Name: Enemy_Nav_Prefab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,29 +120,13 @@ Transform:
   m_GameObject: {fileID: 7767582983130423874}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1.8, z: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8490893636249709839}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2977608312400312353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7767582983130423874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6411b300f682d554c8704d335efd27ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  target: {fileID: 0}
-  speed: 0.01
-  maxDistance: 2
-  navMeshAgent: {fileID: 7194560493018393604}
 --- !u!33 &3543762527068552913
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -176,7 +160,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e48f4202d88c9bb40a565ed1a2b062c5, type: 2}
+  - {fileID: 2100000, guid: c58af2ad023942648ba2609891fdab0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -223,7 +207,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!195 &7194560493018393604
+--- !u!195 &3371838830951322935
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -245,3 +229,19 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7809431440860075205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767582983130423874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d585f1eefa2f7479810e67365c2667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Nav
+  target: {fileID: 0}
+  speed: 0.01
+  maxDistance: 2
+  navMeshAgent: {fileID: 3371838830951322935}

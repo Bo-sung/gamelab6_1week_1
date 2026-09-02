@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameFlowManager : MonoBehaviour
 {
     public Player player;
+    public GameObject arrow;
     public GameOverUI gameOverUI;
 
     [SerializeField]
@@ -58,8 +59,11 @@ public class GameFlowManager : MonoBehaviour
     private void GameOver()
     {
         player.gameObject.SetActive(false);
+        arrow.SetActive(false);
         spawner.GameOver();
         gameOverUI.StartGameOverUI(comboManager.GetScore());
+        Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
+        Cursor.visible = true;
         Debug.Log("Game Over");
     }
 
@@ -68,5 +72,6 @@ public class GameFlowManager : MonoBehaviour
         player.PlayerHeal();
         waveEffect.OnWaveChanged(waveinfo);
         spawnerUI.UpdateWaveText(waveinfo.wave);
+
     }
 }
