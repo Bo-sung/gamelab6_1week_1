@@ -67,5 +67,6 @@ public class GameFlowManager : MonoBehaviour
     {
         player.PlayerHeal();
         waveEffect.OnWaveChanged(waveinfo);
+        spawnerUI.UpdateWaveText(waveinfo.wave);
     }
 }
