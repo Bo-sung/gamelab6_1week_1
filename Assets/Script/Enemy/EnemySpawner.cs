@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 public interface ISpawnUI
@@ -12,10 +13,13 @@ public struct WaveInfo
     public int wave;
     public int[] enemySpawnTable;
 
-    public WaveInfo(int wave, int[] enemySpawnTable)
+    public int[] spawnPointTable;
+
+    public WaveInfo(int wave, int[] enemySpawnTable, int[] spawnPointTable)
     {
         this.wave = wave;
         this.enemySpawnTable = enemySpawnTable;
+        this.spawnPointTable = spawnPointTable;
     }
 }
 
@@ -29,14 +33,17 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float spawnRate = 10f;
 
+    [SerializeField]
+    private Transform[] spawnPoints;
+
     private ISpawnUI spawnerUI;
 
     private EnemyPool pool;
 
-    // ÇöÀç wave
+    // ï¿½ï¿½ï¿½ï¿½ wave
     public int currentWave = 1;
 
-    // ½ºÆù À§Ä¡(¿ø)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡(ï¿½ï¿½)
     public float spawnDistance = 50f;
 
     private bool isGameOn;
@@ -50,13 +57,39 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnerUI = spawnUI;
         pool.Initialize(target, scoreHandler);
+        if(spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½");
+            //SpawnFallBack();
+        }
     }
-
-    private void Start()
+    [ContextMenu("ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 10ï¿½ï¿½ ï¿½Ú±ï¿½")]
+    private void SpawnFallBack()
     {
-        //GameStart();
-    }
+        GameObject prefab = new GameObject();    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        int count = 10;        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        float radius = 10f;
+        spawnPoints = new Transform[count];
+        for (int i = 0; i < count; i++)
+        {
+            // 1. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+            float angle = i * Mathf.PI * 2 / count;
 
+            // 2. ï¿½ï°¢ï¿½Ô¼ï¿½ï¿½ï¿½ X, Z (ï¿½Ç´ï¿½ Y) ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½
+            float x = Mathf.Cos(angle) * radius;
+            float z = Mathf.Sin(angle) * radius;
+
+            // 3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß½ï¿½)
+            Vector3 spawnPosition = new Vector3(x, 0, z) + transform.position;
+
+            // 4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            Quaternion spawnRotation = Quaternion.LookRotation(spawnPosition - transform.position);
+            var point = Instantiate(prefab, spawnPosition, spawnRotation,this.transform);
+            point.name = $"SpawnPoint_{i}";
+            spawnPoints[i] = point.transform;
+        }
+    }
+    
     IEnumerator SpawnEnemy1()
     {
         int waveIndex = 0;
@@ -64,57 +97,59 @@ public class EnemySpawner : MonoBehaviour
 
         while (isGameOn)
         {
-            Vector3 center = transform.position; // 0, 0 Áß½É
-            Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnDistance;
-            Vector3 randomPos;
-
-            // ÇöÀç wave¿¡ µû¶ó¼­ Á¦ÇÑ Á¶°ÇÀÌ Ç®¸®´Â ½ÄÀ¸·Î
-            if (randomCircle.x >= 0 && randomCircle.y >= 0)
-            {
-                randomPos = new Vector3(randomCircle.x, 0, randomCircle.y); // 0, 0 Áß½ÉÀÌ¹Ç·Î ±¸ÇÑ °ªÀ¸·Î¸¸ ÁÂÇ¥ ¼³Á¤
-            }
-            else if (randomCircle.x >= 0 && randomCircle.y <= 0 && currentWave >= 5)
-            {
-                randomPos = new Vector3(randomCircle.x, 0, randomCircle.y);
-            }
-            else if (randomCircle.x <= 0 && randomCircle.y >= 0 && currentWave >= 10)
-            {
-                randomPos = new Vector3(randomCircle.x, 0, randomCircle.y);
-            }
-            else if (randomCircle.x <= 0 && randomCircle.y <= 0 && currentWave >= 15)
-            {
-                randomPos = new Vector3(randomCircle.x, 0, randomCircle.y);
-            }
-            else
-            {
-                continue;
-            }
-
             if (waveIndex >= waveInfos.Length)
             {
-                // ¿þÀÌºê ´Ù³¡³²
+                // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½Ù³ï¿½ï¿½ï¿½
                 continue;
             }
             var waveData = waveInfos[waveIndex];
 
             if (tableIndex >= waveData.enemySpawnTable.Length)
             {
-                //´ÙÀ½ ¿þÀÌºê ³Ñ°Ü
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½Ñ°ï¿½
 
                 yield return new WaitForSeconds(spawnRate);
                 waveIndex++;
+                tableIndex = 0;
                 spawnerUI.UpdateWaveText(waveData.wave);
                 continue;
             }
             var spawnArr = waveData.enemySpawnTable;
-
-            // ½ºÆù Ã³¸®
-            var enemyObj = pool.Pop(spawnArr[tableIndex++]);
+            // ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
+            var enemyObj = pool.Pop(spawnArr[tableIndex]);
             enemyObj.SetActive(true);
-            enemyObj.transform.position = randomPos;
-            // ½ºÆù ÀÎÅÍ¹ú ´ë±â
+            enemyObj.transform.position = ExtractSafeSpawnPoint(waveData).position;
+            UnityEngine.Debug.Log($"EnemySpawn!! Name : {enemyObj.name}, Wave : {waveData.wave}, TableIndex : {tableIndex}, SpawnIndex : {spawnArr[tableIndex]}");
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¹ï¿½ ï¿½ï¿½ï¿½
             yield return new WaitForSeconds(spawnInterval);
+            tableIndex++;
         }
+    }
+
+    private Transform ExtractSafeSpawnPoint(WaveInfo info)
+    {
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ìºï¿½
+        var spawnPointTable = info.spawnPointTable;
+        // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
+        int tableLen = spawnPointTable.Length;
+
+        // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        int randNum = UnityEngine.Random.Range(0, tableLen - 1);
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        int selectedIndex = spawnPointTable[randNum];
+
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½è¿­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
+        if (selectedIndex >= spawnPoints.Length)
+        {
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            selectedIndex = spawnPoints.Length - 1;
+        }
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        var result = spawnPoints[selectedIndex];
+
+        Debug.Log($"Selected Spawn Point Index : {selectedIndex}");
+        return result;
     }
     public void GameStart()
     {
@@ -129,16 +164,16 @@ public class EnemySpawner : MonoBehaviour
 
     private WaveInfo[] waveInfos = new WaveInfo[]
     {
-        new WaveInfo(0,new int[] { 0,0,0,0,0,0 }),
-        new WaveInfo(1,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(2,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(3,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(4,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(5,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(6,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(7,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(8,new int[] { 1,0,1,0,1,0 }),
-        new WaveInfo(9,new int[] { 1,0,1,0,1,0 }),
+        new WaveInfo(0,new int[] { 0,0,0,0,0,0 },new int[] { 0,1,2,3}),
+        new WaveInfo(1,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4}),
+        new WaveInfo(2,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5}),
+        new WaveInfo(3,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6}),
+        new WaveInfo(4,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6,7 }),
+        new WaveInfo(5,new int[] { 1,0,1,0,1,0 },new int[] { 0,2,4,6,8 }),
+        new WaveInfo(6,new int[] { 1,0,1,0,1,0 },new int[] { 1,2,3,4,5,6,7 }),
+        new WaveInfo(7,new int[] { 1,0,1,0,1,0 },new int[] { 4,5,6,7 }),
+        new WaveInfo(8,new int[] { 1,0,1,0,1,0 },new int[] { 0,4,5,6,7 }),
+        new WaveInfo(9,new int[] { 1,0,1,0,1,0 },new int[] { 2,3,4,5,6,7 }),
 
     };
 }
