@@ -104,3 +104,6 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+Assets/Unity.VisualScripting.Generated/VisualScripting.Core.meta
+Assets/Unity.VisualScripting.Generated/VisualScripting.Core/AotStubs.cs
+Assets/Unity.VisualScripting.Generated/VisualScripting.Core/AotStubs.cs.meta

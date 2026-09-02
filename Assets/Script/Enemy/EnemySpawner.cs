@@ -75,8 +75,8 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnFallBack()
     {
         GameObject prefab = new GameObject();    // 생성할 프리팹
-        int count = 10;        // 생성할 개수
-        float radius = 10f;
+        int count = 30;        // 생성할 개수
+        float radius = 50f;
         spawnPoints = new Transform[count];
         for (int i = 0; i < count; i++)
         {
@@ -109,7 +109,7 @@ public class EnemySpawner : MonoBehaviour
             if (waveIndex >= waveInfos.Length)
             {
                 // 웨이브 다끝남
-                continue;
+                break;
             }
             var waveData = waveInfos[waveIndex];
 
