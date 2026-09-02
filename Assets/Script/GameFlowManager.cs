@@ -20,6 +20,8 @@ public class GameFlowManager : MonoBehaviour
     private ComboUI comboUI;
     [SerializeField]
     private SpawnerUI spawnerUI;
+    [SerializeField]
+    private PlayerUI playerUI;
     private EnemyPool enemyPool;
 
 
@@ -40,6 +42,7 @@ public class GameFlowManager : MonoBehaviour
         comboManager.Initialize(controller);
         scoreUI.Initialize(comboManager);
         comboUI.Initialize(comboManager);
+        playerUI.Initialize(player);
         spawner.Initialize(player.transform, spawnerUI, comboManager);
     }
 
