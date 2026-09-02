@@ -13,9 +13,6 @@ public class EnemyPool : MonoBehaviour
     private Transform target;
     private IScoreHandler scoreHandler;
 
-    public float minSpeed = 0.01f;
-    public float maxSpeed = 0.05f;
-
     public void Initialize(Transform target, IScoreHandler scoreHandler)
     {
         this.target = target;
@@ -47,6 +44,16 @@ public class EnemyPool : MonoBehaviour
         {
             Enemy_Head enemy = prefab.GetComponent<Enemy_Head>();
             enemy.SetData(target, scoreHandler, 2);
+        }
+        else if (enemyBase.GetType() == typeof(Enemy_Tele))
+        {
+            Enemy_Tele enemy = prefab.GetComponent<Enemy_Tele>();
+            enemy.SetData(target, scoreHandler);
+        }
+        else if(enemyBase.GetType() == typeof(Enemy_Fast))
+        {
+            Enemy_Fast enemy = prefab.GetComponent<Enemy_Fast>();
+            enemy.SetData(target, scoreHandler, 0.05f);
         }
         return prefab;
     }

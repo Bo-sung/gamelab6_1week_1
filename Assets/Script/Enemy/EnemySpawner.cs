@@ -91,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    IEnumerator SpawnEnemy1()
+    IEnumerator SpawnEnemy()
     {
         int waveIndex = 0;
         int tableIndex = 0;
@@ -155,7 +155,7 @@ public class EnemySpawner : MonoBehaviour
     public void GameStart()
     {
         isGameOn = true;
-        StartCoroutine(SpawnEnemy1());
+        StartCoroutine(SpawnEnemy());
     }
 
     public void GameOver()
@@ -165,7 +165,7 @@ public class EnemySpawner : MonoBehaviour
 
     private WaveInfo[] waveInfos = new WaveInfo[]
     {
-        new WaveInfo(0,new int[] { 0,0,0,0,0,0 },new int[] { 0,1,2,3}),
+        new WaveInfo(0,new int[] { 0,1,2,3,0,0 },new int[] { 0,1,2,3}),
         new WaveInfo(1,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4}),
         new WaveInfo(2,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5}),
         new WaveInfo(3,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6}),
