@@ -9,12 +9,19 @@ public class PlayerUI : MonoBehaviour
     public void Initialize(Player player)
     {
         this.player = player;
-        player.OnPlayerHit += UpdatePlayerHP;
+        player.OnPlayerHit += PlayerHPDown;
+        player.OnPlayerHeal += PlayerHPUp;
     }
 
-    public void UpdatePlayerHP()
+    public void PlayerHPDown()
     {
-        GameObject disableHp = playerHPObjects[player.hp];
+        GameObject disableHp = playerHPObjects[player.curHp];
         disableHp.SetActive(false);
+    }
+
+    public void PlayerHPUp()
+    {
+        GameObject upHp = playerHPObjects[player.curHp - 1];
+        upHp.SetActive(true);
     }
 }

@@ -5,13 +5,15 @@ using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
-    public int hp = 3;
+    public int maxHp = 5;
+    public int curHp = 5;
+
     public int hitEffectDuration = 1;
 
 
     public System.Action OnPlayerDead;
     public System.Action OnPlayerHit;
-
+    public System.Action OnPlayerHeal;
 
 
     [SerializeField]
@@ -34,7 +36,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            hp--;
+            curHp--;
             OnPlayerHit?.Invoke();
 
             other.TryGetComponent<EnemyBase>(out var enemy);
@@ -47,7 +49,7 @@ public class Player : MonoBehaviour
             }
             StartCoroutine(HitEffectSmooth());
 
-            if (hp <= 0)
+            if (curHp <= 0)
             {
                 OnPlayerDead?.Invoke();
             }
@@ -65,6 +67,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Wave 끝날 시 해당 함수 실행
+    [ContextMenu("플레이어 힐")]
+    public void PlayerHeal()
+    {
+        if (curHp != maxHp)
+        {
+            curHp++;
+            OnPlayerHeal?.Invoke();
+        }
+    }
   
 
 }
