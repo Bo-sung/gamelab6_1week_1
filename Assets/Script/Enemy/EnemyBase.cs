@@ -24,7 +24,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     [SerializeField]
     // 접근 속도
-    protected float speed = 0.1f;
+    protected float speed = 0.01f;
     [SerializeField]
     // 최대 접근 거리
     protected float maxDistance = 2;

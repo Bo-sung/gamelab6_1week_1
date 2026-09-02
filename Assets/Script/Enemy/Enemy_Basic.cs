@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : EnemyBase
+public class Enemy_Basic : EnemyBase
 {
     protected override void Movement()
     {

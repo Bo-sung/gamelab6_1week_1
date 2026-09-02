@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class Enemy2 : EnemyBase
+public class Enemy_Head : EnemyBase
 {
     [SerializeField]
     private GameObject head;
@@ -9,10 +9,9 @@ public class Enemy2 : EnemyBase
     protected int hp = 2;
     private bool isPassing = false;
 
-    public void SetData(Transform target, IScoreHandler scoreHandler, float speed, int hp)
+    public void SetData(Transform target, IScoreHandler scoreHandler, int hp)
     {
         SetData(target, scoreHandler);
-        this.speed = speed;
         this.hp = hp;
     }
 

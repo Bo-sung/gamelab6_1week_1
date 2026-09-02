@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy3 : EnemyBase
+public class Enemy_Tele : EnemyBase
 {
     public float dashInterval = 3f;
     private float lastDashTime = 0f;

@@ -38,17 +38,15 @@ public class EnemyPool : MonoBehaviour
     {
         var prefab = Instantiate(enemyBase.gameObject);
         prefab.SetActive(false);
-        if (enemyBase.GetType() == typeof(Enemy))
+        if (enemyBase.GetType() == typeof(Enemy_Basic))
         {
-            Enemy enemy = prefab.GetComponent<Enemy>();
-            float speed = UnityEngine.Random.Range(minSpeed, maxSpeed);
-            enemy.SetData(target, scoreHandler, speed);
+            Enemy_Basic enemy = prefab.GetComponent<Enemy_Basic>();
+            enemy.SetData(target, scoreHandler);
         }
-        else if (enemyBase.GetType() == typeof(Enemy2))
+        else if (enemyBase.GetType() == typeof(Enemy_Head))
         {
-            Enemy2 enemy = prefab.GetComponent<Enemy2>();
-            float speed = UnityEngine.Random.Range(minSpeed, maxSpeed);
-            enemy.SetData(target, scoreHandler, speed, 2);
+            Enemy_Head enemy = prefab.GetComponent<Enemy_Head>();
+            enemy.SetData(target, scoreHandler, 2);
         }
         return prefab;
     }

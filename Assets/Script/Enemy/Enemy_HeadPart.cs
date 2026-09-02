@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class Enemy2Parts : MonoBehaviour
+public class Enemy_HeadPart : MonoBehaviour
 {
-    private Enemy2 parents;
+    private Enemy_Head parents;
 
     private void Awake()
     {
-        parents = GetComponentInParent<Enemy2>();
+        parents = GetComponentInParent<Enemy_Head>();
     }
 
     private void OnTriggerEnter(Collider other)
