@@ -14,14 +14,15 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float acc_per_tick = 1f;
     [SerializeField] bool autoAcc = false;
     [SerializeField] Transform arrowModel;
+    [SerializeField]
     float curAcceleration = 0f;
 
     [Header("Dash")]
     [SerializeField] float dashSpeed = 4f;
-    // ��� ���ӽð�
+    // 대시 지속시간
     [SerializeField] float dashTime = 1f;
     float remainDashTime = 0f;
-    // ��� �ߵ� �� ���� ��Ÿ��
+    // 대시 발동 후 다음 쿨타임
     [SerializeField] float dashCooldown = 2f;
     float remainDashCooldown = 0f;
     [SerializeField] float dashTimeScale = 0f;
@@ -45,7 +46,6 @@ public class ArrowController : MonoBehaviour
 
     private float chargeTimer = 0f;
     private float offControlTimer = 0f;
-    private float offControlTimerF = 0f;
     private Rigidbody rb;
     private Coroutine arrowJitterCoroutine;
 
@@ -79,14 +79,19 @@ public class ArrowController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.Space))
         {
             curAcceleration += acc_per_tick * Time.deltaTime;
         }
+        else
+        {
+            curAcceleration -= acc_per_tick * Time.deltaTime;
+        }
+        curAcceleration = Mathf.Clamp01(curAcceleration);
     }
     private void HandleDashLogic()
     {
-        // ��� ���� ��ȯ
+        // 대시 상태 전환
         if (dashState == DashState.Dashing && remainDashTime <= 0)
             ChangeDashState(DashState.Cooldown);
         else if (dashState == DashState.Cooldown && remainDashCooldown <= 0)
@@ -100,15 +105,13 @@ public class ArrowController : MonoBehaviour
 
         ProcessDash();
 
-        // Ÿ�̸� ����
+        // 타이머 감소
         remainDashTime -= Time.deltaTime;
         remainDashCooldown -= Time.deltaTime;
-        //UnityEngine.Debug.Log($"DashState: {dashState}, remainDashTime: {remainDashTime}, remainDashCooldown: {remainDashCooldown}");
     }
 
     private void ChangeDashState(DashState state)
     {
-        //UnityEngine.Debug.Log($"DashState Changed From {dashState} To {state}");
         dashState = state;
         OnDashStateChanged?.Invoke(dashState);
     }
@@ -117,34 +120,32 @@ public class ArrowController : MonoBehaviour
     {
         switch (dashState)
         {
-            // ��� ���
+            // 대시 사용
             case DashState.Dash:
-                // ��� ���� �� Ÿ�ӽ����ϰ� �ΰ��� ������� ����
+                // 대시 실행 후 타임스케일과 민감도 원래대로 복구
                 DoDash();
                 break;
-            // ��¡ ����
+            // 차징 시작
             case DashState.Ready:
-                // ���� ��ȯ
+                // 상태 전환
                 ChangeDashState(DashState.Charging);
                 dashChargingTime = 0;
                 chargeTimer = 0f;
                 if (arrowJitterCoroutine != null) StopCoroutine(arrowJitterCoroutine);
                 arrowJitterCoroutine = StartCoroutine(ArrowJitter());
-
-
                 break;
-            // ��¡ ��
+            // 차징 중
             case DashState.Charging:
-                // ��¡�� �ð� ������ ȿ�� + �ΰ��� ����(�ð��� �þ����� ����. ���� �Է¿� ������ �ֱ� ����)
+                // 차징중 시간 느려짐 효과 + 민감도 증가(시간이 늘어짐에 따라. 유저 입력에 보정을 주기 위해)
                 chargeTimer += Time.unscaledDeltaTime;
                 dashChargingTime += Time.deltaTime;
                 Time.timeScale = Mathf.Lerp(defaultTimeScale, dashTimeScale, dashChargingTime);
                 currentSensitivity = Mathf.Lerp(sensitivity, dashTimeSensitivity, dashChargingTime);
                 break;
-            // ��� ��
+            // 대시 중
             case DashState.Dashing:
                 break;
-            // ��Ÿ�� ��
+            // 쿨타임 중
             case DashState.Cooldown:
                 // Handle cooldown state logic
                 break;
@@ -161,14 +162,14 @@ public class ArrowController : MonoBehaviour
         currentSensitivity = sensitivity;
         OnDashStart?.Invoke();
 
-        //��鸲 ����
+        //흔들림 제거
         if (arrowJitterCoroutine != null)
         {
             StopCoroutine(arrowJitterCoroutine);
             arrowJitterCoroutine = null;
             arrowModel.transform.localRotation = Quaternion.Euler(90, 0, 0); // Reset rotation
         }
-        //Ÿ�̸� �ʱ�ȭ
+        //타이머 초기화
         chargeTimer = 0f;
 
         UnityEngine.Debug.Log("Dash executed!");
@@ -176,10 +177,7 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
-        offControlTimerF = offControlTimer;
-        offControlTimer -= Time.deltaTime;
-
-        // ��� ��, ���� ó��
+        // 대시 등, 상태 처리
         float moveSpeed = 0;
         switch (dashState)
         {
@@ -189,50 +187,37 @@ public class ArrowController : MonoBehaviour
             case DashState.Cooldown:
             case DashState.None:
             case DashState.Charging:
-                // ��ø� �ƴϸ� ȸ�� ����
-                // ���콺 �Է� ó��
+                // 대시만 아니면 회전 가능
+                // 마우스 입력 처리
+                yaw += Input.GetAxis("Mouse X") * currentSensitivity;
+                pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
+                pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-                if (offControlTimerF > 0 && offControlTimer <= 0)
-                {
-                    yaw = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
-                    pitch = -Mathf.Asin(Mathf.Clamp(transform.forward.y, -1f, 1f)) * Mathf.Rad2Deg;
-                }
+                // 입력 받은 값 토대로 회전 처리
+                transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
 
-                //�Է� ���� �� ���� ȸ�� ó��
-
-                if (offControlTimer < 0)
-                {
-                    yaw += Input.GetAxis("Mouse X") * currentSensitivity;
-                    pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
-
-                    pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-                    transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
-                }
-                //Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
-                //transform.rotation = rot;
-
-                // ���� �ڵ������̸� ��ŵ
+                // 만약 자동가속이면 스킵
                 if (autoAcc)
                 {
                     moveSpeed = speed;
                     break;
                 }
-                // �ڵ� ���� �ƴϸ� �������ϰ� ����
-                moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
+                // 자동 가속 아니면 스무스하게 정지
+                moveSpeed = Mathf.Lerp(speed, minimumSpeed, curAcceleration);
                 break;
             default:
-                UnityEngine.Debug.Log("�̰� �̻��ѵ� ���� ��Ž?");
+                UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
                 break;
         }
 
 
-        // �̵� ����
+        // 이동 시작
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
         curSpeed = moveSpeed;
         //UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
 
-        //�ٴ� �Ʒ��� �̵��ϴ� ���� ����
+        //바닥 아래로 이동하는 현상 방지
         if (transform.position.y < 0.4f)
         {
             transform.position = new Vector3(transform.position.x, 0.4f, transform.position.z);
@@ -273,16 +258,19 @@ public class ArrowController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
-        //transform.rotation = Quaternion.LookRotation(reflectDir);
-        //transform.forward = reflectDir;
+        var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal).normalized;
         rb.rotation = Quaternion.Euler(reflectDir);
-        //yaw = rb.rotation.eulerAngles.x;
-        //pitch = rb.rotation.eulerAngles.y;
 
+        float yaw = Mathf.Atan2(reflectDir.x, reflectDir.z) * Mathf.Rad2Deg;
 
-        offControlTimer = offControlTime;
-        
+        float pitch = Mathf.Atan2(-reflectDir.y,
+            Mathf.Sqrt(
+                reflectDir.x * reflectDir.x +
+                reflectDir.z * reflectDir.z
+            )
+        ) * Mathf.Rad2Deg;
 
+        this.yaw += yaw;
+        this.pitch += pitch;
     }
 }
