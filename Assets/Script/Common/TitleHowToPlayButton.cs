@@ -20,7 +20,6 @@ public class TitleHowToPlayButton : MonoBehaviour
         {
             howToPlayPanel.SetActive(false);
             isActive = false;
-
         }
         else
         {
