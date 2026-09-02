@@ -8,10 +8,14 @@ public class EnemyPool : MonoBehaviour
 
     [SerializeField] private GameObject enemyObject;
     [SerializeField] private GameObject enemyObject2;
+    [SerializeField] private List<EnemyBase> enemyPrefabs;
     [SerializeField] private int poolSize;
  
     private List<GameObject> pool;
     private List<GameObject> pool2;
+
+    private Transform target;
+    private IScoreHandler scoreHandler;
 
     public float minSpeed = 0.01f;
     public float maxSpeed = 0.05f;
@@ -29,12 +33,17 @@ public class EnemyPool : MonoBehaviour
     private void Initialize()
     {
         pool = new List<GameObject>();
+        target = FindObjectOfType<Player>().transform;
+        scoreHandler = FindObjectOfType<ScoreUI>();
+
         for(int i = 0; i < poolSize; i++)
         {
-            var enemy =  Instantiate(enemyObject);
-            enemy.SetActive(false);
-            enemy.GetComponent<Enemy>().speed = Random.Range(minSpeed, maxSpeed);
-            pool.Add(enemy);
+            var prefab =  Instantiate(enemyPrefabs[0].gameObject);
+            prefab.SetActive(false);
+            Enemy enemy = prefab.GetComponent<Enemy>();
+            float speed = Random.Range(minSpeed, maxSpeed);
+            enemy.SetData(target, scoreHandler, speed);
+            pool.Add(prefab);
         }
         pool2 = new List<GameObject>();
         for (int i = 0; i < poolSize; i++)

@@ -1,45 +1,33 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : EnemyBase
 {
-    [SerializeField]
-    private Transform player;
-
-    private ScoreUI scorUI;
-
-    // 접근 속도
-    public float speed = 0.1f;
-    // 최대 접근 거리
-    public float maxDistance = 2;
-    private void Awake()
+    protected override void Movement()
     {
-        player = FindObjectOfType<Player>().transform;
-
-        scorUI = FindObjectOfType<ScoreUI>();
+        if (Vector3.Distance(this.transform.position, target.position) >= maxDistance)
+            this.transform.position = Vector3.MoveTowards(this.transform.position, target.position, speed);
     }
 
-    private void Update()
+    protected override void OnDamage()
     {
-        Movement();
-    }
-
-    private void Movement()
-    {
-        if(Vector3.Distance(this.transform.position, player.position) >= maxDistance)
-        this.transform.position = Vector3.MoveTowards(this.transform.position, player.position, speed);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Arrow"))
-        {
-            OnDamage();
-        }
-    }
-
-    public void OnDamage()
-    {
-        scorUI?.ApplyScore(10);
+        ApplyScore(10);
         this.gameObject.SetActive(false);
+    }
+
+    protected override void Init()
+    {
+        SetData(FindObjectOfType<Player>().transform, FindObjectOfType<ScoreUI>());
+    }
+
+    public void SetData(Transform target, IScoreHandler scoreHandler, float speed)
+    {
+        SetData(target, scoreHandler);
+        this.speed = speed;
+    }
+
+
+    protected override void OnHit(Collider other)
+    {
+        OnDamage();
     }
 }

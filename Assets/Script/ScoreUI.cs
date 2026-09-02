@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Text;
 using System;
 
-public class ScoreUI : MonoBehaviour
+public class ScoreUI : MonoBehaviour, IScoreHandler
 {
     private const string COMBO_STR = "Combo : ";
     private const string MAX_COMBO_STR = "Max Combo : ";
@@ -51,6 +51,11 @@ public class ScoreUI : MonoBehaviour
     private void UpdateCombo()
     {
         curComboRemainTime -= Time.deltaTime;
+    }
+
+    public int GetCombo()
+    {
+        return curCombo;
     }
 
     public void ApplyScore(int score)

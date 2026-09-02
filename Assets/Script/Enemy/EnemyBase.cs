@@ -7,13 +7,14 @@ using UnityEngine;
 public interface IScoreHandler
 {
     void ApplyScore(int score);
+    int GetCombo();
 }
 public abstract class EnemyBase : MonoBehaviour
 {
     [SerializeField]
-    private Transform target;
+    protected Transform target;
 
-    private IScoreHandler scorUI;
+    protected IScoreHandler scorUI;
 
     [SerializeField]
     // 접근 속도
