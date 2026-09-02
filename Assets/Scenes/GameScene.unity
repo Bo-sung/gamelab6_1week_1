@@ -9909,7 +9909,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 77596666250643500, guid: 3fe93c41061aacb468d1c5b98e73e005, type: 3}
       propertyPath: m_text
-      value: 'GAME Clear
+      value: 'GAME CLEAR
 
 '
       objectReference: {fileID: 0}
