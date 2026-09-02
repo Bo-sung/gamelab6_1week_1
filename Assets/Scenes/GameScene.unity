@@ -1607,7 +1607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3516e9a42f963e34a9e90e0e07ad1087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  hp: 5
+  maxHp: 5
+  curHp: 5
   hitEffectDuration: 1
   hitVolume: {fileID: 1821127717}
 --- !u!1 &719039684
@@ -1864,11 +1865,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: speed
-      value: 8
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: autoAcc
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: dashTime
@@ -1876,7 +1877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: dashSpeed
-      value: 30
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: dashState
@@ -1884,15 +1885,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: sensitivity
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: dashCooldown
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: minimumSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: dashTimeScale
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: dashGaugeRegenTime
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 338702948807156229, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: dashTimeSensitivity
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1254478530715743610, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: m_IsTrigger
@@ -3219,7 +3232,7 @@ MonoBehaviour:
   controller: {fileID: 189369625}
   ChargeVolume: {fileID: 827551566}
   Offset: {x: 0, y: 1, z: -3}
-  SmoothTime: 0.1
+  SmoothTime: 0.3
   ChargingFov: 40
   DashFov: 70
   NormalToChargeTime: 0.1
