@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 6495405255522883913}
   m_Layer: 0
   m_Name: Enemy_Prefab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6411b300f682d554c8704d335efd27ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  player: {fileID: 0}
+  target: {fileID: 0}
   speed: 0.01
   maxDistance: 2
 --- !u!33 &3543762527068552913

@@ -64,4 +64,9 @@ public abstract class EnemyBase : MonoBehaviour
     {
         scoreHandler.ApplyScore(score);
     }
+
+    public virtual void OnAttackPlayer()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

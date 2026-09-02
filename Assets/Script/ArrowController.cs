@@ -58,6 +58,19 @@ public class ArrowController : MonoBehaviour
     {
         HandleAcceleration();
         HandleDashLogic();
+
+        
+    }
+
+    private void FixedUpdate()
+    {
+
+        //바닥 아래로 이동하는 현상 방지
+        if (transform.position.y < 0.5f)
+        {
+            transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+        }
+        
     }
 
     private void HandleAcceleration()

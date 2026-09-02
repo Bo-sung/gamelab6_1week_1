@@ -167,10 +167,6 @@ MonoBehaviour:
   spawnInterval: 0.5
   spawnRate: 10
   currentWave: 1
-  nextWaveEnemyNum: 0
-  nextWaveEnemy2Num: 0
-  requireEnemyNum: 3
-  requireEnemy2Num: 0
   spawnDistance: 50
 --- !u!114 &2026720
 MonoBehaviour:
@@ -1126,11 +1122,11 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 2
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -2647,7 +2643,7 @@ MonoBehaviour:
   spawner: {fileID: 2026719}
   scoreUI: {fileID: 1644167058}
   comboUI: {fileID: 361306418}
-  spawnerUI: {fileID: 0}
+  spawnerUI: {fileID: 954481762}
 --- !u!4 &1350346190
 Transform:
   m_ObjectHideFlags: 0

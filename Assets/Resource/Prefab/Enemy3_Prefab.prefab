@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: -8928461140487714274}
   m_Layer: 0
   m_Name: Enemy3_Prefab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -222,7 +222,6 @@ MonoBehaviour:
   speed: 0.1
   maxDistance: 2
   dashInterval: 3
-  lastDashTime: 0
   minDashDistance: 5
   maxDashDistance: 10
   range: 3

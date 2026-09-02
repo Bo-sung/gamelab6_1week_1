@@ -3,7 +3,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int hp = 3;
+
+
     public System.Action OnPlayerDead;
+    public System.Action OnPlayerHit;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,6 +24,11 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             hp--;
+            
+            other.TryGetComponent<EnemyBase>(out var enemy);
+            
+            enemy?.OnAttackPlayer();
+
             if (hp <= 0)
             {
                 OnPlayerDead?.Invoke();

@@ -54,7 +54,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        GameStart();
+        //GameStart();
     }
 
     IEnumerator SpawnEnemy1()
