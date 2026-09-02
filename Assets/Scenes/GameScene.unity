@@ -8224,6 +8224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
   player: {fileID: 716427930}
+  arrow: {fileID: 189369621}
   gameOverUI: {fileID: 1757686217}
   controller: {fileID: 189369625}
   comboManager: {fileID: 1350346188}
