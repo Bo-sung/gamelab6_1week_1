@@ -1,22 +1,19 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class TitleUI : MonoBehaviour
 {
-    [SerializeField]
-    private Button GameStartBtn;
-    [SerializeField]
-    private Button GameExitBtn;
+    private const string GAME_SCENE_NAME = "GameScene";
+    private const string TITLE_SCENE_NAME = "Title";
 
-    // 이벤트 영역
-    public System.Action OnGameStartBtnClicked;
-    public System.Action OnGameExitBtnClicked;
-
-
-    public void AddEvent()
+    public void GameStartButton()
     {
-        GameStartBtn.onClick.AddListener(() => OnGameStartBtnClicked?.Invoke());
-        GameExitBtn.onClick.AddListener(() => OnGameExitBtnClicked?.Invoke());
+        SceneManager.LoadScene(GAME_SCENE_NAME);
     }
+
+    public void ExitButton()
+    {
+        Application.Quit();
+    }
+
 }
 
