@@ -92,7 +92,6 @@ public class Enemy_Head : EnemyBase
 
     protected override void OnHit(Collider other)
     {
-        OnDamage();
     }
 
     private IEnumerator Blink(int count, bool makeBlink)

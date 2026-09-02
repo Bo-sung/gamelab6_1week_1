@@ -6,6 +6,7 @@ public class GameFlowManager : MonoBehaviour
     public Player player;
     public GameObject arrow;
     public GameOverUI gameOverUI;
+    public GameOverUI gameClearUI;
 
     [SerializeField]
     private ArrowController controller;
@@ -32,6 +33,7 @@ public class GameFlowManager : MonoBehaviour
     {
         player.OnPlayerDead += GameOver;
         spawner.OnWaveClear += WaveClear;
+        spawner.OnGameClear += GameClear;
         Initialize();
     }
 
@@ -54,6 +56,17 @@ public class GameFlowManager : MonoBehaviour
     private void GameStart()
     {
         spawner.GameStart();
+
+    }
+
+    private void GameClear()
+    {
+        player.gameObject.SetActive(false);
+        arrow.SetActive(false);
+        spawner.GameOver();
+        gameClearUI.StartGameOverUI(comboManager.GetScore());
+        Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
+        Cursor.visible = true;
     }
 
     private void GameOver()

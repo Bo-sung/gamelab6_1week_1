@@ -4,7 +4,7 @@ using static UnityEngine.UI.Image;
 
 public class ArrowChargeLaser : MonoBehaviour
 {
-    public Action OnCollision;
+
 
     [SerializeField]
     private Transform rayOrigin;
@@ -42,12 +42,6 @@ public class ArrowChargeLaser : MonoBehaviour
      
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
-        transform.rotation = Quaternion.LookRotation(reflectDir);
 
-        OnCollision?.Invoke();
-    }
 
 }

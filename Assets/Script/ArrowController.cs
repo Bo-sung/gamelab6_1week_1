@@ -230,7 +230,7 @@ public class ArrowController : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
         curSpeed = moveSpeed;
-        UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
+        //UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
 
         //�ٴ� �Ʒ��� �̵��ϴ� ���� ����
         if (transform.position.y < 0.4f)

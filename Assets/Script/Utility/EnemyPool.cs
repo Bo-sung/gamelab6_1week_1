@@ -89,4 +89,20 @@ public class EnemyPool : MonoBehaviour
     {
         return Pop(1);
     }
+
+    public bool IsAllInactive()
+    {
+
+        foreach(var pool in pools)
+        {
+            foreach (var item in pool)
+            {
+                if (item.activeInHierarchy)
+                    return false;
+            }
+        }
+        
+        return true;
+
+    }
 }

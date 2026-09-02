@@ -108,7 +108,8 @@ public class EnemySpawner : MonoBehaviour
         {
             if (waveIndex >= waveInfos.Length)
             {
-                // 웨이브 다끝남
+                // 웨이브 다끝남.
+                    
                 break;
             }
             var waveData = waveInfos[waveIndex];
@@ -135,6 +136,14 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnInterval);
             tableIndex++;
         }
+
+        while(!pool.IsAllInactive())
+        {
+            yield return null;
+        }
+        
+        OnGameClear?.Invoke();
+        Debug.Log("Game Clear!!");
     }
 
     private Transform ExtractSafeSpawnPoint(WaveInfo info)
