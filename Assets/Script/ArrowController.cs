@@ -180,52 +180,54 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
-        offControlTimer -= Time.deltaTime;
+        //offControlTimer -= Time.deltaTime;
 
         // 대시 등, 상태 처리
         float moveSpeed = 0;
-        switch (dashState)
-        {
-            case DashState.Dashing:
-                moveSpeed = dashSpeed * dashChargingTime;
-                break;
-            case DashState.Cooldown:
-            case DashState.None:
-            case DashState.Charging:
-                // 대시만 아니면 회전 가능
-                // 마우스 입력 처리
-                yaw += Input.GetAxis("Mouse X") * currentSensitivity;
-                pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
-                pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-
-                // 입력 받은 값 토대로 회전 처리
-                if(offControlTimer < 0)
-                {
-                    transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
-                }
-                //Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
-                //transform.rotation = rot;
-
-                // 만약 자동가속이면 스킵
-                if (autoAcc)
-                {
-                    moveSpeed = speed;
+        //if (offControlTimer > 0f)
+        //{
+        //    moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
+        //}
+        //else
+        //{
+            switch (dashState)
+            {
+                case DashState.Dashing:
+                    moveSpeed = dashSpeed * dashChargingTime;
                     break;
-                }
-                // 자동 가속 아니면 스무스하게 정지
-                moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
-                break;
-            default:
-                UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
-                break;
-        }
+                case DashState.Cooldown:
+                case DashState.None:
+                case DashState.Charging:
+                    // 대시만 아니면 회전 가능
+                    // 마우스 입력 처리
+                    yaw += Input.GetAxis("Mouse X") * currentSensitivity;
+                    pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
+                    pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+                    // 입력 받은 값 토대로 회전 처리
+                    transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+
+                    // 만약 자동가속이면 스킵
+                    if (autoAcc)
+                    {
+                        moveSpeed = speed;
+                        break;
+                    }
+                    // 자동 가속 아니면 스무스하게 정지
+                    moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
+                    break;
+                default:
+                    UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
+                    break;
+            }
+        //}
 
 
         // 이동 시작
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
         curSpeed = moveSpeed;
-        //UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
+        UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
 
         //바닥 아래로 이동하는 현상 방지
         if (transform.position.y < 0.4f)
@@ -268,13 +270,21 @@ public class ArrowController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
+        var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal).normalized;
         //transform.rotation = Quaternion.LookRotation(reflectDir);
         rb.rotation = Quaternion.Euler(reflectDir);
 
+        float yaw = Mathf.Atan2(reflectDir.x, reflectDir.z) * Mathf.Rad2Deg;
 
-        offControlTimer = offControlTime;
+        float pitch = Mathf.Atan2(-reflectDir.y,
+            Mathf.Sqrt(
+                reflectDir.x * reflectDir.x +
+                reflectDir.z * reflectDir.z
+            )
+        ) * Mathf.Rad2Deg;
 
-
+        this.yaw += yaw;
+        this.pitch += pitch;
+        //offControlTimer = offControlTime;
     }
 }
