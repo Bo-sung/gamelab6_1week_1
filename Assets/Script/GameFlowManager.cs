@@ -18,6 +18,10 @@ public class GameFlowManager : MonoBehaviour
     private ScoreUI scoreUI;
     [SerializeField]
     private ComboUI comboUI;
+    [SerializeField]
+    private SpawnerUI spawnerUI;
+    private EnemyPool enemyPool;
+
 
     private void Awake()
     {
@@ -36,6 +40,7 @@ public class GameFlowManager : MonoBehaviour
         comboManager.Initialize(controller);
         scoreUI.Initialize(comboManager);
         comboUI.Initialize(comboManager);
+        spawner.Initialize(comboManager);
     }
 
     private void GameStart()

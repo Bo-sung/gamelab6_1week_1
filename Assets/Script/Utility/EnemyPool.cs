@@ -28,11 +28,9 @@ public class EnemyPool : MonoBehaviour
             instance = this;
         else
             Destroy(this.gameObject);
-
-        Initialize(null);
     }
 
-    private void Initialize(IScoreHandler scoreHandler)
+    public void Initialize(IScoreHandler scoreHandler)
     {
         target = FindObjectOfType<Player>().transform;
         this.scoreHandler = scoreHandler;
