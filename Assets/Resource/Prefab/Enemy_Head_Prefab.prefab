@@ -395,6 +395,12 @@ MonoBehaviour:
   maxDistance: 2
   head: {fileID: 5376347132350404944}
   navMeshAgent: {fileID: 3655652594510425793}
+  originHeadMat: {fileID: 2100000, guid: 390d6d53198c54c4890cfdaf638c47f3, type: 2}
+  blinkHeadMat: {fileID: 2100000, guid: d3c174da036f4f441a9065b3fce58719, type: 2}
+  originBodyMat: {fileID: 2100000, guid: 66a8c47027f067d48a9402d5c544937d, type: 2}
+  blinkBodyMat: {fileID: 2100000, guid: 86e32c0fd8976f64985ea26b50168946, type: 2}
+  headRender: {fileID: 7268746452906953490}
+  bodyRender: {fileID: 1454882232890688628}
 --- !u!195 &3655652594510425793
 NavMeshAgent:
   m_ObjectHideFlags: 0

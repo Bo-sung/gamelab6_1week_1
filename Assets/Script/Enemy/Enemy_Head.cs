@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SocialPlatforms.Impl;
@@ -12,6 +14,20 @@ public class Enemy_Head : EnemyBase
 
     protected int hp = 2;
     private bool isPassing = false;
+
+    [SerializeField]
+    private Material originHeadMat;
+    [SerializeField]
+    private Material blinkHeadMat;
+    [SerializeField]
+    private Material originBodyMat;
+    [SerializeField]
+    private Material blinkBodyMat;
+
+    [SerializeField]
+    private MeshRenderer headRender;
+    [SerializeField]
+    private MeshRenderer bodyRender;
 
     public void SetData(Transform target, IScoreHandler scoreHandler, int hp)
     {
@@ -36,6 +52,7 @@ public class Enemy_Head : EnemyBase
         else if (childTag == "Body" && other.CompareTag("Arrow"))
         {
             OnDamage();
+            StartCoroutine(Blink(0, true));
             isPassing = true;
         }
     }
@@ -71,5 +88,26 @@ public class Enemy_Head : EnemyBase
     protected override void OnHit(Collider other)
     {
         OnDamage();
+    }
+    private IEnumerator Blink(int count, bool makeBlink)
+    {
+
+        if (makeBlink)
+        {
+            headRender.sharedMaterial = blinkHeadMat;
+            bodyRender.sharedMaterial = blinkBodyMat;
+        }
+        else
+        {
+            headRender.sharedMaterial = originHeadMat;
+            bodyRender.sharedMaterial = originBodyMat;
+        }
+
+        yield return new WaitForSeconds(0.4f);
+
+        if (count < 5)
+        {
+            StartCoroutine(Blink(count + 1, !makeBlink));
+        }
     }
 }
