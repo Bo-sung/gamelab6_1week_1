@@ -1,8 +1,6 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
-using UnityEditor.Search;
-using Unity.VisualScripting;
 
 public class GameOverUI : MonoBehaviour
 {
