@@ -18,17 +18,17 @@ public class ArrowController : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] float dashSpeed = 4f;
-    // ´ë½Ã Áö¼Ó½Ã°£
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
     [SerializeField] float dashTime = 1f;
     float remainDashTime = 0f;
-    // ´ë½Ã ¹ßµ¿ ÈÄ ´ÙÀ½ ÄðÅ¸ÀÓ
+    // ï¿½ï¿½ï¿½ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
     [SerializeField] float dashCooldown = 2f;
     float remainDashCooldown = 0f;
     [SerializeField] float dashTimeScale = 0f;
     float defaultTimeScale = 1f;
     [SerializeField] float dashTimeSensitivity = 0f;
     [SerializeField] float chargeTime = 2f;
-    [SerializeField]float chargeJitter = 0.5f;
+    [SerializeField] float chargeJitter = 0.5f;
 
     [Header("Collision")]
     [SerializeField] float offControlTime = 0.5f;
@@ -68,17 +68,12 @@ public class ArrowController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         var arrowChargeLaser = GetComponent<ArrowChargeLaser>();
         arrowChargeLaser.Initialize(this);
-
-        
-
     }
 
     private void Update()
     {
         HandleAcceleration();
         HandleDashLogic();
-
-        
     }
 
 
@@ -91,7 +86,7 @@ public class ArrowController : MonoBehaviour
     }
     private void HandleDashLogic()
     {
-        // ´ë½Ã »óÅÂ ÀüÈ¯
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         if (dashState == DashState.Dashing && remainDashTime <= 0)
             ChangeDashState(DashState.Cooldown);
         else if (dashState == DashState.Cooldown && remainDashCooldown <= 0)
@@ -105,7 +100,7 @@ public class ArrowController : MonoBehaviour
 
         ProcessDash();
 
-        // Å¸ÀÌ¸Ó °¨¼Ò
+        // Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         remainDashTime -= Time.deltaTime;
         remainDashCooldown -= Time.deltaTime;
         //UnityEngine.Debug.Log($"DashState: {dashState}, remainDashTime: {remainDashTime}, remainDashCooldown: {remainDashCooldown}");
@@ -122,34 +117,34 @@ public class ArrowController : MonoBehaviour
     {
         switch (dashState)
         {
-            // ´ë½Ã »ç¿ë
+            // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             case DashState.Dash:
-                // ´ë½Ã ½ÇÇà ÈÄ Å¸ÀÓ½ºÄÉÀÏ°ú ¹Î°¨µµ ¿ø·¡´ë·Î º¹±¸
+                // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Å¸ï¿½Ó½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 DoDash();
                 break;
-            // Â÷Â¡ ½ÃÀÛ
+            // ï¿½ï¿½Â¡ ï¿½ï¿½ï¿½ï¿½
             case DashState.Ready:
-                // »óÅÂ ÀüÈ¯
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
                 ChangeDashState(DashState.Charging);
                 dashChargingTime = 0;
                 chargeTimer = 0f;
-                if(arrowJitterCoroutine != null) StopCoroutine(arrowJitterCoroutine);
+                if (arrowJitterCoroutine != null) StopCoroutine(arrowJitterCoroutine);
                 arrowJitterCoroutine = StartCoroutine(ArrowJitter());
 
 
                 break;
-            // Â÷Â¡ Áß
+            // ï¿½ï¿½Â¡ ï¿½ï¿½
             case DashState.Charging:
-                // Â÷Â¡Áß ½Ã°£ ´À·ÁÁü È¿°ú + ¹Î°¨µµ Áõ°¡(½Ã°£ÀÌ ´Ã¾îÁü¿¡ µû¶ó. À¯Àú ÀÔ·Â¿¡ º¸Á¤À» ÁÖ±â À§ÇØ)
+                // ï¿½ï¿½Â¡ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ + ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ã¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½)
                 chargeTimer += Time.unscaledDeltaTime;
                 dashChargingTime += Time.deltaTime;
                 Time.timeScale = Mathf.Lerp(defaultTimeScale, dashTimeScale, dashChargingTime);
                 currentSensitivity = Mathf.Lerp(sensitivity, dashTimeSensitivity, dashChargingTime);
                 break;
-            // ´ë½Ã Áß
+            // ï¿½ï¿½ï¿½ ï¿½ï¿½
             case DashState.Dashing:
                 break;
-            // ÄðÅ¸ÀÓ Áß
+            // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½
             case DashState.Cooldown:
                 // Handle cooldown state logic
                 break;
@@ -166,14 +161,14 @@ public class ArrowController : MonoBehaviour
         currentSensitivity = sensitivity;
         OnDashStart?.Invoke();
 
-        //Èçµé¸² Á¦°Å
-        if(arrowJitterCoroutine != null)
+        //ï¿½ï¿½é¸² ï¿½ï¿½ï¿½ï¿½
+        if (arrowJitterCoroutine != null)
         {
             StopCoroutine(arrowJitterCoroutine);
             arrowJitterCoroutine = null;
             arrowModel.transform.localRotation = Quaternion.Euler(90, 0, 0); // Reset rotation
         }
-        //Å¸ÀÌ¸Ó ÃÊ±âÈ­
+        //Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
         chargeTimer = 0f;
 
         UnityEngine.Debug.Log("Dash executed!");
@@ -184,7 +179,7 @@ public class ArrowController : MonoBehaviour
         offControlTimerF = offControlTimer;
         offControlTimer -= Time.deltaTime;
 
-        // ´ë½Ã µî, »óÅÂ Ã³¸®
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         float moveSpeed = 0;
         switch (dashState)
         {
@@ -194,8 +189,8 @@ public class ArrowController : MonoBehaviour
             case DashState.Cooldown:
             case DashState.None:
             case DashState.Charging:
-                // ´ë½Ã¸¸ ¾Æ´Ï¸é È¸Àü °¡´É
-                // ¸¶¿ì½º ÀÔ·Â Ã³¸®
+                // ï¿½ï¿½Ã¸ï¿½ ï¿½Æ´Ï¸ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                // ï¿½ï¿½ï¿½ì½º ï¿½Ô·ï¿½ Ã³ï¿½ï¿½
 
                 if (offControlTimerF > 0 && offControlTimer <= 0)
                 {
@@ -203,7 +198,7 @@ public class ArrowController : MonoBehaviour
                     pitch = -Mathf.Asin(Mathf.Clamp(transform.forward.y, -1f, 1f)) * Mathf.Rad2Deg;
                 }
 
-                //ÀÔ·Â ¹ÞÀº °ª Åä´ë·Î È¸Àü Ã³¸®
+                //ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½
 
                 if (offControlTimer < 0)
                 {
@@ -216,28 +211,28 @@ public class ArrowController : MonoBehaviour
                 //Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
                 //transform.rotation = rot;
 
-                // ¸¸¾à ÀÚµ¿°¡¼ÓÀÌ¸é ½ºÅµ
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½Åµ
                 if (autoAcc)
                 {
                     moveSpeed = speed;
                     break;
                 }
-                // ÀÚµ¿ °¡¼Ó ¾Æ´Ï¸é ½º¹«½ºÇÏ°Ô Á¤Áö
+                // ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
                 moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
                 break;
             default:
-                UnityEngine.Debug.Log("ÀÌ°Å ÀÌ»óÇÑµ¥ ¿©±â ¿ÖÅ½?");
+                UnityEngine.Debug.Log("ï¿½Ì°ï¿½ ï¿½Ì»ï¿½ï¿½Ñµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å½?");
                 break;
         }
 
 
-        // ÀÌµ¿ ½ÃÀÛ
+        // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
         curSpeed = moveSpeed;
-        //UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
+        UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
 
-        //¹Ù´Ú ¾Æ·¡·Î ÀÌµ¿ÇÏ´Â Çö»ó ¹æÁö
+        //ï¿½Ù´ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (transform.position.y < 0.4f)
         {
             transform.position = new Vector3(transform.position.x, 0.4f, transform.position.z);
@@ -246,10 +241,10 @@ public class ArrowController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Body") || other.CompareTag("Head")||other.CompareTag("Enemy"))
+        if (other.CompareTag("Body") || other.CompareTag("Head") || other.CompareTag("Enemy"))
         {
             OnHitEnemy?.Invoke();
-            if(dashState == DashState.Charging)
+            if (dashState == DashState.Charging)
             {
                 ChangeDashState(DashState.Dash);
             }
@@ -267,8 +262,8 @@ public class ArrowController : MonoBehaviour
             elapsed += Time.deltaTime / harfJitterTime;
             tick += Time.unscaledDeltaTime * chargeJitter;
             arrowModel.transform.localRotation = Quaternion.Euler(
-               90f +  (Mathf.PerlinNoise(tick, 0) - .5f)*elapsed*10,
-                (Mathf.PerlinNoise(0, tick) - .5f)*elapsed*10,
+               90f + (Mathf.PerlinNoise(tick, 0) - .5f) * elapsed * 10,
+                (Mathf.PerlinNoise(0, tick) - .5f) * elapsed * 10,
                 0f);
             yield return new WaitForSecondsRealtime(0.01f);
         }
