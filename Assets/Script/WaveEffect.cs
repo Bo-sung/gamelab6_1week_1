@@ -17,9 +17,9 @@ public class WaveEffect : MonoBehaviour
         //OnWaveChanged();
     }
 
-    private void OnWaveChanged()
+    public void OnWaveChanged(WaveInfo waveInfo)
     { 
-        var waveInfo = spawner.WaveInfos[spawner.currentWave - 1];
+        var waveInfo1 = spawner.WaveInfos[spawner.currentWave - 1];
 
          StartCoroutine(WaveEffectCoroutine());
     }
