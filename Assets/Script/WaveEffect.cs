@@ -14,7 +14,7 @@ public class WaveEffect : MonoBehaviour
     {
         this.spawner = spawner;
         //이벤트 등록 해주기.
-        OnWaveChanged();
+        //OnWaveChanged();
     }
 
     private void OnWaveChanged()
