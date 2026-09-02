@@ -1,17 +1,23 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy_Fast : EnemyBase
 {
+    [SerializeField]
+    private NavMeshAgent navMeshAgent;
     public void SetData(Transform target, IScoreHandler scoreHandler, float speed)
     {
         SetData(target, scoreHandler);
         this.speed = speed;
+        navMeshAgent.speed = 3.5f * 5f;
     }
 
     protected override void Movement()
     {
         if (Vector3.Distance(this.transform.position, target.position) >= maxDistance)
-            this.transform.position = Vector3.MoveTowards(this.transform.position, target.position, speed);
+            navMeshAgent.destination = target.position;
+        else
+            navMeshAgent.destination = transform.position;
     }
 
     protected override void OnDamage()

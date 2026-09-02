@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_Basic : EnemyBase
+public class Enemy_Nav : EnemyBase
 {
     [SerializeField]
     private NavMeshAgent navMeshAgent;
@@ -28,7 +28,6 @@ public class Enemy_Basic : EnemyBase
     {
         SetData(target, scoreHandler);
         this.speed = speed;
-        navMeshAgent.speed = speed;
     }
 
 

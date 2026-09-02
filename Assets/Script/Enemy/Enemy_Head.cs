@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy_Head : EnemyBase
 {
     [SerializeField]
     private GameObject head;
+
+    [SerializeField]
+    private NavMeshAgent navMeshAgent;
 
     protected int hp = 2;
     private bool isPassing = false;
@@ -18,7 +22,9 @@ public class Enemy_Head : EnemyBase
     protected override void Movement()
     {
         if (Vector3.Distance(this.transform.position, target.position) >= maxDistance)
-            this.transform.position = Vector3.MoveTowards(this.transform.position, target.position, speed);
+            navMeshAgent.destination = target.position;
+        else
+            navMeshAgent.destination = transform.position;
     }
 
     public void OnChildTriggerEnter(Collider other, string childTag)

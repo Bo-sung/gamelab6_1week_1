@@ -55,6 +55,11 @@ public class EnemyPool : MonoBehaviour
             Enemy_Fast enemy = prefab.GetComponent<Enemy_Fast>();
             enemy.SetData(target, scoreHandler, 0.05f);
         }
+        else if (enemyBase.GetType() == typeof(Enemy_Nav))
+        {
+            Enemy_Nav enemy = prefab.GetComponent<Enemy_Nav>();
+            enemy.SetData(target, scoreHandler);
+        }
         return prefab;
     }
 
