@@ -10,6 +10,11 @@ public class TitleUI : MonoBehaviour
         SceneManager.LoadScene(GAME_SCENE_NAME);
     }
 
+    public void TitleButton()
+    {
+        SceneManager.LoadScene(TITLE_SCENE_NAME);
+    }
+
     public void ExitButton()
     {
         Application.Quit();
