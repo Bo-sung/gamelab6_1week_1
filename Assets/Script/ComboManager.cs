@@ -38,7 +38,8 @@ public class ComboManager : MonoBehaviour, IScoreHandler
         curScore += score;
         currentCombo++;
         comboRemainTime = comboRemainTimeMax;
-        
+        maxCombo = Mathf.Max(maxCombo, currentCombo);
+
     }
 
     public int GetCombo()
