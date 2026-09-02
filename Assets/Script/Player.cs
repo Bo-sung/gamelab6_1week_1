@@ -35,7 +35,8 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             hp--;
-            
+            OnPlayerHit?.Invoke();
+
             other.TryGetComponent<EnemyBase>(out var enemy);
             
             enemy?.OnAttackPlayer();

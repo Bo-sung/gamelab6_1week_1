@@ -55,6 +55,7 @@ public class GameFlowManager : MonoBehaviour
     {
         player.gameObject.SetActive(false);
         spawner.GameOver();
+        gameOverUI.StartGameOverUI(comboManager.GetScore());
         Debug.Log("Game Over");
     }
 }
