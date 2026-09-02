@@ -23,6 +23,7 @@ public class Enemy_Tele : EnemyBase
 
     protected override void Init()
     {
+        transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
         lastDashTime = Time.time;
     }
 
@@ -38,6 +39,7 @@ public class Enemy_Tele : EnemyBase
         float dashDistance = Random.Range(minDashDistance, maxDashDistance);
         transform.position += direction * dashDistance;
         transform.position += transform.right * Random.Range(-range, range);
+        transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
         if (Vector3.Distance(transform.position, target.position) < maxDistance)
         {
             transform.position = target.position - (target.position - transform.position).normalized * maxDistance;
