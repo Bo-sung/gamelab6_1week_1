@@ -29,6 +29,8 @@ public class GameFlowManager : MonoBehaviour
     private EnemyPool enemyPool;
 
 
+    private int currentWave = 0;
+
     private void Awake()
     {
         player.OnPlayerDead += GameOver;
@@ -64,7 +66,7 @@ public class GameFlowManager : MonoBehaviour
         player.gameObject.SetActive(false);
         arrow.SetActive(false);
         spawner.GameOver();
-        gameClearUI.StartGameOverUI(comboManager.GetScore());
+        gameClearUI.StartGameOverUI(comboManager.GetScore() + 100*currentWave);
         Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
         Cursor.visible = true;
     }
@@ -74,7 +76,7 @@ public class GameFlowManager : MonoBehaviour
         player.gameObject.SetActive(false);
         arrow.SetActive(false);
         spawner.GameOver();
-        gameOverUI.StartGameOverUI(comboManager.GetScore());
+        gameOverUI.StartGameOverUI(comboManager.GetScore() + 100 * currentWave);
         Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
         Cursor.visible = true;
         Debug.Log("Game Over");
@@ -86,5 +88,6 @@ public class GameFlowManager : MonoBehaviour
         waveEffect.OnWaveChanged(waveinfo);
         spawnerUI.UpdateWaveText(waveinfo.wave);
 
+        currentWave = waveinfo.wave;
     }
 }
