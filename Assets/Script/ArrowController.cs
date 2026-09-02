@@ -45,6 +45,7 @@ public class ArrowController : MonoBehaviour
 
     private float chargeTimer = 0f;
     private float offControlTimer = 0f;
+    private float offControlTimerF = 0f;
     private Rigidbody rb;
     private Coroutine arrowJitterCoroutine;
 
@@ -180,6 +181,7 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
+        offControlTimerF = offControlTimer;
         offControlTimer -= Time.deltaTime;
 
         // 대시 등, 상태 처리
@@ -194,13 +196,21 @@ public class ArrowController : MonoBehaviour
             case DashState.Charging:
                 // 대시만 아니면 회전 가능
                 // 마우스 입력 처리
-                yaw += Input.GetAxis("Mouse X") * currentSensitivity;
-                pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
-                pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-                // 입력 받은 값 토대로 회전 처리
-                if(offControlTimer < 0)
+                if (offControlTimerF > 0 && offControlTimer <= 0)
                 {
+                    yaw = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
+                    pitch = -Mathf.Asin(Mathf.Clamp(transform.forward.y, -1f, 1f)) * Mathf.Rad2Deg;
+                }
+
+                //입력 받은 값 토대로 회전 처리
+
+                if (offControlTimer < 0)
+                {
+                    yaw += Input.GetAxis("Mouse X") * currentSensitivity;
+                    pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
+
+                    pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
                     transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
                 }
                 //Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
@@ -270,11 +280,14 @@ public class ArrowController : MonoBehaviour
     {
         var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
         //transform.rotation = Quaternion.LookRotation(reflectDir);
+        //transform.forward = reflectDir;
         rb.rotation = Quaternion.Euler(reflectDir);
+        //yaw = rb.rotation.eulerAngles.x;
+        //pitch = rb.rotation.eulerAngles.y;
 
 
         offControlTimer = offControlTime;
-
+        
 
     }
 }
