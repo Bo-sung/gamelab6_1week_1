@@ -8097,7 +8097,7 @@ MonoBehaviour:
   SmoothTime: 0.3
   ChargingFov: 40
   DashFov: 70
-  NormalToChargeTime: 0.1
+  NormalToChargeTime: 0.4
   ChargeToDashTime: 0.1
   DashToNormalTime: 0.4
   InChargeTime: 0.5
