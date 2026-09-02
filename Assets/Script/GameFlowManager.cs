@@ -14,15 +14,28 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField]
     private EnemySpawner spawner;
 
+    [SerializeField]
+    private ScoreUI scoreUI;
+    [SerializeField]
+    private ComboUI comboUI;
 
     private void Awake()
     {
         player.OnPlayerDead += GameOver;
+        Initialize();
+    }
+
+    private void Start()
+    {
+
+        GameStart();
     }
 
     private void Initialize()
     {
         comboManager.Initialize(controller);
+        scoreUI.Initialize(comboManager);
+        comboUI.Initialize(comboManager);
     }
 
     private void GameStart()

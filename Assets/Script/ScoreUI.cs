@@ -28,7 +28,7 @@ public class ScoreUI : MonoBehaviour
 
     }
 
-    public void Initailize(IScoreHandler handler)
+    public void Initialize(IScoreHandler handler)
     {
         scoreHandler = handler;
     }
