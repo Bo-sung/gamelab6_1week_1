@@ -120,8 +120,7 @@ public class ArrowCamera : MonoBehaviour
     private void OnArrowDashStateChanged(ArrowController.DashState state)
     {
         
-        
-
+       
         switch (state)
         {
             //차징상태 진입
@@ -167,7 +166,7 @@ public class ArrowCamera : MonoBehaviour
         {
             count += Time.deltaTime;
             currentFov = Mathf.Lerp(originFov, targetFov, count / time);
-            Debug.Log($"FovChangeSmooth: {currentFov}");
+            
             yield return null;
         }
         

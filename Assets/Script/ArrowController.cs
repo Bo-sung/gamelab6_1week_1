@@ -59,6 +59,7 @@ public class ArrowController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        GetComponent<ArrowChargeLaser>().Initialize(this);
     }
 
     private void Update()
