@@ -28,7 +28,7 @@ public class ArrowController : MonoBehaviour
     float defaultTimeScale = 1f;
     [SerializeField] float dashTimeSensitivity = 0f;
     [SerializeField] float chargeTime = 2f;
-    [SerializeField]float chargeJitter = 0.5f;
+    [SerializeField] float chargeJitter = 0.5f;
 
     [Header("Collision")]
     [SerializeField] float offControlTime = 0.5f;
@@ -67,17 +67,12 @@ public class ArrowController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         var arrowChargeLaser = GetComponent<ArrowChargeLaser>();
         arrowChargeLaser.Initialize(this);
-
-        
-
     }
 
     private void Update()
     {
         HandleAcceleration();
         HandleDashLogic();
-
-        
     }
 
 
@@ -132,7 +127,7 @@ public class ArrowController : MonoBehaviour
                 ChangeDashState(DashState.Charging);
                 dashChargingTime = 0;
                 chargeTimer = 0f;
-                if(arrowJitterCoroutine != null) StopCoroutine(arrowJitterCoroutine);
+                if (arrowJitterCoroutine != null) StopCoroutine(arrowJitterCoroutine);
                 arrowJitterCoroutine = StartCoroutine(ArrowJitter());
 
 
@@ -166,7 +161,7 @@ public class ArrowController : MonoBehaviour
         OnDashStart?.Invoke();
 
         //흔들림 제거
-        if(arrowJitterCoroutine != null)
+        if (arrowJitterCoroutine != null)
         {
             StopCoroutine(arrowJitterCoroutine);
             arrowJitterCoroutine = null;
@@ -180,47 +175,38 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
-        //offControlTimer -= Time.deltaTime;
-
         // 대시 등, 상태 처리
         float moveSpeed = 0;
-        //if (offControlTimer > 0f)
-        //{
-        //    moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
-        //}
-        //else
-        //{
-            switch (dashState)
-            {
-                case DashState.Dashing:
-                    moveSpeed = dashSpeed * dashChargingTime;
-                    break;
-                case DashState.Cooldown:
-                case DashState.None:
-                case DashState.Charging:
-                    // 대시만 아니면 회전 가능
-                    // 마우스 입력 처리
-                    yaw += Input.GetAxis("Mouse X") * currentSensitivity;
-                    pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
-                    pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+        switch (dashState)
+        {
+            case DashState.Dashing:
+                moveSpeed = dashSpeed * dashChargingTime;
+                break;
+            case DashState.Cooldown:
+            case DashState.None:
+            case DashState.Charging:
+                // 대시만 아니면 회전 가능
+                // 마우스 입력 처리
+                yaw += Input.GetAxis("Mouse X") * currentSensitivity;
+                pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
+                pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-                    // 입력 받은 값 토대로 회전 처리
-                    transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+                // 입력 받은 값 토대로 회전 처리
+                transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
 
-                    // 만약 자동가속이면 스킵
-                    if (autoAcc)
-                    {
-                        moveSpeed = speed;
-                        break;
-                    }
-                    // 자동 가속 아니면 스무스하게 정지
-                    moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
+                // 만약 자동가속이면 스킵
+                if (autoAcc)
+                {
+                    moveSpeed = speed;
                     break;
-                default:
-                    UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
-                    break;
-            }
-        //}
+                }
+                // 자동 가속 아니면 스무스하게 정지
+                moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
+                break;
+            default:
+                UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
+                break;
+        }
 
 
         // 이동 시작
@@ -238,10 +224,10 @@ public class ArrowController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Body") || other.CompareTag("Head")||other.CompareTag("Enemy"))
+        if (other.CompareTag("Body") || other.CompareTag("Head") || other.CompareTag("Enemy"))
         {
             OnHitEnemy?.Invoke();
-            if(dashState == DashState.Charging)
+            if (dashState == DashState.Charging)
             {
                 ChangeDashState(DashState.Dash);
             }
@@ -259,8 +245,8 @@ public class ArrowController : MonoBehaviour
             elapsed += Time.deltaTime / harfJitterTime;
             tick += Time.unscaledDeltaTime * chargeJitter;
             arrowModel.transform.localRotation = Quaternion.Euler(
-               90f +  (Mathf.PerlinNoise(tick, 0) - .5f)*elapsed*10,
-                (Mathf.PerlinNoise(0, tick) - .5f)*elapsed*10,
+               90f + (Mathf.PerlinNoise(tick, 0) - .5f) * elapsed * 10,
+                (Mathf.PerlinNoise(0, tick) - .5f) * elapsed * 10,
                 0f);
             yield return new WaitForSecondsRealtime(0.01f);
         }
@@ -271,7 +257,6 @@ public class ArrowController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var reflectDir = Vector3.Reflect(transform.forward, collision.contacts[0].normal).normalized;
-        //transform.rotation = Quaternion.LookRotation(reflectDir);
         rb.rotation = Quaternion.Euler(reflectDir);
 
         float yaw = Mathf.Atan2(reflectDir.x, reflectDir.z) * Mathf.Rad2Deg;
@@ -285,6 +270,5 @@ public class ArrowController : MonoBehaviour
 
         this.yaw += yaw;
         this.pitch += pitch;
-        //offControlTimer = offControlTime;
     }
 }

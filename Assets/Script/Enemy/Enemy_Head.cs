@@ -57,6 +57,11 @@ public class Enemy_Head : EnemyBase
         }
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
     public void OnChildTriggerOut(Collider other, string childTag)
     {
         if (childTag == "Body")
