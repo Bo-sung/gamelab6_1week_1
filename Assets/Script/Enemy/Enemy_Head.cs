@@ -57,7 +57,7 @@ public class Enemy_Head : EnemyBase
         }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         StopAllCoroutines();
     }
@@ -94,6 +94,7 @@ public class Enemy_Head : EnemyBase
     {
         OnDamage();
     }
+
     private IEnumerator Blink(int count, bool makeBlink)
     {
 
