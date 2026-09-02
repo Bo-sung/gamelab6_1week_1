@@ -219,9 +219,13 @@ public class ArrowController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Body") || other.CompareTag("Head"))
+        if (other.CompareTag("Body") || other.CompareTag("Head")||other.CompareTag("Enemy"))
         {
             OnHitEnemy?.Invoke();
+            if(dashState == DashState.Charging)
+            {
+                ChangeDashState(DashState.Dash);
+            }
         }
     }
 
