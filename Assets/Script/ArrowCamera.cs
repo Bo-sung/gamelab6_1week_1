@@ -34,6 +34,9 @@ public class ArrowCamera : MonoBehaviour
     private float InChargeTime = 0.5f;
     [SerializeField]
     private float OutChargeTime = 0.1f;
+
+    [SerializeField]
+    private float ChargingSmooth = 0.01f;
    
 
 
@@ -45,11 +48,14 @@ public class ArrowCamera : MonoBehaviour
     private float currentFov { get { return cam.fieldOfView; }
         set { cam.fieldOfView = value; }}
 
+    private float currentSmooth;
+
     private ArrowController.DashState dashState = ArrowController.DashState.None;
     private float remainDashCount;
 
     private Coroutine fovChangeCoroutine;
     private Coroutine volumeChangeCoroutine;
+    private Coroutine smoothValueCoroutine;
 
     private void Start()
     {
@@ -61,6 +67,8 @@ public class ArrowCamera : MonoBehaviour
         controller.OnDashStart += OnDash;
         controller.OnHitEnemy += OnHitEnemy;
         controller.OnDashStateChanged += OnArrowDashStateChanged;
+
+        currentSmooth = SmoothTime;
 
     }
 
@@ -80,7 +88,7 @@ public class ArrowCamera : MonoBehaviour
             transform.position,
             targetWorldPos,
             ref _currentVelocity,
-            SmoothTime
+            currentSmooth
         );
 
         Vector3 lookTarget = target.transform.position;
@@ -121,6 +129,8 @@ public class ArrowCamera : MonoBehaviour
                 fovChangeCoroutine = StartCoroutine(FovChangeSmooth(defaultFov, ChargingFov, NormalToChargeTime));
                 if (volumeChangeCoroutine != null) StopCoroutine(volumeChangeCoroutine);
                 volumeChangeCoroutine = StartCoroutine(VolumeChangeSmooth(true));
+                if(smoothValueCoroutine != null) StopCoroutine(smoothValueCoroutine);
+                smoothValueCoroutine = StartCoroutine(SmoothValueLerp(SmoothTime, ChargingSmooth, NormalToChargeTime));
                 break;
 
             case ArrowController.DashState.Dash:
@@ -128,6 +138,9 @@ public class ArrowCamera : MonoBehaviour
                 fovChangeCoroutine  =  StartCoroutine(FovChangeSmooth(ChargingFov, DashFov, ChargeToDashTime));
                 if (volumeChangeCoroutine != null) StopCoroutine(volumeChangeCoroutine);
                 volumeChangeCoroutine = StartCoroutine(VolumeChangeSmooth(false));
+                if (smoothValueCoroutine != null) StopCoroutine(smoothValueCoroutine);
+                smoothValueCoroutine = StartCoroutine(SmoothValueLerp(ChargingSmooth, SmoothTime, ChargeToDashTime));
+                currentSmooth = SmoothTime;
                 break;
             case ArrowController.DashState.Cooldown:
                 fovChangeCoroutine  =  StartCoroutine(FovChangeSmooth(DashFov, defaultFov, DashToNormalTime));
@@ -164,12 +177,21 @@ public class ArrowCamera : MonoBehaviour
             Debug.Log($"현재 Weight : {ChargeVolume.weight}");
             yield return null;
         }
+    }
 
-        
+    IEnumerator SmoothValueLerp(float origin, float target, float time)
+    {
+        var count = 0f;
+        while (count < time)
+        {
+            count += Time.unscaledDeltaTime;
+            currentSmooth = Mathf.Lerp(origin, target, count / time);
+            yield return null;
+        }
     }
 
 
-    
+
 
 
 }

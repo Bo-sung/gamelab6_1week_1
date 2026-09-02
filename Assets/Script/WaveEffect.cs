@@ -27,17 +27,17 @@ public class WaveEffect : MonoBehaviour
     IEnumerator WaveEffectCoroutine()
     {
         // Wave effect logic here
-        effectDom.gameObject.SetActive(true);
-        var timer = 0f;
-        while (timer < effectDuration)
-        {
-            timer += Time.deltaTime;
-            var scale = Mathf.Lerp(0, effectMaxSize, timer / effectDuration);
-            effectDom.localScale = new Vector3(scale, scale, scale);
-            yield return null;
-        }
-        //스폰 위치에 빔 세우기.
-        effectDom.gameObject.SetActive(false);
+        //effectDom.gameObject.SetActive(true);
+        //var timer = 0f;
+        //while (timer < effectDuration)
+        //{
+        //    timer += Time.deltaTime;
+        //    var scale = Mathf.Lerp(0, effectMaxSize, timer / effectDuration);
+        //    effectDom.localScale = new Vector3(scale, scale, scale);
+        //    yield return null;
+        //}
+        ////스폰 위치에 빔 세우기.
+        //effectDom.gameObject.SetActive(false);
         var spawnEffects = new GameObject[spawner.WaveInfos[spawner.currentWave - 1].spawnPointTable.Length];
         var i = 0;
         foreach (var spawnPointIndex in spawner.WaveInfos[spawner.currentWave - 1].spawnPointTable)

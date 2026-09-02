@@ -69,16 +69,6 @@ public class ArrowController : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
-    {
-
-        //바닥 아래로 이동하는 현상 방지
-        if (transform.position.y < 0.5f)
-        {
-            transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
-        }
-        
-    }
 
     private void HandleAcceleration()
     {
@@ -213,11 +203,18 @@ public class ArrowController : MonoBehaviour
                 break;
         }
 
+
         // 이동 시작
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
         curSpeed = moveSpeed;
         //UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
+
+        //바닥 아래로 이동하는 현상 방지
+        if (transform.position.y < 0.4f)
+        {
+            transform.position = new Vector3(transform.position.x, 0.4f, transform.position.z);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -237,10 +234,10 @@ public class ArrowController : MonoBehaviour
         while (elapsed < chargeTime)
         {
             elapsed += Time.deltaTime / harfJitterTime;
-            tick += Time.deltaTime * chargeJitter;
+            tick += Time.unscaledDeltaTime * chargeJitter;
             arrowModel.transform.localRotation = Quaternion.Euler(
-               90f +  Mathf.PerlinNoise(tick, 0) - .5f,
-                Mathf.PerlinNoise(0, tick) - .5f,
+               90f +  (Mathf.PerlinNoise(tick, 0) - .5f)*elapsed*10,
+                (Mathf.PerlinNoise(0, tick) - .5f)*elapsed*10,
                 0f);
             yield return new WaitForSecondsRealtime(0.01f);
         }
