@@ -1,27 +1,33 @@
+using System;
 using System.Diagnostics;
 using UnityEngine;
 
 public class ArrowController : MonoBehaviour
 {
+    [Header("Default")]
     [SerializeField] float sensitivity = 3f;
     float currentSensitivity = 3f;
     [SerializeField] float minPitch = -20f, maxPitch = 70f;
     [SerializeField] float speed = 2f;
+    [SerializeField] float acc_per_tick = 1f;
+    [SerializeField] bool autoAcc = false;
+    float curAcceleration = 0f;
+
+    [Header("Dash")]
     [SerializeField] float dashSpeed = 4f;
-    [SerializeField] int curDashGauge = 3;
-    [SerializeField] int dashGaugeMax = 3;
     // 대시 지속시간
     [SerializeField] float dashTime = 1f;
     float remainDashTime = 0f;
     // 대시 발동 후 다음 쿨타임
     [SerializeField] float dashCooldown = 2f;
     float remainDashCooldown = 0f;
-
-
     [SerializeField] float dashTimeScale = 0f;
     float defaultTimeScale = 1f;
     [SerializeField] float dashTimeSensitivity = 0f;
+
+    [Header("Monitor")]
     [SerializeField] float dashChargingTime = 0f;
+    [SerializeField] float curSpeed = 0f;
 
     public System.Action OnDashStart;
     public System.Action OnHitEnemy;
@@ -39,7 +45,8 @@ public class ArrowController : MonoBehaviour
     }
 
     public DashState dashState = DashState.None;
-    public bool IsDashing = false;
+    [Obsolete("Use dashState property instead.")]
+    public bool IsDashing => dashState == DashState.Dashing;
 
     void Start()
     {
@@ -49,9 +56,17 @@ public class ArrowController : MonoBehaviour
 
     private void Update()
     {
+        HandleAcceleration();
         HandleDashLogic();
     }
 
+    private void HandleAcceleration()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            curAcceleration += acc_per_tick * Time.deltaTime;
+        }
+    }
     private void HandleDashLogic()
     {
         // 대시 상태 전환
@@ -117,21 +132,50 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
-        yaw += Input.GetAxis("Mouse X") * currentSensitivity;
-        pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
-        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+        // 대시 등, 상태 처리
+        float moveSpeed = 0;
+        switch (dashState)
+        {
+            case DashState.Dashing:
+                moveSpeed = dashSpeed * dashChargingTime;
+                break;
+            case DashState.Cooldown:
+            case DashState.None:
+            case DashState.Charging:
+                // 대시만 아니면 회전 가능
+                // 마우스 입력 처리
+                yaw += Input.GetAxis("Mouse X") * currentSensitivity;
+                pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
+                pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
+                // 입력 받은 값 토대로 회전 처리
+                Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
+                transform.rotation = rot;
 
-        transform.Translate(Vector3.forward * Time.deltaTime * (dashState == DashState.Dashing ? dashSpeed * dashChargingTime : speed));
-        if (dashState != DashState.Dashing)
-            transform.rotation = rot;
-        UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}");
+                // 만약 자동가속이면 스킵
+                if (autoAcc)
+                {
+                    moveSpeed = speed;
+                    break;
+                }
+                // 자동 가속 아니면 스무스하게 정지
+                moveSpeed = Mathf.Lerp(0, speed, curAcceleration);
+                break;
+            default:
+                UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
+                break;
+        }
+
+        // 이동 시작
+        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+
+        curSpeed = moveSpeed;
+        UnityEngine.Debug.Log($"Yaw: {yaw}, Pitch: {pitch}, moveSpeed : {moveSpeed}");
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Body")|| other.CompareTag("Head"))
+        if (other.CompareTag("Body") || other.CompareTag("Head"))
         {
             OnHitEnemy?.Invoke();
         }
