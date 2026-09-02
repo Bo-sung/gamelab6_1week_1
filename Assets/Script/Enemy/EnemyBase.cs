@@ -8,6 +8,7 @@ public interface IScoreHandler
 {
     void ApplyScore(int score);
     int GetCombo();
+    int GetScore();
 }
 public abstract class EnemyBase : MonoBehaviour
 {

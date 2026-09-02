@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static UnityEngine.GraphicsBuffer;
 
 public class ArrowCamera : MonoBehaviour
@@ -10,6 +11,7 @@ public class ArrowCamera : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Rigidbody targetRb;
     [SerializeField] private ArrowController controller;
+    [SerializeField] private Volume ChargeVolume;
 
     [Header("Value Setting")]
     [SerializeField]
@@ -26,11 +28,13 @@ public class ArrowCamera : MonoBehaviour
     private float ChargeToDashTime = 0.1f;
     [SerializeField]
     private float DashToNormalTime = 0.4f;
+
+    [Header("화면 이펙트 세팅")]
+    [SerializeField]
+    private float InChargeTime = 0.5f;
+    [SerializeField]
+    private float OutChargeTime = 0.1f;
    
-    
-    [SerializeField]
-    private float RemainDashTime = 0.2f;
-    [SerializeField]
 
 
     private Camera cam;
@@ -45,6 +49,7 @@ public class ArrowCamera : MonoBehaviour
     private float remainDashCount;
 
     private Coroutine fovChangeCoroutine;
+    private Coroutine volumeChangeCoroutine;
 
     private void Start()
     {
@@ -107,19 +112,25 @@ public class ArrowCamera : MonoBehaviour
     private void OnArrowDashStateChanged(ArrowController.DashState state)
     {
         if (fovChangeCoroutine != null) StopCoroutine(fovChangeCoroutine);
+        
 
         switch (state)
         {
             //차징상태 진입
             case ArrowController.DashState.Charging:
-                StartCoroutine(FovChangeSmooth(defaultFov, ChargingFov, NormalToChargeTime));
+                fovChangeCoroutine = StartCoroutine(FovChangeSmooth(defaultFov, ChargingFov, NormalToChargeTime));
+                if (volumeChangeCoroutine != null) StopCoroutine(volumeChangeCoroutine);
+                volumeChangeCoroutine = StartCoroutine(VolumeChangeSmooth(true));
                 break;
 
             case ArrowController.DashState.Dash:
-                StartCoroutine(FovChangeSmooth(ChargingFov, DashFov, ChargeToDashTime));
+                Debug.Log("대쉬상태 진입");
+                fovChangeCoroutine  =  StartCoroutine(FovChangeSmooth(ChargingFov, DashFov, ChargeToDashTime));
+                if (volumeChangeCoroutine != null) StopCoroutine(volumeChangeCoroutine);
+                volumeChangeCoroutine = StartCoroutine(VolumeChangeSmooth(false));
                 break;
             case ArrowController.DashState.Cooldown:
-                StartCoroutine(FovChangeSmooth(DashFov, defaultFov, DashToNormalTime));
+                fovChangeCoroutine  =  StartCoroutine(FovChangeSmooth(DashFov, defaultFov, DashToNormalTime));
                 break;
 
 
@@ -135,6 +146,25 @@ public class ArrowCamera : MonoBehaviour
             currentFov = Mathf.Lerp(originFov, targetFov, count / time);
             yield return null;
         }
+        
+    }
+
+    IEnumerator VolumeChangeSmooth(bool charge)
+    {
+        var count = 0f;
+        var time = charge ? InChargeTime : OutChargeTime;
+        var originWeight = charge ? 0f : 1f;
+        var targetWeight = charge ? 1f : 0f;
+        
+        while(count < time)
+        {
+            count += Time.deltaTime;
+            ChargeVolume.weight = Mathf.Lerp(originWeight, targetWeight, count / time);
+            Debug.Log($"현재 카운트 : {count}");
+            Debug.Log($"현재 Weight : {ChargeVolume.weight}");
+            yield return null;
+        }
+
         
     }
 

@@ -74,4 +74,8 @@ public class ScoreUI : MonoBehaviour, IScoreHandler
         maxCombo = maxCombo < curCombo ? curCombo : maxCombo;
 
     }
+    public int GetScore()
+    {
+        return 0;
+    }
 }

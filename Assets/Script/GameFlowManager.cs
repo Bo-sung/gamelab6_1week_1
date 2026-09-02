@@ -7,6 +7,11 @@ public class GameFlowManager : MonoBehaviour
     public GameOverUI gameOverUI;
 
     [SerializeField]
+    private ArrowController controller;
+    [SerializeField]
+    private ComboManager comboManager;
+
+    [SerializeField]
     private EnemySpawner spawner;
 
 
@@ -17,7 +22,7 @@ public class GameFlowManager : MonoBehaviour
 
     private void Initialize()
     {
-    
+        comboManager.Initialize(controller);
     }
 
     private void GameStart()
