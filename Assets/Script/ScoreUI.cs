@@ -1,12 +1,33 @@
 using TMPro;
 using UnityEngine;
+using UnityEditor;
+using System.Text;
+using System;
 
 public class ScoreUI : MonoBehaviour
 {
+    private const string COMBO_STR = "Combo : ";
+    private const string MAX_COMBO_STR = "Max Combo : ";
+    private const string SCORE_STR = "Score : ";
     [SerializeField]
-    private TextMeshProUGUI score;
+    private TextMeshProUGUI txt_Score;
     [SerializeField]
     private int scoreValue = 0;
+
+    [Header("Combo")]
+    [SerializeField]
+    private TextMeshProUGUI txt_Combo;
+    [SerializeField]
+    private TextMeshProUGUI txt_MaxCombo;
+    [SerializeField]
+    private float comboRemainTimeMax = 3f;
+    [SerializeField]
+    private float curComboRemainTime = 0f;
+    [SerializeField]
+    private int curCombo = 0;
+
+    [SerializeField]
+    private int maxCombo = 0;
 
 
     private void Awake()
@@ -16,15 +37,36 @@ public class ScoreUI : MonoBehaviour
     private void Update()
     {
         UpdateScore();
+        UpdateCombo();
     }
 
     public void UpdateScore()
     {
-        score.text = "Score: " + scoreValue;
+        //UI 갱신
+        txt_Score.text = SCORE_STR + scoreValue;
+        txt_Combo.text = COMBO_STR + curCombo;
+        txt_MaxCombo.text = MAX_COMBO_STR + maxCombo;
+    }
+
+    private void UpdateCombo()
+    {
+        curComboRemainTime -= Time.deltaTime;
     }
 
     public void ApplyScore(int score)
     {
         scoreValue += score;
+        // 콤보 남은 시간이 0 미만이면 콤보 저장 후 새로 세팅
+        if (curComboRemainTime <= 0)
+        {
+            // 최대 콤보보다 현재가 더 많으면 갱신
+            maxCombo = maxCombo < curCombo ? curCombo : maxCombo;
+            // 콤보 초기화
+            curCombo = 0;
+        }
+        // 시간 재갱신
+        curComboRemainTime = comboRemainTimeMax;
+        curCombo++;
+
     }
 }
