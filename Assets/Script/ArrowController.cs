@@ -9,6 +9,7 @@ public class ArrowController : MonoBehaviour
     float currentSensitivity = 3f;
     [SerializeField] float minPitch = -20f, maxPitch = 70f;
     [SerializeField] float speed = 2f;
+    [SerializeField] float minimumSpeed = 0f;
     [SerializeField] float acc_per_tick = 1f;
     [SerializeField] bool autoAcc = false;
     float curAcceleration = 0f;
@@ -165,7 +166,7 @@ public class ArrowController : MonoBehaviour
                     break;
                 }
                 // 자동 가속 아니면 스무스하게 정지
-                moveSpeed = Mathf.Lerp(0, speed, curAcceleration);
+                moveSpeed = Mathf.Lerp(minimumSpeed, speed, curAcceleration);
                 break;
             default:
                 UnityEngine.Debug.Log("이거 이상한데 여기 왜탐?");
