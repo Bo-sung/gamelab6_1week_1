@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3511065536550886281}
   - component: {fileID: 338702948807156229}
-  - component: {fileID: 4910606451651822940}
+  - component: {fileID: 8492202590270143577}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Arrow
@@ -137,21 +137,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 090a2d7595d41cb468ff5157b3a2c340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  sensitivity: 0.25
+  sensitivity: 0.5
   minPitch: -20
   maxPitch: 70
-  speed: 4
-  dashSpeed: 8
-  curDashGauge: 3
-  dashGaugeMax: 3
-  dashTime: 1
-  dashCooldown: 2
+  speed: 8
+  acc_per_tick: 1
+  autoAcc: 1
+  dashSpeed: 30
+  dashTime: 0.5
+  dashCooldown: 0
   dashTimeScale: 0
   dashTimeSensitivity: 0
   dashChargingTime: 0
+  curSpeed: 0
   dashState: 0
-  IsDashing: 0
---- !u!54 &4910606451651822940
+--- !u!54 &8492202590270143577
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
