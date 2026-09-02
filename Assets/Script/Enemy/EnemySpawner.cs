@@ -10,6 +10,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float spawnRate = 10f;
 
+    private SpawnerUI spawnerUI;
+
     // ÇöÀç wave
     public int currentWave = 1;
 
@@ -25,6 +27,11 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDistance = 50f;
 
     private bool isGameOn;
+
+    private void Awake()
+    {
+        spawnerUI = FindObjectOfType<SpawnerUI>();
+    }
 
     private void Start()
     {
@@ -110,9 +117,9 @@ public class EnemySpawner : MonoBehaviour
                 }
                 requireEnemy2Num = nextWaveEnemy2Num;
                 requireEnemyNum = nextWaveEnemyNum;
-                currentWave++;
-
                 yield return new WaitForSeconds(spawnRate);
+                currentWave++;
+                spawnerUI.UpdateWaveText(currentWave);
             }
             else
             {
