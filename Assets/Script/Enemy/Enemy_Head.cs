@@ -45,7 +45,7 @@ public class Enemy_Head : EnemyBase
 
     public void OnChildTriggerEnter(Collider other, string childTag)
     {
-        if (childTag == "Head" && other.CompareTag("Arrow") && !isPassing)
+        if (childTag == "Head" && other.CompareTag("Arrow"))
         {
             OnHeadshot();
         }
