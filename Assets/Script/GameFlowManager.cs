@@ -40,7 +40,7 @@ public class GameFlowManager : MonoBehaviour
         comboManager.Initialize(controller);
         scoreUI.Initialize(comboManager);
         comboUI.Initialize(comboManager);
-        spawner.Initialize(comboManager);
+        spawner.Initialize(player.transform, spawnerUI, comboManager);
     }
 
     private void GameStart()

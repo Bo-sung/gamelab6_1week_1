@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class EnemyPool : MonoBehaviour
 {
-    /// <summary>
-    /// 모노 싱글톤 제거 예정. 가능하면 객체 주입 받아 사용할것
-    /// </summary>
-    [Obsolete]
-    public static EnemyPool instance;
-
     [SerializeField] private List<EnemyBase> enemyPrefabs;
     [SerializeField] private int poolSize;
 
@@ -22,17 +16,9 @@ public class EnemyPool : MonoBehaviour
     public float minSpeed = 0.01f;
     public float maxSpeed = 0.05f;
 
-    private void Awake()
+    public void Initialize(Transform target, IScoreHandler scoreHandler)
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(this.gameObject);
-    }
-
-    public void Initialize(IScoreHandler scoreHandler)
-    {
-        target = FindObjectOfType<Player>().transform;
+        this.target = target;
         this.scoreHandler = scoreHandler;
 
         pools = new List<List<GameObject>>();

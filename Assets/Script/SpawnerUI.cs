@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class SpawnerUI : MonoBehaviour
+public class SpawnerUI : MonoBehaviour, ISpawnUI
 {
     [SerializeField]
     private TextMeshProUGUI currentWaveText;
