@@ -139,7 +139,7 @@ public class ArrowController : MonoBehaviour
             // 차징 중
             case DashState.Charging:
                 // 차징중 시간 느려짐 효과 + 민감도 증가(시간이 늘어짐에 따라. 유저 입력에 보정을 주기 위해)
-                chargeTimer += Time.deltaTime;
+                chargeTimer += Time.unscaledDeltaTime;
                 dashChargingTime += Time.deltaTime;
                 Time.timeScale = Mathf.Lerp(defaultTimeScale, dashTimeScale, dashChargingTime);
                 currentSensitivity = Mathf.Lerp(sensitivity, dashTimeSensitivity, dashChargingTime);
@@ -242,7 +242,7 @@ public class ArrowController : MonoBehaviour
                90f +  Mathf.PerlinNoise(tick, 0) - .5f,
                 Mathf.PerlinNoise(0, tick) - .5f,
                 0f);
-            yield return null;
+            yield return new WaitForSecondsRealtime(0.01f);
         }
 
         arrowModel.transform.localRotation = Quaternion.Euler(90, 0, 0); // Reset rotation

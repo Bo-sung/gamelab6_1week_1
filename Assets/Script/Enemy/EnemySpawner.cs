@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
     private float spawnRate = 10f;
 
     [SerializeField]
-    private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
     private ISpawnUI spawnerUI;
 
@@ -47,6 +47,10 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDistance = 50f;
 
     private bool isGameOn;
+
+    public WaveInfo[] WaveInfos => waveInfos;
+
+    
 
     private void Awake()
     {

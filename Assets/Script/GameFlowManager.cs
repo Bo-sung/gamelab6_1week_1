@@ -13,6 +13,8 @@ public class GameFlowManager : MonoBehaviour
 
     [SerializeField]
     private EnemySpawner spawner;
+    [SerializeField]
+    private WaveEffect waveEffect;
 
     [SerializeField]
     private ScoreUI scoreUI;
@@ -44,6 +46,7 @@ public class GameFlowManager : MonoBehaviour
         comboUI.Initialize(comboManager);
         playerUI.Initialize(player);
         spawner.Initialize(player.transform, spawnerUI, comboManager);
+        waveEffect.Initialize(spawner);
     }
 
     private void GameStart()
