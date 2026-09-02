@@ -1,12 +1,23 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
     public int hp = 3;
+    public int hitEffectDuration = 1;
 
 
     public System.Action OnPlayerDead;
     public System.Action OnPlayerHit;
+
+
+
+    [SerializeField]
+    private Volume hitVolume;
+
+    private Coroutine hitEffectCoroutine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,11 +40,30 @@ public class Player : MonoBehaviour
             
             enemy?.OnAttackPlayer();
 
+            if (hitEffectCoroutine != null)
+            {
+                StopCoroutine(hitEffectCoroutine);
+            }
+            StartCoroutine(HitEffectSmooth());
+
             if (hp <= 0)
             {
                 OnPlayerDead?.Invoke();
             }
         }
     }
+
+    IEnumerator HitEffectSmooth()
+    {
+        var time = 0f;
+        while(time < hitEffectDuration)
+        {
+            time += Time.deltaTime;
+            hitVolume.weight = Mathf.Lerp(1, 0, time / hitEffectDuration);
+            yield return null;
+        }
+    }
+
+  
 
 }
