@@ -131,7 +131,7 @@ public class ArrowController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Body")|| other.CompareTag("Head"))
         {
             OnHitEnemy?.Invoke();
         }
