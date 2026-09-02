@@ -16,6 +16,8 @@ public class ComboManager : MonoBehaviour, IScoreHandler
     private int currentCombo;
     private float comboRemainTime;
 
+    private int curComboLvl;
+
     public void Initialize(ArrowController con)
     {
         arrow = con;
@@ -24,12 +26,21 @@ public class ComboManager : MonoBehaviour, IScoreHandler
     public void Update()
     {
         comboRemainTime -= Time.deltaTime;
+        curComboLvl = currentCombo == 0 ? 0 : currentCombo / 5;
         if (comboRemainTime <= 0f)
         {
-            currentCombo = 0;
-            comboRemainTime = 0;
+            // 콤보 레벨 하락. 만약 레벨 더 안내려 가면 0으로 취급
+            if(curComboLvl != 0)
+            {
+                comboRemainTime = comboRemainTimeMax;
+                currentCombo -= 5;
+            }
+            else
+            {
+                currentCombo = 0;
+                comboRemainTime = 0;
+            }
         }
-
     }
 
 
@@ -54,7 +65,8 @@ public class ComboManager : MonoBehaviour, IScoreHandler
 
     public int GetComboLevel()
     {
-        return currentCombo == 0 ? 0 : currentCombo / 5;
+        return curComboLvl;
+     //   return currentCombo == 0 ? 0 : currentCombo / 5;
     }
 
     public int GetScore()
