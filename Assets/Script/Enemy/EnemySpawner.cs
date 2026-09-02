@@ -1,4 +1,5 @@
-using System;
+
+using System.Collections.Generic;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -38,6 +39,9 @@ public class EnemySpawner : MonoBehaviour
 
     private ISpawnUI spawnerUI;
 
+    public System.Action<WaveInfo> OnWaveClear;
+    public System.Action OnGameClear;
+
     private EnemyPool pool;
 
     // 현재 wave
@@ -61,12 +65,12 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnerUI = spawnUI;
         pool.Initialize(target, scoreHandler);
-        if(spawnPoints == null || spawnPoints.Length == 0)
+        if (spawnPoints == null || spawnPoints.Length == 0)
         {
             Debug.LogError("스폰 포인트 없다");
-            //SpawnFallBack();
         }
     }
+
     [ContextMenu("일단 원형으로 10개 박기")]
     private void SpawnFallBack()
     {
@@ -88,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
 
             // 4. 오브젝트 생성 및 바깥쪽을 바라보도록 회전 설정
             Quaternion spawnRotation = Quaternion.LookRotation(spawnPosition - transform.position);
-            var point = Instantiate(prefab, spawnPosition, spawnRotation,this.transform);
+            var point = Instantiate(prefab, spawnPosition, spawnRotation, this.transform);
             point.name = $"SpawnPoint_{i}";
             spawnPoints[i] = point.transform;
         }
@@ -112,11 +116,13 @@ public class EnemySpawner : MonoBehaviour
             if (tableIndex >= waveData.enemySpawnTable.Length)
             {
                 //다음 웨이브 넘겨
-
                 yield return new WaitForSeconds(spawnRate);
                 waveIndex++;
                 tableIndex = 0;
-                spawnerUI.UpdateWaveText(waveData.wave);
+                if(waveIndex >= waveInfos.Length)
+                    OnGameClear?.Invoke();
+                else
+                    OnWaveClear?.Invoke(waveInfos[waveIndex]);
                 continue;
             }
             var spawnArr = waveData.enemySpawnTable;
@@ -156,6 +162,7 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log($"Selected Spawn Point Index : {selectedIndex}");
         return result;
     }
+
     public void GameStart()
     {
         isGameOn = true;
@@ -169,16 +176,15 @@ public class EnemySpawner : MonoBehaviour
 
     private WaveInfo[] waveInfos = new WaveInfo[]
     {
-        new WaveInfo(0,new int[] { 0,1,2,3,0,0 },new int[] { 0,1,2,3}),
-        new WaveInfo(1,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4}),
-        new WaveInfo(2,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5}),
-        new WaveInfo(3,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6}),
-        new WaveInfo(4,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6,7 }),
-        new WaveInfo(5,new int[] { 1,0,1,0,1,0 },new int[] { 0,2,4,6,8 }),
-        new WaveInfo(6,new int[] { 1,0,1,0,1,0 },new int[] { 1,2,3,4,5,6,7 }),
-        new WaveInfo(7,new int[] { 1,0,1,0,1,0 },new int[] { 4,5,6,7 }),
-        new WaveInfo(8,new int[] { 1,0,1,0,1,0 },new int[] { 0,4,5,6,7 }),
-        new WaveInfo(9,new int[] { 1,0,1,0,1,0 },new int[] { 2,3,4,5,6,7 }),
-
+        new WaveInfo(1,new int[] { 0,1,2,3,0,0 },new int[] { 0,1,2,3}),
+        new WaveInfo(2,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4}),
+        new WaveInfo(3,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5}),
+        new WaveInfo(4,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6}),
+        new WaveInfo(5,new int[] { 1,0,1,0,1,0 },new int[] { 0,1,2,3,4,5,6,7 }),
+        new WaveInfo(6,new int[] { 1,0,1,0,1,0 },new int[] { 0,2,4,6,8 }),
+        new WaveInfo(7,new int[] { 1,0,1,0,1,0 },new int[] { 1,2,3,4,5,6,7 }),
+        new WaveInfo(8,new int[] { 1,0,1,0,1,0 },new int[] { 4,5,6,7 }),
+        new WaveInfo(9,new int[] { 1,0,1,0,1,0 },new int[] { 0,4,5,6,7 }),
+        new WaveInfo(10,new int[] { 1,0,1,0,1,0 },new int[] { 2,3,4,5,6,7 }),
     };
 }

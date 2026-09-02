@@ -18,6 +18,7 @@ public class Enemy_Tele : EnemyBase
 
     protected override void OnHit(Collider other)
     {
+        OnDamage();
     }
 
     protected override void Init()
