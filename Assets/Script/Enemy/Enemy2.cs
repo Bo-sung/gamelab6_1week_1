@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy2 : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Enemy2 : MonoBehaviour
     private Transform player;
     [SerializeField]
     private GameObject head;
+
+    private ScoreUI scorUI;
 
     public int hp = 2;
     private bool isPassing = false;
@@ -16,6 +19,7 @@ public class Enemy2 : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>().transform;
+        scorUI = FindObjectOfType<ScoreUI>();
     }
 
     private void Update()
@@ -34,7 +38,8 @@ public class Enemy2 : MonoBehaviour
         if (childTag == "Head" && other.CompareTag("Arrow") && !isPassing)
         {
             OnHeadshot();
-        } else if (childTag == "Body" && other.CompareTag("Arrow"))
+        }
+        else if (childTag == "Body" && other.CompareTag("Arrow"))
         {
             OnDamage();
             isPassing = true;
@@ -54,14 +59,14 @@ public class Enemy2 : MonoBehaviour
         hp--;
         if (hp <= 0)
         {
-            ScoreUI.scoreValue += 20;
+            scorUI?.ApplyScore(20);
             this.gameObject.SetActive(false);
         }
     }
 
     public void OnHeadshot()
     {
-        ScoreUI.scoreValue += 50;
+        scorUI?.ApplyScore(50);
         this.gameObject.SetActive(false);
     }
 }

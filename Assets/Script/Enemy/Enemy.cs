@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Transform player;
 
+    private ScoreUI scorUI;
+
     // 접근 속도
     public float speed = 0.1f;
     // 최대 접근 거리
@@ -12,6 +14,8 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>().transform;
+
+        scorUI = FindObjectOfType<ScoreUI>();
     }
 
     private void Update()
@@ -35,8 +39,7 @@ public class Enemy : MonoBehaviour
 
     public void OnDamage()
     {
-        ScoreUI.scoreValue += 10;
-
+        scorUI?.ApplyScore(10);
         this.gameObject.SetActive(false);
     }
 }

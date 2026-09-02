@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class ScoreUI : MonoBehaviour
 {
-    public TextMeshProUGUI score;
-    static public int scoreValue = 0;
+    [SerializeField]
+    private TextMeshProUGUI score;
+    [SerializeField]
+    private int scoreValue = 0;
 
 
     private void Awake()
@@ -19,5 +21,10 @@ public class ScoreUI : MonoBehaviour
     public void UpdateScore()
     {
         score.text = "Score: " + scoreValue;
+    }
+
+    public void ApplyScore(int score)
+    {
+        scoreValue += score;
     }
 }
