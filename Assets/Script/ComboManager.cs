@@ -51,6 +51,11 @@ public class ComboManager : MonoBehaviour, IScoreHandler
         return maxCombo;
     }
 
+    public int GetComboLevel()
+    {
+        return currentCombo == 0 ? 0 : currentCombo / 5;
+    }
+
     public int GetScore()
     {
         return curScore;
@@ -61,6 +66,11 @@ public class ComboManager : MonoBehaviour, IScoreHandler
         return comboRemainTime;
     }
 
+    public float GetMaxComboRemainTime()
+    {
+        return comboRemainTimeMax;
+    }
 
- 
+
+
 }
