@@ -30,6 +30,7 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float curSpeed = 0f;
 
     public System.Action OnDashStart;
+    public System.Action<DashState> OnDashStateChanged;
     public System.Action OnHitEnemy;
 
     float yaw, pitch = 28f;
@@ -45,8 +46,6 @@ public class ArrowController : MonoBehaviour
     }
 
     public DashState dashState = DashState.None;
-    [Obsolete("Use dashState property instead.")]
-    public bool IsDashing => dashState == DashState.Dashing;
 
     void Start()
     {
@@ -71,20 +70,27 @@ public class ArrowController : MonoBehaviour
     {
         // 대시 상태 전환
         if (dashState == DashState.Dashing && remainDashTime <= 0)
-            dashState = DashState.Cooldown;
+            ChangeDashState(DashState.Cooldown);
         else if (dashState == DashState.Cooldown && remainDashCooldown <= 0)
-            dashState = DashState.None;
+            ChangeDashState(DashState.None);
         else if (Input.GetKeyUp(KeyCode.Mouse1) && dashState == DashState.Charging)
-            dashState = DashState.Dash;
+            ChangeDashState(DashState.Dash);
         else if (Input.GetKeyDown(KeyCode.Mouse1) && dashState == DashState.None)
-            dashState = DashState.Ready;
+            ChangeDashState(DashState.Ready);
 
         ProcessDash();
 
         // 타이머 감소
         remainDashTime -= Time.deltaTime;
         remainDashCooldown -= Time.deltaTime;
-        UnityEngine.Debug.Log($"DashState: {dashState}, remainDashTime: {remainDashTime}, remainDashCooldown: {remainDashCooldown}, IsDashing: {IsDashing}");
+        UnityEngine.Debug.Log($"DashState: {dashState}, remainDashTime: {remainDashTime}, remainDashCooldown: {remainDashCooldown}");
+    }
+
+    private void ChangeDashState(DashState state)
+    {
+        UnityEngine.Debug.Log($"DashState Changed From {dashState} To {state}");
+        dashState = state;
+        OnDashStateChanged?.Invoke(dashState);
     }
 
     private void ProcessDash()
@@ -99,7 +105,7 @@ public class ArrowController : MonoBehaviour
             // 차징 시작
             case DashState.Ready:
                 // 상태 전환
-                dashState = DashState.Charging;
+                ChangeDashState(DashState.Charging);
                 dashChargingTime = 0;
                 break;
             // 차징 중
@@ -121,7 +127,7 @@ public class ArrowController : MonoBehaviour
 
     private void DoDash()
     {
-        dashState = DashState.Dashing;
+        ChangeDashState(DashState.Dashing);
         remainDashTime = dashTime;
         remainDashCooldown = dashCooldown;
 
