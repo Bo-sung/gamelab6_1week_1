@@ -120,7 +120,7 @@ public class EnemySpawner : MonoBehaviour
                 waveIndex++;
                 tableIndex = 0;
                 if (waveIndex >= waveInfos.Length)
-                    OnGameClear?.Invoke();
+                    ;
                 else
                     OnWaveClear?.Invoke(waveInfos[waveIndex]);
                 yield return new WaitForSeconds(spawnRate);
@@ -141,9 +141,9 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return null;
         }
-        
-        OnGameClear?.Invoke();
         Debug.Log("Game Clear!!");
+        OnGameClear?.Invoke();
+        
     }
 
     private Transform ExtractSafeSpawnPoint(WaveInfo info)
