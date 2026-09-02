@@ -16,7 +16,7 @@ public class Enemy : EnemyBase
 
     protected override void Init()
     {
-        SetData(FindObjectOfType<Player>().transform, FindObjectOfType<ScoreUI>());
+
     }
 
     public void SetData(Transform target, IScoreHandler scoreHandler, float speed)

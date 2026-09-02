@@ -1,36 +1,25 @@
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class Enemy2 : MonoBehaviour
+public class Enemy2 : EnemyBase
 {
-    [SerializeField]
-    private Transform player;
     [SerializeField]
     private GameObject head;
 
-    private ScoreUI scorUI;
-
-    public int hp = 2;
+    protected int hp = 2;
     private bool isPassing = false;
-    // 접근 속도
-    public float speed = 0.15f;
-    // 최대 접근 거리
-    public float maxDistance = 2;
-    private void Awake()
+
+    public void SetData(Transform target, IScoreHandler scoreHandler, float speed, int hp)
     {
-        player = FindObjectOfType<Player>().transform;
-        scorUI = FindObjectOfType<ScoreUI>();
+        SetData(target, scoreHandler);
+        this.speed = speed;
+        this.hp = hp;
     }
 
-    private void Update()
+    protected override void Movement()
     {
-        Movement();
-    }
-
-    private void Movement()
-    {
-        if (Vector3.Distance(this.transform.position, player.position) >= maxDistance)
-            this.transform.position = Vector3.MoveTowards(this.transform.position, player.position, speed);
+        if (Vector3.Distance(this.transform.position, target.position) >= maxDistance)
+            this.transform.position = Vector3.MoveTowards(this.transform.position, target.position, speed);
     }
 
     public void OnChildTriggerEnter(Collider other, string childTag)
@@ -54,19 +43,28 @@ public class Enemy2 : MonoBehaviour
         }
     }
 
-    public void OnDamage()
+    protected override void OnDamage()
     {
         hp--;
         if (hp <= 0)
         {
-            scorUI?.ApplyScore(20);
+            ApplyScore(20);
             this.gameObject.SetActive(false);
         }
     }
 
-    public void OnHeadshot()
+    protected void OnHeadshot()
     {
-        scorUI?.ApplyScore(50);
+        ApplyScore(50);
         this.gameObject.SetActive(false);
+    }
+
+    protected override void Init()
+    {
+    }
+
+    protected override void OnHit(Collider other)
+    {
+        OnDamage();
     }
 }

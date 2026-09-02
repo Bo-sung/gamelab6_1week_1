@@ -10,6 +10,7 @@ public interface IScoreHandler
     int GetCombo();
     int GetScore();
 }
+
 public abstract class EnemyBase : MonoBehaviour
 {
     [SerializeField]
