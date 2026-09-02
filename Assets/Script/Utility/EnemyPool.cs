@@ -1,18 +1,20 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class EnemyPool : MonoBehaviour
 {
+    /// <summary>
+    /// 모노 싱글톤 제거 예정. 가능하면 객체 주입 받아 사용할것
+    /// </summary>
+    [Obsolete]
     public static EnemyPool instance;
 
-    [SerializeField] private GameObject enemyObject;
-    [SerializeField] private GameObject enemyObject2;
     [SerializeField] private List<EnemyBase> enemyPrefabs;
     [SerializeField] private int poolSize;
- 
-    private List<GameObject> pool;
-    private List<GameObject> pool2;
+
+    private List<List<GameObject>> pools;
 
     private Transform target;
     private IScoreHandler scoreHandler;
@@ -32,54 +34,65 @@ public class EnemyPool : MonoBehaviour
 
     private void Initialize()
     {
-        pool = new List<GameObject>();
         target = FindObjectOfType<Player>().transform;
         scoreHandler = FindObjectOfType<ScoreUI>();
 
-        for(int i = 0; i < poolSize; i++)
+        pools = new List<List<GameObject>>();
+        foreach (var prefab in enemyPrefabs)
         {
-            var prefab =  Instantiate(enemyPrefabs[0].gameObject);
-            prefab.SetActive(false);
-            Enemy enemy = prefab.GetComponent<Enemy>();
-            float speed = Random.Range(minSpeed, maxSpeed);
-            enemy.SetData(target, scoreHandler, speed);
-            pool.Add(prefab);
-        }
-        pool2 = new List<GameObject>();
-        for (int i = 0; i < poolSize; i++)
-        {
-            var enemy = Instantiate(enemyObject2);
-            enemy.SetActive(false);
-            enemy.GetComponent<Enemy2>().speed = Random.Range(minSpeed, maxSpeed);
-            pool2.Add(enemy);
+            var pool = new List<GameObject>();
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                pool.Add(SpawnEnemy(prefab));
+            }
+            pools.Add(pool);
         }
     }
 
-    public GameObject GetObject() 
+    private GameObject SpawnEnemy(EnemyBase enemyBase)
     {
-        foreach(var enemy in pool)
+        var prefab = Instantiate(enemyBase.gameObject);
+        prefab.SetActive(false);
+        if (enemyBase.GetType() == typeof(Enemy))
         {
-            if(!enemy.activeInHierarchy) return enemy;  
+            Enemy enemy = prefab.GetComponent<Enemy>();
+            float speed = UnityEngine.Random.Range(minSpeed, maxSpeed);
+            enemy.SetData(target, scoreHandler, speed);
+        }
+        else if (enemyBase.GetType() == typeof(Enemy2))
+        {
+            Enemy2 enemy = prefab.GetComponent<Enemy2>();
+            float speed = UnityEngine.Random.Range(minSpeed, maxSpeed);
+            enemy.SetData(target, scoreHandler, speed, 2);
+        }
+        return prefab;
+    }
+
+    public GameObject Pop(int index)
+    {
+        if (index >= pools.Count)
+            return null;
+        var selectedPool = pools[index];
+        foreach (var item in selectedPool)
+        {
+            if (!item.activeInHierarchy)
+                return item;
         }
 
-        var e = Instantiate(enemyObject);
-        e.SetActive(false);
-        pool.Add(e);
+        var newbie = SpawnEnemy(enemyPrefabs[index]);
+        newbie.SetActive(false);
+        selectedPool.Add(newbie);
+        return newbie;
+    }
 
-        return e;
-       
+    public GameObject GetObject()
+    {
+        return Pop(0);
     }
 
     public GameObject GetObject2()
     {
-        foreach (var enemy in pool2)
-        {
-            if (!enemy.activeInHierarchy) return enemy;
-        }
-        var e = Instantiate(enemyObject2);
-        e.SetActive(false);
-        pool2.Add(e);
-        return e;
+        return Pop(1);
     }
-
 }
