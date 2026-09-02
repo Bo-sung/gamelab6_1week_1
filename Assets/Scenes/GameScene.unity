@@ -3240,6 +3240,7 @@ MonoBehaviour:
   DashToNormalTime: 0.4
   InChargeTime: 0.5
   OutChargeTime: 0.1
+  ChargingSmooth: 0.01
 --- !u!114 &1268369537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3525,6 +3526,7 @@ GameObject:
   - component: {fileID: 1350346190}
   - component: {fileID: 1350346189}
   - component: {fileID: 1350346188}
+  - component: {fileID: 1350346191}
   m_Layer: 0
   m_Name: GameFlowManager
   m_TagString: Untagged
@@ -3563,6 +3565,7 @@ MonoBehaviour:
   controller: {fileID: 189369625}
   comboManager: {fileID: 1350346188}
   spawner: {fileID: 2026719}
+  waveEffect: {fileID: 1350346191}
   scoreUI: {fileID: 1644167058}
   comboUI: {fileID: 361306418}
   spawnerUI: {fileID: 954481762}
@@ -3582,6 +3585,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1350346191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350346187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3720b3958e76f024dbc2e6558c538a00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEffect
+  effectDom: {fileID: 0}
+  spawnPointEffect: {fileID: 5055032249221347412, guid: 3410d84d7f99ec340834f29e45f7a831, type: 3}
+  effectMaxSize: 0
+  effectDuration: 0
+  spawnPointEffectDuration: 3
 --- !u!1 &1369409358
 GameObject:
   m_ObjectHideFlags: 0
