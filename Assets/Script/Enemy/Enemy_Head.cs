@@ -52,7 +52,7 @@ public class Enemy_Head : EnemyBase
         else if (childTag == "Body" && other.CompareTag("Arrow"))
         {
             OnDamage();
-            StartCoroutine(Blink(0, true));
+            StartCoroutine(Blink());
             isPassing = true;
         }
     }
@@ -60,6 +60,13 @@ public class Enemy_Head : EnemyBase
     private void OnDisable()
     {
         StopAllCoroutines();
+        headRender.sharedMaterial = originHeadMat;
+        bodyRender.sharedMaterial = originBodyMat;
+    }
+
+    private void OnEnable()
+    {
+        hp = 2;
     }
 
     public void OnChildTriggerOut(Collider other, string childTag)
@@ -94,25 +101,15 @@ public class Enemy_Head : EnemyBase
     {
     }
 
-    private IEnumerator Blink(int count, bool makeBlink)
+    private IEnumerator Blink()
     {
 
-        if (makeBlink)
-        {
-            headRender.sharedMaterial = blinkHeadMat;
-            bodyRender.sharedMaterial = blinkBodyMat;
-        }
-        else
-        {
-            headRender.sharedMaterial = originHeadMat;
-            bodyRender.sharedMaterial = originBodyMat;
-        }
+        headRender.sharedMaterial = blinkHeadMat;
+        bodyRender.sharedMaterial = blinkBodyMat;
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(2f);
 
-        if (count < 5)
-        {
-            StartCoroutine(Blink(count + 1, !makeBlink));
-        }
+        headRender.sharedMaterial = originHeadMat;
+        bodyRender.sharedMaterial = originBodyMat;
     }
 }
