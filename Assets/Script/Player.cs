@@ -3,80 +3,61 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+
 public class Player : MonoBehaviour
 {
-    public int maxHp = 5000;
-    public int curHp = 500;
+    public interface IPlayerInfoHandler
+    {
+
+    }
+
+    [SerializeField]
+    PlayerController controller;
 
     public int hitEffectDuration = 1;
 
 
-    public System.Action OnPlayerDead;
-    public System.Action OnPlayerHit;
-    public System.Action OnPlayerHeal;
+    public System.Action<EnemyBase> OnPlayerHit;
 
 
     [SerializeField]
     private Volume hitVolume;
 
     private Coroutine hitEffectCoroutine;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        controller = GetComponent<PlayerController>();
+        OnPlayerHit += OnHit;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            curHp--;
-            OnPlayerHit?.Invoke();
-
-            other.TryGetComponent<EnemyBase>(out var enemy);
-            
-            enemy?.OnAttackPlayer();
-
-            if (hitEffectCoroutine != null)
-            {
-                StopCoroutine(hitEffectCoroutine);
-            }
-            StartCoroutine(HitEffectSmooth());
-
-            if (curHp <= 0)
-            {
-                OnPlayerDead?.Invoke();
-            }
+            if (other.TryGetComponent<EnemyBase>(out var enemy))
+                OnPlayerHit?.Invoke(enemy);
         }
+    }
+
+    private void OnHit(EnemyBase enemy)
+    {
+        if (hitEffectCoroutine != null)
+        {
+            StopCoroutine(hitEffectCoroutine);
+        }
+
+        StartCoroutine(HitEffectSmooth());
     }
 
     IEnumerator HitEffectSmooth()
     {
         var time = 0f;
-        while(time < hitEffectDuration)
+        while (time < hitEffectDuration)
         {
             time += Time.deltaTime;
             hitVolume.weight = Mathf.Lerp(1, 0, time / hitEffectDuration);
             yield return null;
         }
     }
-
-    //Wave 끝날 시 해당 함수 실행
-    [ContextMenu("플레이어 힐")]
-    public void PlayerHeal()
-    {
-        if (curHp != maxHp)
-        {
-            curHp++;
-            OnPlayerHeal?.Invoke();
-        }
-    }
-  
-
 }

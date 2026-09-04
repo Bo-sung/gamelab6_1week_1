@@ -39,14 +39,9 @@ public class ScoreUI : MonoBehaviour
 
     public void UpdateScore()
     {
-        //UI 갱신
-        txt_Score.text = SCORE_STR + scoreHandler.GetScore();
-        txt_Combo.text = COMBO_STR + scoreHandler.GetCombo();
-        txt_MaxCombo.text = MAX_COMBO_STR + scoreHandler.GetMaxCombo();
+        //UI 갱신j
+        txt_Score.text = SCORE_STR + scoreHandler?.GetScore();
+        txt_Combo.text = COMBO_STR + scoreHandler?.GetCombo();
+        txt_MaxCombo.text = MAX_COMBO_STR + scoreHandler?.GetMaxCombo();
     }
-
-
-
-   
-
 }

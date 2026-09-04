@@ -69,4 +69,6 @@ public abstract class EnemyBase : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
+
+    //public abstract void OnTargeted();
 }

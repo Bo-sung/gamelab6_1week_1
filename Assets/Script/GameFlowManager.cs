@@ -33,16 +33,16 @@ public class GameFlowManager : MonoBehaviour
 
     private void Awake()
     {
-        player.OnPlayerDead += GameOver;
-        spawner.OnWaveClear += WaveClear;
-        spawner.OnGameClear += GameClear;
-        Initialize();
+        //player.OnPlayerDead += GameOver;
+        //spawner.OnWaveClear += WaveClear;
+        //spawner.OnGameClear += GameClear;
+        //Initialize();
     }
 
     private void Start()
     {
 
-        GameStart();
+        //GameStart();
     }
 
     private void Initialize()
@@ -84,7 +84,7 @@ public class GameFlowManager : MonoBehaviour
 
     private void WaveClear(WaveInfo waveinfo)
     {
-        player.PlayerHeal();
+        //player.PlayerHeal();
         waveEffect.OnWaveChanged(waveinfo);
         spawnerUI.UpdateWaveText(waveinfo.wave);
 

@@ -6,7 +6,12 @@ public class ArrowFolowCam : MonoBehaviour
 {
     [Header("Target")]
     [SerializeField]
-    private ArrowController controller;
+    private ArrowController a_controller;
+    [SerializeField]
+    private PlayerController p_controller;
+
+    [SerializeField]
+    private bool arrowCamMode = false;
     [SerializeField]
     private Vector3 positionGap;
     [SerializeField]
@@ -41,17 +46,26 @@ public class ArrowFolowCam : MonoBehaviour
     float yVelocity;
     float zVelocity;
 
+    Transform target;
+
     bool charging = false;
+
     float dashChargeTime;
     [SerializeField]
     float dashChargeTimer;
 
-    void Start()
+    private void Start()
+    {
+        Initialize();
+    }
+
+    public void Initialize()
     {
         currentDistance = distance;
-        followPoint = controller.transform.position;
-        controller.OnDashStateChanged += HandleDashState;
-        dashChargeTime = controller.ChargeTime;
+        target = arrowCamMode? a_controller.transform : p_controller.transform;
+        followPoint = arrowCamMode ? a_controller.transform.position : p_controller.transform.position;
+        dashChargeTime = a_controller.ChargeTime;
+        a_controller.OnDashStateChanged += HandleDashState;
     }
 
     private void HandleDashState(ArrowController.DashState dashState)
@@ -67,23 +81,31 @@ public class ArrowFolowCam : MonoBehaviour
         }
     }
 
-
     void LateUpdate()
     {
-        // 차지시 pov 값 적용
+        if(arrowCamMode)
+            HandleCharge();
+        HandleCam();
+    }
+
+    // 차지시 pov 값 적용
+    private void HandleCharge()
+    {
         if (charging)
             dashChargeTimer += Time.deltaTime;
         else
             dashChargeTimer -= Time.deltaTime * 2;
         dashChargeTimer = Mathf.Clamp01(dashChargeTimer);
         cam.fieldOfView = Mathf.Lerp(normalFov, dashFov, dashChargeTimer);
+    }
 
+    private void HandleCam()
+    {
         // 카메라 댐핑
-        var target = controller.transform;
         followPoint.x = Mathf.SmoothDamp(followPoint.x, target.position.x + positionGap.x, ref xVelocity, verticalSmoothTime);
         followPoint.z = Mathf.SmoothDamp(followPoint.z, target.position.z + positionGap.z, ref zVelocity, verticalSmoothTime);
         followPoint.y = Mathf.SmoothDamp(followPoint.y, target.position.y + positionGap.y, ref yVelocity, verticalSmoothTime);
-        var dir = controller.transform.rotation * Vector3.back;
+        var dir = a_controller.transform.rotation * Vector3.back;
 
         // 벽관통 방지
         float targetDistance = distance;
@@ -98,6 +120,6 @@ public class ArrowFolowCam : MonoBehaviour
             currentDistance = Mathf.MoveTowards(currentDistance, targetDistance, recoverSpeed * Time.deltaTime);
 
         transform.position = followPoint + dir * currentDistance;
-        transform.SetPositionAndRotation(followPoint + dir * currentDistance, controller.transform.rotation);
+        transform.SetPositionAndRotation(followPoint + dir * currentDistance, a_controller.transform.rotation);
     }
 }

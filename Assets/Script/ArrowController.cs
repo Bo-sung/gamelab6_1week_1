@@ -1,7 +1,15 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.GraphicsBuffer;
+using Cursor = UnityEngine.Cursor;
+using Debug = UnityEngine.Debug;
 
 public class ArrowController : MonoBehaviour
 {
@@ -28,14 +36,16 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float dashTimeScale = 0f;
     float defaultTimeScale = 1f;
     [SerializeField] float dashTimeSensitivity = 0f;
-    [SerializeField] 
-    float chargeTime = 2f; 
+    [SerializeField]
+    float chargeTime = 2f;
     public float ChargeTime => chargeTime;
     [SerializeField] float chargeJitter = 0.5f;
 
     [Header("Collision")]
     [SerializeField] float offControlTime = 0.5f;
 
+    [SerializeField]
+    Transform rayOrigin;
     [Header("Monitor")]
     [SerializeField] float dashChargingTime = 0f;
     [SerializeField] float curSpeed = 0f;
@@ -48,6 +58,8 @@ public class ArrowController : MonoBehaviour
 
     private float chargeTimer = 0f;
     private Rigidbody rb;
+
+    private Vector3 lockTarget;
 
     public enum DashState
     {
@@ -63,6 +75,7 @@ public class ArrowController : MonoBehaviour
 
     void Start()
     {
+        transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         rb = GetComponent<Rigidbody>();
@@ -143,6 +156,7 @@ public class ArrowController : MonoBehaviour
                 break;
             // 쿨타임 중
             case DashState.Cooldown:
+                lockTarget = Vector3.zero;
                 break;
         }
     }
@@ -153,6 +167,15 @@ public class ArrowController : MonoBehaviour
         remainDashTime = dashTime;
         remainDashCooldown = dashCooldown;
 
+        if (lockTarget != null && lockTarget != Vector3.zero)
+        {
+            Vector3 direction = transform.position - lockTarget;
+
+            ReCalcInput(direction.normalized);
+
+            // 입력 받은 값 토대로 회전 처리
+            transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+        }
         Time.timeScale = defaultTimeScale;
         currentSensitivity = sensitivity;
         OnDashStart?.Invoke();
@@ -172,9 +195,49 @@ public class ArrowController : MonoBehaviour
             case DashState.Dashing:
                 moveSpeed = dashSpeed * dashChargingTime;
                 break;
+            case DashState.Charging:
+                {
+                    // 대시만 아니면 회전 가능
+                    // 마우스 입력 처리
+                    yaw += Input.GetAxis("Mouse X") * currentSensitivity;
+                    pitch -= Input.GetAxis("Mouse Y") * currentSensitivity;
+                    pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+                    // 입력 받은 값 토대로 회전 처리
+                    transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+
+                    // 만약 자동가속이면 스킵
+                    if (autoAcc)
+                    {
+                        moveSpeed = speed;
+                        break;
+                    }
+                    // 자동 가속 아니면 스무스하게 정지
+                    moveSpeed = Mathf.Lerp(speed, minimumSpeed, curAcceleration);
+                    Debug.DrawLine(rayOrigin.position, rayOrigin.position + (rayOrigin.position - transform.position).normalized * dashSpeed * dashChargingTime, Color.aquamarine);
+                    var hits = Physics.RaycastAll(rayOrigin.position, (rayOrigin.position - transform.position).normalized, dashSpeed * dashChargingTime);
+                    if (hits != null)
+                    {
+                        // 거리(distance)가 가까운 순서대로 정렬
+                        RaycastHit[] sortedHits = hits.OrderBy(h => h.distance).ToArray();
+
+                        foreach(var hit in sortedHits)
+                        {
+                            if(hit.transform.CompareTag("Enemy"))
+                            {
+                                var enemy = hit.transform.GetComponent<EnemyBase>();
+                                if (enemy != null)
+                                {
+                                    lockTarget = hit.transform.position;
+                                    Debug.Log($"적 인식, point {lockTarget}");
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
             case DashState.Cooldown:
             case DashState.None:
-            case DashState.Charging:
                 // 대시만 아니면 회전 가능
                 // 마우스 입력 처리
                 yaw += Input.GetAxis("Mouse X") * currentSensitivity;
@@ -221,5 +284,20 @@ public class ArrowController : MonoBehaviour
                 ChangeDashState(DashState.Dash);
             }
         }
+    }
+
+    private void ReCalcInput(Vector3 direction)
+    {
+        float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+        float pitch = Mathf.Atan2(-direction.y,
+            Mathf.Sqrt(
+                direction.x * direction.x +
+                direction.z * direction.z
+            )
+        ) * Mathf.Rad2Deg;
+
+        this.yaw += yaw;
+        this.pitch += pitch;
     }
 }
