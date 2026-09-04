@@ -221,9 +221,9 @@ public class ArrowController : MonoBehaviour
                         // 거리(distance)가 가까운 순서대로 정렬
                         RaycastHit[] sortedHits = hits.OrderBy(h => h.distance).ToArray();
 
-                        foreach(var hit in sortedHits)
+                        foreach (var hit in sortedHits)
                         {
-                            if(hit.transform.CompareTag("Enemy"))
+                            if (hit.transform.CompareTag("Enemy"))
                             {
                                 var enemy = hit.transform.GetComponent<EnemyBase>();
                                 if (enemy != null)
@@ -286,18 +286,38 @@ public class ArrowController : MonoBehaviour
         }
     }
 
+    public void ReSetYawPitch()
+    {
+        ReCalcInput(transform.forward);
+    }
+
     private void ReCalcInput(Vector3 direction)
     {
-        float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        if (direction.sqrMagnitude < 0.000001f)
+            return;
 
-        float pitch = Mathf.Atan2(-direction.y,
-            Mathf.Sqrt(
+        float horizontalMagnitude =
+            Mathf.Sqrt
+            (
                 direction.x * direction.x +
                 direction.z * direction.z
-            )
-        ) * Mathf.Rad2Deg;
+            );
 
-        this.yaw += yaw;
-        this.pitch += pitch;
+        float targetPitch = Mathf.Atan2(-direction.y, horizontalMagnitude) * Mathf.Rad2Deg;
+
+        // 수직에 너무 가까우면 yaw는 기존 값 유지
+        if (horizontalMagnitude > 0.0001f)
+        {
+            float targetYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+            this.yaw += Mathf.DeltaAngle(this.yaw, targetYaw);
+        }
+
+        this.pitch = Mathf.Clamp
+            (
+            targetPitch,
+            minPitch,
+            maxPitch
+        );
     }
 }

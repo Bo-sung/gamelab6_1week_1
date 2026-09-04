@@ -46,9 +46,6 @@ public class WaveManager : MonoBehaviour
 
     private EnemyPool pool;
 
-    // 현재 wave
-    public int currentWave => waveCount;
-
     public WaveInfo[] WaveInfos => waveInfos;
 
     private void Awake()

@@ -6,10 +6,6 @@ using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
-    public interface IPlayerInfoHandler
-    {
-
-    }
 
     [SerializeField]
     PlayerController controller;
