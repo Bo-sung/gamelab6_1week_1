@@ -62,7 +62,7 @@ public class ArrowFolowCam : MonoBehaviour
     public void Initialize()
     {
         currentDistance = distance;
-        target = arrowCamMode? a_controller.transform : p_controller.transform;
+        target = arrowCamMode ? a_controller.transform : p_controller.transform;
         followPoint = arrowCamMode ? a_controller.transform.position : p_controller.transform.position;
         dashChargeTime = a_controller.ChargeTime;
         a_controller.OnDashStateChanged += HandleDashState;
@@ -83,7 +83,7 @@ public class ArrowFolowCam : MonoBehaviour
 
     void LateUpdate()
     {
-        if(arrowCamMode)
+        if (arrowCamMode)
             HandleCharge();
         HandleCam();
     }

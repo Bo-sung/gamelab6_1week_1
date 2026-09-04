@@ -41,9 +41,6 @@ public class ArrowController : MonoBehaviour
     public float ChargeTime => chargeTime;
     [SerializeField] float chargeJitter = 0.5f;
 
-    [Header("Collision")]
-    [SerializeField] float offControlTime = 0.5f;
-
     [SerializeField]
     Transform rayOrigin;
     [Header("Monitor")]
@@ -53,6 +50,11 @@ public class ArrowController : MonoBehaviour
     public System.Action OnDashStart;
     public System.Action<DashState> OnDashStateChanged;
     public System.Action OnHitEnemy;
+    public System.Action OnHitGround;
+
+    private bool isFlyable = true;
+
+    public bool IsFlyable => isFlyable;
 
     float yaw, pitch = 28f;
 
@@ -284,6 +286,27 @@ public class ArrowController : MonoBehaviour
                 ChangeDashState(DashState.Dash);
             }
         }
+        else if (other.CompareTag("Ground"))
+        {
+            MakeStatic();
+            Debug.Log("땅에 닿음");
+        }
+    }
+
+    private void MakeStatic()
+    {
+        isFlyable = false;
+        rb.isKinematic = true;
+        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+        this.enabled = false;
+    }
+
+    private void MakeDynamic()
+    {
+        isFlyable = true;
+        rb.isKinematic = false;
+        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
+        this.enabled = true;
     }
 
     public void ReSetYawPitch()

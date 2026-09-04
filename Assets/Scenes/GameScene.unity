@@ -286,9 +286,9 @@ GameObject:
   - component: {fileID: 101360834}
   - component: {fileID: 101360833}
   - component: {fileID: 101360832}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(0.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1762,6 +1762,10 @@ PrefabInstance:
       value: Arrow
       objectReference: {fileID: 0}
     - target: {fileID: 4323129568922056268, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323129568922056268, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
       propertyPath: m_TagString
       value: Arrow
       objectReference: {fileID: 0}
@@ -1894,6 +1898,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!4 &819217101 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2350713804113983542, guid: d4b57ac1df5e46449b85f459a7862961, type: 3}
+  m_PrefabInstance: {fileID: 2030728146828242643}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &819217103 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1881011423529628315, guid: d4b57ac1df5e46449b85f459a7862961, type: 3}
@@ -2563,9 +2572,9 @@ GameObject:
   - component: {fileID: 1095586780}
   - component: {fileID: 1095586779}
   - component: {fileID: 1095586778}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-1000.00, 0.00, 0.00)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2978,6 +2987,7 @@ GameObject:
   - component: {fileID: 1268369538}
   - component: {fileID: 1268369537}
   - component: {fileID: 1268369541}
+  - component: {fileID: 1268369542}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -3076,7 +3086,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 63
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3117,7 +3127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArrowFolowCam
   a_controller: {fileID: 189369625}
   p_controller: {fileID: 819217103}
-  arrowCamMode: 0
+  arrowCamMode: 1
   positionGap: {x: 0, y: 0.5, z: 0}
   verticalSmoothTime: 0.12
   distance: 3
@@ -3130,6 +3140,34 @@ MonoBehaviour:
   normalFov: 60
   dashFov: 30
   dashChargeTimer: 0
+--- !u!114 &1268369542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268369535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c13d31d3666e10e40a03a9df2c84eb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitCamera
+  target: {fileID: 819217101}
+  verticalSmoothTime: 0.12
+  playerController: {fileID: 819217103}
+  distance: 7
+  minDistance: 1.2
+  sensitivity: 3
+  minPitch: -20
+  maxPitch: 70
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  probeRadius: 0.35
+  recoverSpeed: 6
+  normalFov: 60
+  dashFov: 78
+  fovLerpSpeed: 12
 --- !u!1 &1328661199
 GameObject:
   m_ObjectHideFlags: 0
@@ -3141,9 +3179,9 @@ GameObject:
   - component: {fileID: 1328661202}
   - component: {fileID: 1328661201}
   - component: {fileID: 1328661200}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-1000.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -4627,9 +4665,9 @@ GameObject:
   - component: {fileID: 1839065472}
   - component: {fileID: 1839065471}
   - component: {fileID: 1839065470}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -5174,6 +5212,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2541544152140770679, guid: d4b57ac1df5e46449b85f459a7862961, type: 3}
+      propertyPath: arrow
+      value: 
+      objectReference: {fileID: 189369625}
     - target: {fileID: 2541544152140770679, guid: d4b57ac1df5e46449b85f459a7862961, type: 3}
       propertyPath: hitVolume
       value: 

@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     PlayerController controller;
+    [SerializeField]
+    ArrowController arrow;
 
     public int hitEffectDuration = 1;
 
