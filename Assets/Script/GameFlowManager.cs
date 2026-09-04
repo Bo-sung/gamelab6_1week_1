@@ -14,9 +14,9 @@ public class GameFlowManager : MonoBehaviour
     private ComboManager comboManager;
 
     [SerializeField]
-    private EnemySpawner spawner;
-    [SerializeField]
-    private WaveEffect waveEffect;
+    private WaveManager spawner;
+    //[SerializeField]
+    //private WaveEffect waveEffect;
 
     [SerializeField]
     private ScoreUI scoreUI;
@@ -52,13 +52,12 @@ public class GameFlowManager : MonoBehaviour
         comboUI.Initialize(comboManager);
         playerUI.Initialize(player);
         spawner.Initialize(player.transform, spawnerUI, comboManager);
-        waveEffect.Initialize(spawner);
+        //waveEffect.Initialize(spawner);
     }
 
     private void GameStart()
     {
         spawner.GameStart();
-
     }
 
     private void GameClear()
@@ -85,7 +84,7 @@ public class GameFlowManager : MonoBehaviour
     private void WaveClear(WaveInfo waveinfo)
     {
         //player.PlayerHeal();
-        waveEffect.OnWaveChanged(waveinfo);
+        //waveEffect.OnWaveChanged(waveinfo);
         spawnerUI.UpdateWaveText(waveinfo.wave);
 
         currentWave = waveinfo.wave;
