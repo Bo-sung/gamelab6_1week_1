@@ -5,8 +5,8 @@ using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
-    public int maxHp = 5;
-    public int curHp = 5;
+    public int maxHp = 5000;
+    public int curHp = 500;
 
     public int hitEffectDuration = 1;
 

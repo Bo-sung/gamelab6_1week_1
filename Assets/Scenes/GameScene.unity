@@ -5132,7 +5132,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Arrow
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6496010445543953197, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3511065536550886281, guid: 924dc4e5d2ba75247a99bd6ba00bfc00, type: 3}
@@ -8069,7 +8070,7 @@ GameObject:
   - component: {fileID: 1268369539}
   - component: {fileID: 1268369538}
   - component: {fileID: 1268369537}
-  - component: {fileID: 1268369536}
+  - component: {fileID: 1268369541}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -8077,32 +8078,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1268369536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268369535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b3dc1f43efc7e4086e8dc81c5625ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ArrowCamera
-  target: {fileID: 189369623}
-  targetRb: {fileID: 189369624}
-  controller: {fileID: 189369625}
-  ChargeVolume: {fileID: 827551566}
-  Offset: {x: 0, y: 1, z: -3}
-  SmoothTime: 0.3
-  ChargingFov: 40
-  DashFov: 70
-  NormalToChargeTime: 0.4
-  ChargeToDashTime: 0.1
-  DashToNormalTime: 0.4
-  InChargeTime: 0.5
-  OutChargeTime: 0.1
-  ChargingSmooth: 0.01
 --- !u!114 &1268369537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8221,6 +8196,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1268369541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268369535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1308ea7c7bced34893ff4bced84d2e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArrowFolowCam
+  controller: {fileID: 189369625}
+  positionGap: {x: 0, y: 0.5, z: 0}
+  verticalSmoothTime: 0.12
+  distance: 3
+  minDistance: 1.2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 9
+  probeRadius: 0.35
+  recoverSpeed: 6
+  normalFov: 60
+  dashFov: 30
+  dashChargeTimer: 0
 --- !u!1 &1281764629
 GameObject:
   m_ObjectHideFlags: 0
@@ -13590,6 +13590,7 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 716427929}
   - {fileID: 449115589}
+  - {fileID: 600295996}
   - {fileID: 2026718}
   - {fileID: 815404762}
   - {fileID: 732939148}
@@ -13602,4 +13603,3 @@ SceneRoots:
   - {fileID: 1261623510}
   - {fileID: 827551567}
   - {fileID: 1821127718}
-  - {fileID: 600295996}

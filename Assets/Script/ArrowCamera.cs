@@ -33,7 +33,7 @@ public class ArrowCamera : MonoBehaviour
 
     [SerializeField]
     private float ChargingSmooth = 0.01f;
-   
+
 
 
     private Camera cam;
@@ -41,8 +41,11 @@ public class ArrowCamera : MonoBehaviour
 
     private float defaultFov;
 
-    private float currentFov { get { return cam.fieldOfView; }
-        set { cam.fieldOfView = value; }}
+    private float currentFov
+    {
+        get { return cam.fieldOfView; }
+        set { cam.fieldOfView = value; }
+    }
 
     private float currentSmooth;
 
@@ -72,11 +75,11 @@ public class ArrowCamera : MonoBehaviour
     {
         if (target == null) return;
 
-    
+
         //cam.fieldOfView = Mathf.Lerp(DashFov, DefaultFov, remainDashCount / RemainDashTime);
         //remainDashCount += Time.deltaTime;
-    
-        
+
+
 
         Vector3 targetWorldPos = target.TransformPoint(Offset);
 
@@ -101,22 +104,22 @@ public class ArrowCamera : MonoBehaviour
 
     private void OnDash()
     {
-        
+
         remainDashCount = 0;
 
     }
 
     private void OnHitEnemy()
     {
- 
+
 
 
     }
 
     private void OnArrowDashStateChanged(ArrowController.DashState state)
     {
-        
-       
+
+
         switch (state)
         {
             //차징상태 진입
@@ -127,7 +130,7 @@ public class ArrowCamera : MonoBehaviour
                 if (volumeChangeCoroutine != null) StopCoroutine(volumeChangeCoroutine);
                 volumeChangeCoroutine = StartCoroutine(VolumeChangeSmooth(true));
 
-                if(smoothValueCoroutine != null) StopCoroutine(smoothValueCoroutine);
+                if (smoothValueCoroutine != null) StopCoroutine(smoothValueCoroutine);
                 smoothValueCoroutine = StartCoroutine(SmoothValueLerp(SmoothTime, ChargingSmooth, NormalToChargeTime));
 
                 break;
@@ -135,20 +138,20 @@ public class ArrowCamera : MonoBehaviour
             case ArrowController.DashState.Dash:
                 Debug.Log("대쉬상태 진입");
                 if (fovChangeCoroutine != null) StopCoroutine(fovChangeCoroutine);
-                fovChangeCoroutine  =  StartCoroutine(FovChangeSmooth(ChargingFov, DashFov, ChargeToDashTime));
+                fovChangeCoroutine = StartCoroutine(FovChangeSmooth(ChargingFov, DashFov, ChargeToDashTime));
 
                 if (volumeChangeCoroutine != null) StopCoroutine(volumeChangeCoroutine);
                 volumeChangeCoroutine = StartCoroutine(VolumeChangeSmooth(false));
 
                 if (smoothValueCoroutine != null) StopCoroutine(smoothValueCoroutine);
                 smoothValueCoroutine = StartCoroutine(SmoothValueLerp(ChargingSmooth, SmoothTime, ChargeToDashTime));
-                
+
                 currentSmooth = SmoothTime;
 
                 break;
             case ArrowController.DashState.Cooldown:
                 if (fovChangeCoroutine != null) StopCoroutine(fovChangeCoroutine);
-                fovChangeCoroutine  =  StartCoroutine(FovChangeSmooth(DashFov, defaultFov, DashToNormalTime));
+                fovChangeCoroutine = StartCoroutine(FovChangeSmooth(DashFov, defaultFov, DashToNormalTime));
                 break;
 
 
@@ -158,14 +161,14 @@ public class ArrowCamera : MonoBehaviour
     IEnumerator FovChangeSmooth(float originFov, float targetFov, float time)
     {
         var count = 0f;
-        while(count < time)
+        while (count < time)
         {
             count += Time.deltaTime;
             currentFov = Mathf.Lerp(originFov, targetFov, count / time);
-            
+
             yield return null;
         }
-        
+
     }
 
     IEnumerator VolumeChangeSmooth(bool charge)
@@ -174,8 +177,8 @@ public class ArrowCamera : MonoBehaviour
         var time = charge ? InChargeTime : OutChargeTime;
         var originWeight = charge ? 0f : 1f;
         var targetWeight = charge ? 1f : 0f;
-        
-        while(count < time)
+
+        while (count < time)
         {
             count += Time.deltaTime;
             ChargeVolume.weight = Mathf.Lerp(originWeight, targetWeight, count / time);
@@ -193,9 +196,4 @@ public class ArrowCamera : MonoBehaviour
             yield return null;
         }
     }
-
-
-
-
-
 }
