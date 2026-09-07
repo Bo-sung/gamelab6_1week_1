@@ -1,10 +1,12 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UIElements;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.GraphicsBuffer;
@@ -21,9 +23,7 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float minimumSpeed = 0f;
     [SerializeField] float acc_per_tick = 1f;
     [SerializeField] bool autoAcc = false;
-    [SerializeField] Transform arrowModel;
-    [SerializeField]
-    float curAcceleration = 0f;
+    [SerializeField] float curAcceleration = 0f;
 
     [Header("Dash")]
     [SerializeField] float dashSpeed = 4f;
@@ -36,32 +36,42 @@ public class ArrowController : MonoBehaviour
     [SerializeField] float dashTimeScale = 0f;
     float defaultTimeScale = 1f;
     [SerializeField] float dashTimeSensitivity = 0f;
-    [SerializeField]
-    float chargeTime = 2f;
+    [SerializeField] float chargeTime = 2f;
     public float ChargeTime => chargeTime;
     [SerializeField] float chargeJitter = 0.5f;
 
-    [SerializeField]
-    Transform rayOrigin;
+    [SerializeField] Transform rayOrigin;
     [Header("Monitor")]
     [SerializeField] float dashChargingTime = 0f;
     [SerializeField] float curSpeed = 0f;
+
+    [Header("Return")]
+    [SerializeField] private NavMeshAgent returningAgent;
+
+    [SerializeField] private float navSearchDistance = 5f;
+    [SerializeField] private float returnRefreshTime = 0.1f;
+    [SerializeField] private float returnArriveDistance = 0.5f;
+
+    [SerializeField] LogRoller effect;
+
+    private Transform returnTarget;
+    private float returnRefreshTimer;
+
+    private Vector3 lastReturnDestination;
+
+    public bool IsReturning { get; private set; }
+
+    public System.Action OnReturnComplete;
 
     public System.Action OnDashStart;
     public System.Action<DashState> OnDashStateChanged;
     public System.Action OnHitEnemy;
     public System.Action OnHitGround;
 
-    private bool isFlyable = true;
-
-    public bool IsFlyable => isFlyable;
-
     float yaw, pitch = 28f;
 
     private float chargeTimer = 0f;
     private Rigidbody rb;
-
-    private Vector3 lockTarget;
 
     public enum DashState
     {
@@ -75,18 +85,38 @@ public class ArrowController : MonoBehaviour
 
     public DashState dashState = DashState.None;
 
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        returningAgent = GetComponent<NavMeshAgent>();
+
+    }
     void Start()
     {
-        transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+        ReSetYawPitch();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    void Update()
     {
+        if (IsReturning)
+        {
+            UpdateReturn();
+            return;
+        }
+
         HandleAcceleration();
         HandleDashLogic();
+    }
+
+    void OnEnable()
+    {
+        MakeDynamic();
+        ReSetYawPitch();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
 
@@ -158,7 +188,6 @@ public class ArrowController : MonoBehaviour
                 break;
             // 쿨타임 중
             case DashState.Cooldown:
-                lockTarget = Vector3.zero;
                 break;
         }
     }
@@ -169,15 +198,6 @@ public class ArrowController : MonoBehaviour
         remainDashTime = dashTime;
         remainDashCooldown = dashCooldown;
 
-        if (lockTarget != null && lockTarget != Vector3.zero)
-        {
-            Vector3 direction = transform.position - lockTarget;
-
-            ReCalcInput(direction.normalized);
-
-            // 입력 받은 값 토대로 회전 처리
-            transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
-        }
         Time.timeScale = defaultTimeScale;
         currentSensitivity = sensitivity;
         OnDashStart?.Invoke();
@@ -190,6 +210,8 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
+        if(IsReturning) 
+            return;
         // 대시 등, 상태 처리
         float moveSpeed = 0;
         switch (dashState)
@@ -216,26 +238,6 @@ public class ArrowController : MonoBehaviour
                     }
                     // 자동 가속 아니면 스무스하게 정지
                     moveSpeed = Mathf.Lerp(speed, minimumSpeed, curAcceleration);
-                    Debug.DrawLine(rayOrigin.position, rayOrigin.position + (rayOrigin.position - transform.position).normalized * dashSpeed * dashChargingTime, Color.aquamarine);
-                    var hits = Physics.RaycastAll(rayOrigin.position, (rayOrigin.position - transform.position).normalized, dashSpeed * dashChargingTime);
-                    if (hits != null)
-                    {
-                        // 거리(distance)가 가까운 순서대로 정렬
-                        RaycastHit[] sortedHits = hits.OrderBy(h => h.distance).ToArray();
-
-                        foreach (var hit in sortedHits)
-                        {
-                            if (hit.transform.CompareTag("Enemy"))
-                            {
-                                var enemy = hit.transform.GetComponent<EnemyBase>();
-                                if (enemy != null)
-                                {
-                                    lockTarget = hit.transform.position;
-                                    Debug.Log($"적 인식, point {lockTarget}");
-                                }
-                            }
-                        }
-                    }
                 }
                 break;
             case DashState.Cooldown:
@@ -248,6 +250,7 @@ public class ArrowController : MonoBehaviour
 
                 // 입력 받은 값 토대로 회전 처리
                 transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+                Debug.Log($"post CalcInput = {transform.rotation}");
 
                 // 만약 자동가속이면 스킵
                 if (autoAcc)
@@ -288,8 +291,10 @@ public class ArrowController : MonoBehaviour
         }
         else if (other.CompareTag("Ground"))
         {
-            MakeStatic();
-            Debug.Log("땅에 닿음");
+            GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+            OnHitGround?.Invoke();
+            if (!IsReturning)
+                this.enabled = false;
         }
     }
 
@@ -297,61 +302,251 @@ public class ArrowController : MonoBehaviour
     {
         if (collision.collider.CompareTag("Ground"))
         {
-            MakeStatic();
-            Debug.Log("땅에 닿음");
+            GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+            OnHitGround?.Invoke();
+            if(!IsReturning)
+                this.enabled = false;
         }
     }
 
     public void MakeStatic()
     {
-        isFlyable = false;
-        rb.isKinematic = true;
         GetComponentInChildren<CapsuleCollider>().isTrigger = false;
         OnHitGround?.Invoke();
-        this.enabled = false;
+        if (!IsReturning)
+            this.enabled = false;
     }
 
     public void MakeDynamic()
     {
-        isFlyable = true;
-        rb.isKinematic = false;
         GetComponentInChildren<CapsuleCollider>().isTrigger = true;
-        ReCalcInput(transform.rotation.eulerAngles);
-        this.enabled = true;
     }
 
     public void ReSetYawPitch()
     {
-        ReCalcInput(transform.forward);
+        var result = CommonUtils.ReCalcInput(transform.forward);
+
+        pitch = result.pitch;
+        yaw = result.yaw;
     }
 
-    private void ReCalcInput(Vector3 direction)
+    public bool StartReturn(Transform target)
     {
-        if (direction.sqrMagnitude < 0.000001f)
-            return;
+        if (target == null)
+            return false;
 
-        float horizontalMagnitude =
-            Mathf.Sqrt
-            (
-                direction.x * direction.x +
-                direction.z * direction.z
-            );
-
-        float targetPitch = Mathf.Atan2(-direction.y, horizontalMagnitude) * Mathf.Rad2Deg;
-
-        // 수직에 너무 가까우면 yaw는 기존 값 유지
-        if (horizontalMagnitude > 0.0001f)
+        if (returningAgent == null)
         {
-            float targetYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-            this.yaw += Mathf.DeltaAngle(this.yaw, targetYaw);
+            Debug.LogError("NavMeshAgent가 없습니다.");
+            return false;
         }
 
-        this.pitch = Mathf.Clamp
-            (
-            targetPitch,
-            minPitch,
-            maxPitch
-        );
+        // 현재 화살 근처에서 이 Agent가 사용할 수 있는 NavMesh 탐색
+        if (!TryGetNavMeshPosition(transform.position, out Vector3 startPosition))
+        {
+            Debug.Log("귀환 시작 가능한 NavMesh가 없음");
+            return false;
+        }
+
+        returnTarget = target;
+        IsReturning = true;
+        effect.enabled = true;
+
+        // 바닥 충돌 후 ArrowController가 꺼진 상태일 수 있음
+        enabled = true;
+
+        // 기존 비행 / 물리 영향 제거
+        if (rb != null)
+        {
+#if UNITY_6000_0_OR_NEWER
+            rb.linearVelocity = Vector3.zero;
+#else
+        rb.velocity = Vector3.zero;
+#endif
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        CapsuleCollider col = GetComponentInChildren<CapsuleCollider>();
+
+        if (col != null)
+            col.isTrigger = true;
+
+        // Agent가 기존 위치에서 켜지는 것을 방지
+        returningAgent.enabled = false;
+
+        // 화살 자체를 NavMesh 위로 이동
+        transform.position = startPosition;
+
+        returningAgent.enabled = true;
+
+        if (!returningAgent.isOnNavMesh)
+        {
+            Debug.LogWarning($"NavMeshAgent 진입 실패 : {startPosition}");
+
+            returningAgent.enabled = false;
+            IsReturning = false;
+            effect.enabled = false;
+            returnTarget = null;
+
+            return false;
+        }
+
+        // 내부 Agent 위치도 명확하게 맞춤
+        returningAgent.Warp(startPosition);
+
+        returningAgent.isStopped = false;
+        returningAgent.ResetPath();
+
+        // 바로 목적지 계산
+        returnRefreshTimer = 0f;
+
+        if (!RefreshReturnDestination())
+        {
+            CancelReturn();
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool TryGetNavMeshPosition(Vector3 worldPosition, out Vector3 navPosition)
+    {
+        NavMeshQueryFilter filter = new NavMeshQueryFilter
+        {
+            agentTypeID = returningAgent.agentTypeID,
+            areaMask = returningAgent.areaMask
+        };
+
+        if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit, navSearchDistance, filter))
+        {
+            navPosition = hit.position;
+            return true;
+        } else if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit2, navSearchDistance * 10, filter))
+        {
+            navPosition = hit2.position;
+            return true;
+        } else if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit3, navSearchDistance * 40, filter))
+        {
+            navPosition = hit3.position;
+            return true;
+        }
+
+        navPosition = default;
+        return false;
+    }
+
+    private void UpdateReturn()
+    {
+        if (!IsReturning)
+            return;
+
+        if (returnTarget == null)
+        {
+            CancelReturn();
+            return;
+        }
+
+        if (!returningAgent.enabled || !returningAgent.isOnNavMesh)
+        {
+            CancelReturn();
+            return;
+        }
+
+        returnRefreshTimer -= Time.deltaTime;
+
+        if (returnRefreshTimer <= 0f)
+        {
+            RefreshReturnDestination();
+
+            returnRefreshTimer = returnRefreshTime;
+        }
+
+        // 경로 계산 중에는 도착 판정하지 않음
+        if (returningAgent.pathPending)
+            return;
+
+        Vector3 delta = lastReturnDestination - returningAgent.transform.position;
+
+        delta.y = 0f;
+
+        if (delta.sqrMagnitude <= returnArriveDistance * returnArriveDistance)
+        {
+            CompleteReturn();
+        }
+
+        Debug.Log($"NavDestination = {returningAgent.destination}");
+    }
+
+    private bool RefreshReturnDestination()
+    {
+        if (returnTarget == null)
+            return false;
+
+        // 플레이어 Transform 자체가 NavMesh 위에 있을 필요 없음.
+        // 플레이어 근처의 NavMesh 점을 목적지로 사용.
+        if (!TryGetNavMeshPosition(returnTarget.position, out Vector3 destination))
+        {
+            Debug.LogWarning($"귀환 목적지 근처 NavMesh 없음 : " + $"{returnTarget.position}");
+
+            return false;
+        }
+
+        lastReturnDestination = destination;
+
+        return returningAgent.SetDestination(destination);
+    }
+
+    private void CompleteReturn()
+    {
+        if (!IsReturning)
+            return;
+
+        IsReturning = false;
+        effect.enabled = false;
+        returnTarget = null;
+
+        if (returningAgent != null && returningAgent.enabled)
+        {
+            if (returningAgent.isOnNavMesh)
+            {
+                returningAgent.isStopped = true;
+                returningAgent.ResetPath();
+            }
+
+            returningAgent.enabled = false;
+        }
+
+        OnReturnComplete?.Invoke();
+    }
+
+    public void CancelReturn()
+    {
+        IsReturning = false;
+        effect.enabled = false;
+        returnTarget = null;
+
+        if (returningAgent == null)
+            return;
+
+        if (returningAgent.enabled)
+        {
+            if (returningAgent.isOnNavMesh)
+            {
+                returningAgent.isStopped = true;
+                returningAgent.ResetPath();
+            }
+
+            returningAgent.enabled = false;
+        }
+    }
+
+    public void FinishReturn()
+    {
+        if (!IsReturning)
+            return;
+
+        CompleteReturn();
     }
 }

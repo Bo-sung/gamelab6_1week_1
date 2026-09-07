@@ -16,7 +16,7 @@ public class Enemy_Basic : EnemyBase
     protected override void OnDamage()
     {
         ApplyScore(10);
-        this.gameObject.SetActive(false);
+        Die();
     }
 
     protected override void Init()

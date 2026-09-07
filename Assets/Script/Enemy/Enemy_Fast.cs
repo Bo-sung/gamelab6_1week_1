@@ -9,7 +9,7 @@ public class Enemy_Fast : EnemyBase
     {
         SetData(target, scoreHandler, miniMapUI);
         this.speed = speed;
-        navMeshAgent.speed = 3.5f * 5f;
+        navMeshAgent.speed = 3.5f * 10f;
     }
 
     protected override void Movement()
@@ -23,7 +23,7 @@ public class Enemy_Fast : EnemyBase
     protected override void OnDamage()
     {
         ApplyScore(20);
-        this.gameObject.SetActive(false);
+        Die();
     }
 
     protected override void Init()

@@ -34,6 +34,8 @@ public abstract class EnemyBase : MonoBehaviour, IMapElement
     [SerializeField]
     float markerSize = 1.0f;
 
+    public System.Action OnDie;
+
 
     private void Awake()
     {
@@ -47,7 +49,7 @@ public abstract class EnemyBase : MonoBehaviour, IMapElement
 
     protected virtual void OnDisable()
     {
-        
+
     }
 
     protected virtual void OnEnable()
@@ -74,6 +76,12 @@ public abstract class EnemyBase : MonoBehaviour, IMapElement
     protected abstract void OnHit(Collider other);
     protected abstract void Movement();
     protected abstract void OnDamage();
+
+    protected virtual void Die()
+    {
+        this.gameObject.SetActive(false);
+        OnDie?.Invoke();
+    }
 
     protected virtual void ApplyScore(int score)
     {

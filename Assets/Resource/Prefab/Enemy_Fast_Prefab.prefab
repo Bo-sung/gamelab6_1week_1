@@ -101,8 +101,8 @@ GameObject:
   - component: {fileID: 88808338498897335}
   - component: {fileID: 3543762527068552913}
   - component: {fileID: 2277221811087129870}
-  - component: {fileID: 6495405255522883913}
   - component: {fileID: 1847292343569103007}
+  - component: {fileID: 6495405255522883913}
   - component: {fileID: 1875991474246082399}
   m_Layer: 0
   m_Name: Enemy_Fast_Prefab
@@ -184,6 +184,24 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1847292343569103007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767582983130423874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bad159d675f8fd47918ac6a3baf9ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Fast
+  target: {fileID: 0}
+  speed: 0.01
+  maxDistance: 2
+  markerColor: {r: 0.11764707, g: 0.16078432, b: 0.7960785, a: 1}
+  markerSize: 1
+  navMeshAgent: {fileID: 1875991474246082399}
 --- !u!136 &6495405255522883913
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -207,24 +225,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1847292343569103007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7767582983130423874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bad159d675f8fd47918ac6a3baf9ee7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Fast
-  target: {fileID: 0}
-  speed: 0.01
-  maxDistance: 2
-  markerColor: {r: 0.11764707, g: 0.16078432, b: 0.7960785, a: 1}
-  markerSize: 1
-  navMeshAgent: {fileID: 1875991474246082399}
 --- !u!195 &1875991474246082399
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -235,7 +235,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2239253852358769522}
+  - component: {fileID: 4735869255203661154}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -25,13 +26,29 @@ Transform:
   m_GameObject: {fileID: 1040442327419846813}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.25, z: 1.0000001}
+  m_LocalPosition: {x: 0, y: 0, z: 1.0000001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1125067179941861331}
   m_Father: {fileID: 3511065536550886281}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &4735869255203661154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040442327419846813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a49d3750fd33249bc99b14b7c1fcdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  originalPos: {x: 0, y: 0, z: 1}
+  originalRot: {x: 90, y: 0, z: 0}
+  animPos: {x: 0, y: 0, z: 0}
+  animRot: {x: 0, y: 0, z: 90}
 --- !u!1 &1062802347450417293
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +77,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: -0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 2.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1125067179941861331}
@@ -148,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 1208907130198961302}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -174,7 +191,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.25
-  m_Center: {x: 0, y: -0.25, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4323129568922056268
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,6 +203,7 @@ GameObject:
   - component: {fileID: 3511065536550886281}
   - component: {fileID: 338702948807156229}
   - component: {fileID: 8492202590270143577}
+  - component: {fileID: 4751620481386759099}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Arrow
@@ -232,7 +250,6 @@ MonoBehaviour:
   minimumSpeed: 0
   acc_per_tick: 1
   autoAcc: 1
-  arrowModel: {fileID: 8706349895964896971}
   curAcceleration: 0
   dashSpeed: 30
   dashTime: 0.5
@@ -244,6 +261,10 @@ MonoBehaviour:
   rayOrigin: {fileID: 3449413891584933933}
   dashChargingTime: 0
   curSpeed: 0
+  returningAgent: {fileID: 0}
+  navSearchDistance: 5
+  returnRefreshTime: 0.1
+  returnArriveDistance: 0.5
   dashState: 0
 --- !u!54 &8492202590270143577
 Rigidbody:
@@ -272,6 +293,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!195 &4751620481386759099
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4323129568922056268}
+  m_Enabled: 0
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5181867294023351972
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1072869487267800504
 Transform:
   m_ObjectHideFlags: 0
@@ -298,7 +341,7 @@ Transform:
   m_GameObject: {fileID: 5181867294023351972}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.251, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +500,7 @@ Transform:
   m_GameObject: {fileID: 6542845484009248964}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 1.25}
+  m_LocalPosition: {x: 0, y: 0, z: 1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -488,7 +531,7 @@ Transform:
   m_GameObject: {fileID: 6685122768407368932}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -547,6 +590,6 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.25
-  m_Height: 2
+  m_Height: 5
   m_Direction: 2
-  m_Center: {x: 0, y: -0.25, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}

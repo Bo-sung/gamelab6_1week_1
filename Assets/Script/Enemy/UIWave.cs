@@ -28,6 +28,11 @@ public class UIWave : MonoBehaviour, IWaveUI
         waveTimer = waveInterval + (info.enemySpawnTable.Length * 0.5f);
     }
 
+    public void Refresh()
+    {
+
+    }
+
     void Start()
     {
         waveTimer = waveInterval;

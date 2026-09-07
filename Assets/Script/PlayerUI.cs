@@ -1,43 +1,66 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerUI : MonoBehaviour, GameScene.IHealthUI
 {
-    private float health;
-    private float maxHealth;
     [SerializeField]
     private GameObject prefab;
 
     [SerializeField]
     Transform pool;
 
-    [SerializeField] 
-    private List<GameObject> playerHPObjects;
+    [SerializeField]
+    private List<GameObject> playerHPObjects = new List<GameObject>();
 
-    public void SetData(int maxHealth)
+    GameScene.IHealthUI.Presenterbase presenter;
+
+    public void Initialize(GameScene.IHealthUI.Presenterbase _presenter)
     {
-        this.maxHealth = maxHealth;
+        this.presenter = _presenter;
     }
 
-    public void ApplyHealth(int health)
+    public void Refresh()
     {
-        this.health += health;
-        if(health > 0)
+        int healthRemain = Mathf.Clamp(presenter.GetHealth(), 0, presenter.GetMaxHealth());
+        while (playerHPObjects.Count < healthRemain)
         {
-            var obj = Instantiate(prefab, pool);
-            obj.SetActive(true);
-            playerHPObjects.Add(obj);
+            AddHPObj();
         }
-        else
+
+        for (int i = 0; i < playerHPObjects.Count; i++)
         {
-            var temp = playerHPObjects[playerHPObjects.Count - 1];
-            playerHPObjects.Remove(temp);
-            Destroy(temp);
+            playerHPObjects[i].SetActive(i < healthRemain);
         }
     }
-
-    public void SetHealth(int health)
+    void AddHPObj()
     {
-        this.health = health;
+        var obj = Instantiate(prefab, pool);
+        obj.SetActive(true);
+        playerHPObjects.Add(obj);
+    }
+
+    void EnableHPObj(int index)
+    {
+        if (playerHPObjects.Count - 1 > index)
+            return; // 인덱스 오버
+
+        playerHPObjects[index].SetActive(false);
+    }
+
+    void DisableHPObj(int index)
+    {
+        if (playerHPObjects.Count - 1 > index)
+            return; // 인덱스 오버
+
+        playerHPObjects[index].SetActive(false);
+    }
+
+    void DestroyHPObj(int index)
+    {
+        if (playerHPObjects.Count - 1 > index)
+            return; // 인덱스 오버
+
+        playerHPObjects.RemoveAt(index);
     }
 }

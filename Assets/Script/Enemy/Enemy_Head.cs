@@ -13,7 +13,6 @@ public class Enemy_Head : EnemyBase
     private NavMeshAgent navMeshAgent;
 
     protected int hp = 2;
-    private bool isPassing = false;
 
     [SerializeField]
     private Material originHeadMat;
@@ -29,6 +28,10 @@ public class Enemy_Head : EnemyBase
     [SerializeField]
     private MeshRenderer bodyRender;
 
+    private float blinkTime = 2f;
+    private float blinkTimer = 0f;
+    private bool blinkEnabled = false;
+
     public void SetData(Transform target, IScoreHandler scoreHandler, GameScene.IMiniMap miniMapUI, int hp)
     {
         SetData(target, scoreHandler, miniMapUI);
@@ -41,6 +44,13 @@ public class Enemy_Head : EnemyBase
             navMeshAgent.destination = target.position;
         else
             navMeshAgent.destination = transform.position;
+
+        if (blinkTimer < 0f && blinkEnabled)
+        {
+            blinkEnabled = false;
+            headRender.sharedMaterial = originHeadMat;
+            bodyRender.sharedMaterial = originBodyMat;
+        }
     }
 
     public void OnChildTriggerEnter(Collider other, string childTag)
@@ -52,9 +62,10 @@ public class Enemy_Head : EnemyBase
         else if (childTag == "Body" && other.CompareTag("Arrow"))
         {
             OnDamage();
-            if(this.enabled)
-                StartCoroutine(Blink());
-            isPassing = true;
+            blinkEnabled = true;
+            blinkTimer = blinkTime;
+            headRender.sharedMaterial = blinkHeadMat;
+            bodyRender.sharedMaterial = blinkBodyMat;
         }
     }
 
@@ -74,24 +85,24 @@ public class Enemy_Head : EnemyBase
     {
         if (childTag == "Body")
         {
-            isPassing = false;
+
         }
     }
 
     protected override void OnDamage()
     {
         hp--;
+        ApplyScore(10);
         if (hp <= 0)
         {
-            ApplyScore(20);
-            this.gameObject.SetActive(false);
+            Die();
         }
     }
 
     protected void OnHeadshot()
     {
         ApplyScore(50);
-        this.gameObject.SetActive(false);
+        Die();
     }
 
     protected override void Init()
@@ -100,17 +111,5 @@ public class Enemy_Head : EnemyBase
 
     protected override void OnHit(Collider other)
     {
-    }
-
-    private IEnumerator Blink()
-    {
-
-        headRender.sharedMaterial = blinkHeadMat;
-        bodyRender.sharedMaterial = blinkBodyMat;
-
-        yield return new WaitForSeconds(2f);
-
-        headRender.sharedMaterial = originHeadMat;
-        bodyRender.sharedMaterial = originBodyMat;
     }
 }

@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
     public System.Action OnSlamImpact;   // 내리찍기로 바닥에 닿은 순간 (충격파용 훅)
     public static float BaseTimeScale { get; private set; } = 1f;
 
+    public bool isAiming = false;
+
     CharacterController cc;
     Vector3 velocity;                 // y만 중력 누적, xz는 매 프레임 계산
     Vector3 dashDirection;
@@ -249,13 +251,22 @@ public class PlayerController : MonoBehaviour
     {
         if (horizontalVelocity.sqrMagnitude > 0.01f)
         {
+            // 이동 방향 자체는 계속 기억
             lastMoveDirection = horizontalVelocity.normalized;
-            Quaternion targetRot = Quaternion.LookRotation(lastMoveDirection);
-            transform.rotation = targetRot; //Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+
+            // 조준 중이 아닐 때만 이동 방향으로 회전
+            if (!isAiming)
+            {
+                Quaternion targetRot =
+                    Quaternion.LookRotation(lastMoveDirection);
+
+                transform.rotation = targetRot;
+            }
         }
 
         Vector3 motion = horizontalVelocity;
         motion.y = velocity.y;
+
         cc.Move(motion * Time.deltaTime);
     }
 

@@ -18,7 +18,7 @@ public class Enemy_Nav : EnemyBase
     protected override void OnDamage()
     {
         ApplyScore(10);
-        this.gameObject.SetActive(false);
+        Die();
     }
 
     protected override void Init()

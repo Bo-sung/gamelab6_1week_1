@@ -30,7 +30,7 @@ public class Enemy_Tele : EnemyBase
     protected override void OnDamage()
     {
         ApplyScore(40);
-        this.gameObject.SetActive(false);
+        Die();
     }
 
     private void Dash()

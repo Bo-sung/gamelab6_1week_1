@@ -33,6 +33,11 @@ public class UIMiniMap : MonoBehaviour, IMiniMap
         UpdateMapPositions();
     }
 
+    public void Refresh()
+    {
+        UpdateMapPositions();
+    }
+
     private void UpdateMapPositions()
     {
         if (centerTarget == null)

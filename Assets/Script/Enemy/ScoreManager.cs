@@ -18,6 +18,8 @@ public class ScoreManager : MonoBehaviour, IScoreHandler
     private double comboDuration;
     private DateTime lastScoreTime = DateTime.Now;
 
+    public System.Action OnScoreChanged;
+
     public float GaugeVal => (float)(1 - (lastScoreTime - DateTime.Now).Milliseconds / comboDuration);
 
     public void ApplyScore(int score)
@@ -31,6 +33,8 @@ public class ScoreManager : MonoBehaviour, IScoreHandler
 
         this.maxCombo = Math.Max(combo, maxCombo);
         this.lastScoreTime = DateTime.Now;
+
+        OnScoreChanged?.Invoke();
     }
 
     public int GetScore()
@@ -41,6 +45,7 @@ public class ScoreManager : MonoBehaviour, IScoreHandler
     public void SetScore(int score)
     {
         this.score = score;
+        OnScoreChanged?.Invoke();
     }
 }
 

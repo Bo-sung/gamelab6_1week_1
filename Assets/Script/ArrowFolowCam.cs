@@ -8,11 +8,6 @@ public class ArrowFolowCam : MonoBehaviour
     [SerializeField]
     private ArrowController a_controller;
     [SerializeField]
-    private PlayerController p_controller;
-
-    [SerializeField]
-    private bool arrowCamMode = false;
-    [SerializeField]
     private Vector3 positionGap;
     [SerializeField]
     float verticalSmoothTime = 0.12f;
@@ -62,8 +57,8 @@ public class ArrowFolowCam : MonoBehaviour
     public void Initialize()
     {
         currentDistance = distance;
-        target = arrowCamMode ? a_controller.transform : p_controller.transform;
-        followPoint = arrowCamMode ? a_controller.transform.position : p_controller.transform.position;
+        target = a_controller.transform;
+        followPoint = a_controller.transform.position;
         dashChargeTime = a_controller.ChargeTime;
         a_controller.OnDashStateChanged += HandleDashState;
     }
@@ -83,8 +78,7 @@ public class ArrowFolowCam : MonoBehaviour
 
     void LateUpdate()
     {
-        if (arrowCamMode)
-            HandleCharge();
+        HandleCharge();
         HandleCam();
     }
 
@@ -101,10 +95,11 @@ public class ArrowFolowCam : MonoBehaviour
 
     private void HandleCam()
     {
+        float DampDist = Vector3.Distance(followPoint, target.position);
         // 카메라 댐핑
-        followPoint.x = Mathf.SmoothDamp(followPoint.x, target.position.x + positionGap.x, ref xVelocity, verticalSmoothTime);
-        followPoint.z = Mathf.SmoothDamp(followPoint.z, target.position.z + positionGap.z, ref zVelocity, verticalSmoothTime);
-        followPoint.y = Mathf.SmoothDamp(followPoint.y, target.position.y + positionGap.y, ref yVelocity, verticalSmoothTime);
+        followPoint.x = Mathf.SmoothDamp(followPoint.x, target.position.x + positionGap.x, ref xVelocity, DampDist > 100f ? verticalSmoothTime : 0.0005f);
+        followPoint.z = Mathf.SmoothDamp(followPoint.z, target.position.z + positionGap.z, ref zVelocity, DampDist > 100f ? verticalSmoothTime : 0.0005f);
+        followPoint.y = Mathf.SmoothDamp(followPoint.y, target.position.y + positionGap.y, ref yVelocity, DampDist > 100f ? verticalSmoothTime : 0.0005f);
         var dir = a_controller.transform.rotation * Vector3.back;
 
         // 벽관통 방지
