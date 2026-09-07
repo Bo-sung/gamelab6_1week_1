@@ -222,6 +222,8 @@ MonoBehaviour:
   target: {fileID: 0}
   speed: 0.01
   maxDistance: 2
+  markerColor: {r: 0.11764707, g: 0.16078432, b: 0.7960785, a: 1}
+  markerSize: 1
   navMeshAgent: {fileID: 1875991474246082399}
 --- !u!195 &1875991474246082399
 NavMeshAgent:

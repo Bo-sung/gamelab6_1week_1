@@ -15,8 +15,6 @@ public class GameFlowManager : MonoBehaviour
 
     [SerializeField]
     private WaveManager spawner;
-    //[SerializeField]
-    //private WaveEffect waveEffect;
 
     [SerializeField]
     private ScoreUI scoreUI;
@@ -50,21 +48,16 @@ public class GameFlowManager : MonoBehaviour
         comboManager.Initialize(controller);
         scoreUI.Initialize(comboManager);
         comboUI.Initialize(comboManager);
-        playerUI.Initialize(player);
-        spawner.Initialize(player.transform, spawnerUI, comboManager);
-        //waveEffect.Initialize(spawner);
     }
 
     private void GameStart()
     {
-        spawner.GameStart();
     }
 
     private void GameClear()
     {
         player.gameObject.SetActive(false);
         arrow.SetActive(false);
-        spawner.GameOver();
         gameClearUI.StartGameOverUI(comboManager.GetScore() + 100*currentWave);
         Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
         Cursor.visible = true;
@@ -74,7 +67,6 @@ public class GameFlowManager : MonoBehaviour
     {
         player.gameObject.SetActive(false);
         arrow.SetActive(false);
-        spawner.GameOver();
         gameOverUI.StartGameOverUI(comboManager.GetScore() + 100 * currentWave);
         Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
         Cursor.visible = true;

@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
         {
             lastMoveDirection = horizontalVelocity.normalized;
             Quaternion targetRot = Quaternion.LookRotation(lastMoveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            transform.rotation = targetRot; //Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
         }
 
         Vector3 motion = horizontalVelocity;

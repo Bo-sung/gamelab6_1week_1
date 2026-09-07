@@ -41,7 +41,5 @@ public class ScoreUI : MonoBehaviour
     {
         //UI 갱신j
         txt_Score.text = SCORE_STR + scoreHandler?.GetScore();
-        txt_Combo.text = COMBO_STR + scoreHandler?.GetCombo();
-        txt_MaxCombo.text = MAX_COMBO_STR + scoreHandler?.GetMaxCombo();
     }
 }

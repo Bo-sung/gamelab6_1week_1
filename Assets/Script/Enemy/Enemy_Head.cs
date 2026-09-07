@@ -29,9 +29,9 @@ public class Enemy_Head : EnemyBase
     [SerializeField]
     private MeshRenderer bodyRender;
 
-    public void SetData(Transform target, IScoreHandler scoreHandler, int hp)
+    public void SetData(Transform target, IScoreHandler scoreHandler, GameScene.IMiniMap miniMapUI, int hp)
     {
-        SetData(target, scoreHandler);
+        SetData(target, scoreHandler, miniMapUI);
         this.hp = hp;
     }
 
@@ -52,19 +52,20 @@ public class Enemy_Head : EnemyBase
         else if (childTag == "Body" && other.CompareTag("Arrow"))
         {
             OnDamage();
-            StartCoroutine(Blink());
+            if(this.enabled)
+                StartCoroutine(Blink());
             isPassing = true;
         }
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         StopAllCoroutines();
         headRender.sharedMaterial = originHeadMat;
         bodyRender.sharedMaterial = originBodyMat;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         hp = 2;
     }

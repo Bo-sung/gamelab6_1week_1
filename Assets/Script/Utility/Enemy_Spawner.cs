@@ -16,9 +16,9 @@ public class Enemy_Spawner : MonoBehaviour
     [SerializeField]
     private GameObject spawnPointEffect;
 
-    private void Awake()
+    public void Initialize(EnemyPool pool)
     {
-        pool = GetComponent<EnemyPool>();
+        this.pool = pool;
         spawnPointEffect.SetActive(false);
     }
 

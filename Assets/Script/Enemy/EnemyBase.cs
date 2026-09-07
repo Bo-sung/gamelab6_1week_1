@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameScene;
 
 
 /// <summary>
@@ -7,20 +8,18 @@ using UnityEngine;
 public interface IScoreHandler
 {
     void ApplyScore(int score);
-    int GetCombo();
-    int GetMaxCombo();
-    int GetComboLevel();
     int GetScore();
-    float GetComboRemainTime();
-    float GetMaxComboRemainTime();
 }
 
-public abstract class EnemyBase : MonoBehaviour
+
+public abstract class EnemyBase : MonoBehaviour, IMapElement
 {
     [SerializeField]
     protected Transform target;
 
     protected IScoreHandler scoreHandler;
+
+    protected IMiniMap miniMapUI;
 
     [SerializeField]
     // 접근 속도
@@ -28,6 +27,12 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField]
     // 최대 접근 거리
     protected float maxDistance = 2;
+
+    [SerializeField]
+    Color markerColor = Color.green;
+
+    [SerializeField]
+    float markerSize = 1.0f;
 
 
     private void Awake()
@@ -40,7 +45,17 @@ public abstract class EnemyBase : MonoBehaviour
         Movement();
     }
 
-    public void SetData(Transform target, IScoreHandler scoreHandler)
+    protected virtual void OnDisable()
+    {
+        
+    }
+
+    protected virtual void OnEnable()
+    {
+
+    }
+
+    public void SetData(Transform target, IScoreHandler scoreHandler, IMiniMap miniMapUI)
     {
         this.scoreHandler = scoreHandler;
         this.target = target;
@@ -70,5 +85,17 @@ public abstract class EnemyBase : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    //public abstract void OnTargeted();
+    public Color GetMarkercolor() => markerColor;
+
+    public float GetMarkerSize() => markerSize;
+
+    Transform IMapElement.GetTransform()
+    {
+        return transform;
+    }
+
+    bool IMapElement.IsCenterTarget()
+    {
+        return false;
+    }
 }

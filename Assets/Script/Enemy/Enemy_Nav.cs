@@ -6,6 +6,7 @@ public class Enemy_Nav : EnemyBase
 {
     [SerializeField]
     private NavMeshAgent navMeshAgent;
+
     protected override void Movement()
     {
         if (Vector3.Distance(this.transform.position, target.position) >= maxDistance)
@@ -25,9 +26,9 @@ public class Enemy_Nav : EnemyBase
 
     }
 
-    public void SetData(Transform target, IScoreHandler scoreHandler, float speed)
+    public void SetData(Transform target, IScoreHandler scoreHandler, GameScene.IMiniMap miniMapUI, float speed)
     {
-        SetData(target, scoreHandler);
+        SetData(target, scoreHandler, miniMapUI);
         this.speed = speed;
     }
 

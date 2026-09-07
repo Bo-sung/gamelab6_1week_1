@@ -5,9 +5,9 @@ public class Enemy_Fast : EnemyBase
 {
     [SerializeField]
     private NavMeshAgent navMeshAgent;
-    public void SetData(Transform target, IScoreHandler scoreHandler, float speed)
+    public void SetData(Transform target, IScoreHandler scoreHandler, GameScene.IMiniMap miniMapUI, float speed)
     {
-        SetData(target, scoreHandler);
+        SetData(target, scoreHandler, miniMapUI);
         this.speed = speed;
         navMeshAgent.speed = 3.5f * 5f;
     }

@@ -38,15 +38,5 @@ public class ComboUI : MonoBehaviour
     
     void UpdateComboSlider()
     {
-        int curLevel = scoreHandler.GetComboLevel();
-        if (curLevel >= comboColors.Count)
-        {
-            comboFill.color = comboColors[comboColors.Count - 1];
-        }
-        else
-        {
-             comboFill.color = comboColors[curLevel];
-        }
-        comboSlider.value = scoreHandler.GetComboRemainTime() / scoreHandler.GetMaxComboRemainTime();
     }
 }

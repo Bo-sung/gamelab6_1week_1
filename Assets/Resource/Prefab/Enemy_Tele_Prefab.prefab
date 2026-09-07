@@ -221,6 +221,8 @@ MonoBehaviour:
   target: {fileID: 0}
   speed: 0.1
   maxDistance: 2
+  markerColor: {r: 0.54509807, g: 0.11764707, b: 0.7686275, a: 1}
+  markerSize: 1
   dashInterval: 3
   minDashDistance: 5
   maxDashDistance: 10

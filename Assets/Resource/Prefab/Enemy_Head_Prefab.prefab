@@ -394,6 +394,8 @@ MonoBehaviour:
   target: {fileID: 0}
   speed: 0.012
   maxDistance: 2
+  markerColor: {r: 0.654902, g: 0.10588236, b: 0.10980393, a: 1}
+  markerSize: 1
   head: {fileID: 5376347132350404944}
   navMeshAgent: {fileID: 3655652594510425793}
   originHeadMat: {fileID: 2100000, guid: 390d6d53198c54c4890cfdaf638c47f3, type: 2}

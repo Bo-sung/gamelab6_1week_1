@@ -142,6 +142,8 @@ MonoBehaviour:
   target: {fileID: 0}
   speed: 0.01
   maxDistance: 2
+  markerColor: {r: 0.7607844, g: 0.77647066, b: 0.8000001, a: 1}
+  markerSize: 1
   navMeshAgent: {fileID: 7194560493018393604}
 --- !u!33 &3543762527068552913
 MeshFilter:

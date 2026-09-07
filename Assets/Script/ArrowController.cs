@@ -276,7 +276,7 @@ public class ArrowController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Body") || other.CompareTag("Head") || other.CompareTag("Enemy"))
         {
@@ -293,19 +293,30 @@ public class ArrowController : MonoBehaviour
         }
     }
 
-    private void MakeStatic()
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            MakeStatic();
+            Debug.Log("땅에 닿음");
+        }
+    }
+
+    public void MakeStatic()
     {
         isFlyable = false;
         rb.isKinematic = true;
         GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+        OnHitGround?.Invoke();
         this.enabled = false;
     }
 
-    private void MakeDynamic()
+    public void MakeDynamic()
     {
         isFlyable = true;
         rb.isKinematic = false;
         GetComponentInChildren<CapsuleCollider>().isTrigger = true;
+        ReCalcInput(transform.rotation.eulerAngles);
         this.enabled = true;
     }
 
