@@ -11,6 +11,9 @@ public class EnemyPool : MonoBehaviour
 
     private List<List<GameObject>> pools;
 
+    public bool HasActiveEnemies => pools != null &&
+        pools.Exists(pool => pool.Exists(enemy => enemy.activeInHierarchy));
+
     private Transform target;
     private IScoreHandler scoreHandler;
 

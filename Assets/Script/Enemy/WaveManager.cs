@@ -89,7 +89,11 @@ public class WaveManager : MonoBehaviour
         }
 
         if (waveCount >= WaveInfos.Length)
+        {
+            while (pool.HasActiveEnemies)
+                yield return null;
             OnWaveEmpty?.Invoke();
+        }
         else
             OnWaveClear?.Invoke(waveInfos[waveCount++]);
     }
@@ -97,6 +101,7 @@ public class WaveManager : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Game Start");
+        waveCount = 1;
         Wave(waveInfos[0]);
     }
 

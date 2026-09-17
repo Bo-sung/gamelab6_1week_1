@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
     private Volume hitVolume;
 
     private Coroutine hitEffectCoroutine;
+    private bool gameplayStopped;
 
     void Awake()
     {
@@ -108,6 +109,8 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (gameplayStopped)
+            return;
         if (other.CompareTag("Enemy"))
         {
             if (other.TryGetComponent<EnemyBase>(out var enemy))
@@ -122,6 +125,8 @@ public class Player : MonoBehaviour
 
     private void OnHit(EnemyBase enemy)
     {
+        if (gameplayStopped)
+            return;
         statManager.ApplyHP(-1);
 
         if (hitEffectCoroutine != null)
@@ -144,6 +149,17 @@ public class Player : MonoBehaviour
         }
         hitVolume.weight = 0f;
         hitEffectCoroutine = null;
+    }
+
+    public void StopGameplay()
+    {
+        gameplayStopped = true;
+        enabled = false;
+        playerController.enabled = false;
+        arrowController.enabled = false;
+        arrowController.StopAllCoroutines();
+        arrowCam.enabled = false;
+        playerCam.enabled = false;
     }
 
     private void HandleInput()

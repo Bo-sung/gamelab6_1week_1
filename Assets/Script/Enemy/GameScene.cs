@@ -1,7 +1,4 @@
-using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static GameScene;
 
 public class UIHealth_Presenter : IHealthUI.Presenterbase
@@ -97,6 +94,7 @@ public class GameScene : MonoBehaviour, IStatManager
     IWaveUI waveUI;
     IGameResultUI gameResultUI;
     IMiniMap miniMap;
+    private bool gameEnded;
 
     // 매니저 객체
     WaveManager m_waveManager;
@@ -163,6 +161,7 @@ public class GameScene : MonoBehaviour, IStatManager
         m_waveManager.OnWaveClear += waveUI.UpdateData;
 
         m_waveManager.OnWaveStart += Handle_WaveStart;
+        m_waveManager.OnWaveEmpty += HandleGameClear;
         m_scoreManager.OnScoreChanged += HandleOnScore;
     }
 
@@ -178,6 +177,8 @@ public class GameScene : MonoBehaviour, IStatManager
 
     private void Handle_WaveClear(WaveInfo info)
     {
+        if (gameEnded)
+            return;
         ApplyHP(1);
         waveManager.NextWave(info);
         OnWaveClear?.Invoke(info);
@@ -190,9 +191,29 @@ public class GameScene : MonoBehaviour, IStatManager
 
     public void SetHP(int _hp)
     {
+        if (gameEnded)
+            return;
         curPlayerHealth = Mathf.Clamp(_hp, 0, maxPlayerHealth);
         healthUI?.Refresh();
         OnHPChanged?.Invoke();
+        if (curPlayerHealth == 0)
+            EndGame(false);
+    }
+
+    private void HandleGameClear() => EndGame(true);
+
+    private void EndGame(bool success)
+    {
+        if (gameEnded)
+            return;
+        gameEnded = true;
+        waveManager.StopAllCoroutines();
+        player.StopGameplay();
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        gameResultUI?.UpdateData(scoreManager.GetScore(), success ? "GAME CLEAR" : "GAME OVER");
+        gameResultUI?.Refresh();
     }
 
     public void ApplyHP(int _hp)

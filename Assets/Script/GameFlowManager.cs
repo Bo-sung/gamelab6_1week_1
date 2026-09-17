@@ -58,7 +58,7 @@ public class GameFlowManager : MonoBehaviour
     {
         player.gameObject.SetActive(false);
         arrow.SetActive(false);
-        gameClearUI.StartGameOverUI(comboManager.GetScore() + 100*currentWave);
+        gameClearUI.StartGameClearUI(comboManager.GetScore() + 100*currentWave);
         Cursor.lockState = CursorLockMode.None; // 화면 중앙에 고정
         Cursor.visible = true;
     }

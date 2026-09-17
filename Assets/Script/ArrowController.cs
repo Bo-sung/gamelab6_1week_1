@@ -1,15 +1,6 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
 using Cursor = UnityEngine.Cursor;
 using Debug = UnityEngine.Debug;
 
@@ -210,7 +201,7 @@ public class ArrowController : MonoBehaviour
 
     void LateUpdate()
     {
-        if(IsReturning) 
+        if (IsReturning)
             return;
         // 대시 등, 상태 처리
         float moveSpeed = 0;
@@ -304,7 +295,7 @@ public class ArrowController : MonoBehaviour
         {
             GetComponentInChildren<CapsuleCollider>().isTrigger = false;
             OnHitGround?.Invoke();
-            if(!IsReturning)
+            if (!IsReturning)
                 this.enabled = false;
         }
     }
@@ -423,11 +414,13 @@ public class ArrowController : MonoBehaviour
         {
             navPosition = hit.position;
             return true;
-        } else if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit2, navSearchDistance * 10, filter))
+        }
+        else if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit2, navSearchDistance * 10, filter))
         {
             navPosition = hit2.position;
             return true;
-        } else if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit3, navSearchDistance * 40, filter))
+        }
+        else if (NavMesh.SamplePosition(worldPosition, out NavMeshHit hit3, navSearchDistance * 40, filter))
         {
             navPosition = hit3.position;
             return true;

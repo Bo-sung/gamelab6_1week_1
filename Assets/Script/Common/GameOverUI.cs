@@ -1,40 +1,103 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class GameOverUI : MonoBehaviour
+public class GameOverUI : MonoBehaviour, GameScene.IGameResultUI
 {
-    [SerializeField]
-    private GameObject GameOverPanel;
-    [SerializeField]
-    private GameObject GameOverText;
-    [SerializeField]
-    private TextMeshProUGUI ScoreText;
-    [SerializeField]
-    private GameObject bt1;
-    [SerializeField]
-    private GameObject bt2;
-    [SerializeField]
-    private GameObject bt3;
+    [SerializeField] private GameObject GameOverPanel;
+    [SerializeField] private GameObject GameOverText;
+    [SerializeField] private TextMeshProUGUI ScoreText;
+    [SerializeField] private Button rtBtn;
+    [SerializeField] private Button totitleBtn;
+    [SerializeField] private string titleSceneName = "Title";
 
-    [ContextMenu("게임 오버 UI 띄우기")]
-    public void StartGameOverUI(int score)
+    private int resultScore;
+    private string resultText;
+    private bool hasResult;
+    private bool loadingScene;
+    private Coroutine showCoroutine;
+
+    private void Awake()
     {
-        StartCoroutine(ShowGameOver(score));
+        rtBtn.onClick.AddListener(RestartGame);
+        totitleBtn.onClick.AddListener(GoToTitle);
+        if (!hasResult)
+            HideElements();
     }
 
-    private IEnumerator ShowGameOver(int score)
+    private void OnDestroy()
     {
+        rtBtn.onClick.RemoveListener(RestartGame);
+        totitleBtn.onClick.RemoveListener(GoToTitle);
+    }
+
+    public void StartGameOverUI(int score) => ShowResult(score, false);
+    public void StartGameClearUI(int score) => ShowResult(score, true);
+
+    public void ShowResult(int score, bool success)
+    {
+        UpdateData(score, success ? "GAME CLEAR" : "GAME OVER");
+        Refresh();
+    }
+
+    public void UpdateData(int score, string text)
+    {
+        resultScore = score;
+        resultText = text;
+        hasResult = true;
+    }
+
+    public void Refresh()
+    {
+        if (!hasResult)
+            return;
+
+        gameObject.SetActive(true);
+        if (showCoroutine != null)
+            StopCoroutine(showCoroutine);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        showCoroutine = StartCoroutine(ShowGameOver());
+    }
+
+    private void HideElements()
+    {
+        GameOverPanel.SetActive(false);
+        GameOverText.SetActive(false);
+        ScoreText.gameObject.SetActive(false);
+        rtBtn.gameObject.SetActive(false);
+        totitleBtn.gameObject.SetActive(false);
+    }
+
+    private IEnumerator ShowGameOver()
+    {
+        HideElements();
         GameOverPanel.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
+        GameOverText.GetComponentInChildren<TMP_Text>(true).text = resultText;
+        ScoreText.text = "Score: " + resultScore;
+        yield return new WaitForSecondsRealtime(0.3f);
         GameOverText.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSecondsRealtime(0.3f);
         ScoreText.gameObject.SetActive(true);
-        ScoreText.text = "Score: " + score;
-        yield return new WaitForSeconds(0.3f);
-        bt1.SetActive(true);
-        bt2.SetActive(true);
-        bt3.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.3f);
+        rtBtn.gameObject.SetActive(true);
+        totitleBtn.gameObject.SetActive(true);
+        showCoroutine = null;
+    }
+
+    public void RestartGame() => LoadScene(SceneManager.GetActiveScene().name);
+    public void GoToTitle() => LoadScene(titleSceneName);
+
+    private void LoadScene(string sceneName)
+    {
+        if (loadingScene)
+            return;
+        loadingScene = true;
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene(sceneName);
     }
 }
-
